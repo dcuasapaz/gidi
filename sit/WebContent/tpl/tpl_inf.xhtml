@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<h:head>
+	<link href="#{request.contextPath}/css/stl_adm.css" rel="stylesheet"
+		type="text/css" />
+	<link rel="shortcut icon" href="/#{default.acr()}/ico/episig.ico" />
+	<h:outputScript name="validador.js"></h:outputScript>
+	<title><ui:insert name="ttl">Title Page</ui:insert> |
+		#{infCtlStm.stm.SStmAcr}</title>
+</h:head>
+
+<h:body>
+
+	<p:layout fullPage="true">
+
+		<p:layoutUnit position="north">
+			<div id="adm-hdr">
+
+				<div class="hdr-lgo">
+					<h:panelGrid columns="2">
+						<p:link id="lnk-hdr-lgo" href="#{infCtlStm.stm.SStmLnk}"
+							target="_blank"
+							title="#{insCtlUnt.rtrUnt(infCtlStm.stm.IUntId).SUntNme}">
+							<p:graphicImage value="/img/lgo/secundary_wht.png"
+								styleClass="hdr-lgo-obj" />
+						</p:link>
+
+						<h:outputLabel value="#{infCtlStm.stm.SStmNme}" />
+					</h:panelGrid>
+				</div>
+			</div>
+			<div class="hr" />
+		</p:layoutUnit>
+		<p:layoutUnit position="south">
+
+		</p:layoutUnit>
+		<p:layoutUnit position="center" styleClass="bdy-frm">
+			<ui:insert name="ctt">
+				<h:outputLabel value="Content" />
+			</ui:insert>
+		</p:layoutUnit>
+
+	</p:layout>
+</h:body>
+</h:html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<h:head>
+	<meta name="keywords"
+		content="404 iphone web template, Andriod web template, Smartphone web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+
+	<link href="#{request.contextPath}/css/stl_error.css" rel="stylesheet"
+		type="text/css" />
+	<link rel="shortcut icon" href="/#{page.acr()}/ico/episig.ico" />
+
+	<title>Enlace no disponible | #{infCtlStm.stm.SStmAcr}</title>
+</h:head>
+<h:body>
+
+
+	<div class="wrap">
+
+		<div class="header">
+			<div class="logo">
+				<a href="http://www.investigacionsalud.gob.ec" title="INSPI-LIP"><img
+					src="/sgi/img/lgo/main.png" class="img-lgo" /></a>
+			</div>
+		</div>
+
+		<div class="content">
+			<p:graphicImage value="/img/error/error.png" title="Error" />
+			<p>
+				<span><label>U</label>ps.... </span>Parece que existe un error con
+				el enlace que estas buscando.
+			</p>
+			<a href="#{infCtlStm.stm.SStmLnk}" title="INSPI - EpiSIG">Ir al
+				Inicio</a><br /> <br /> <br />
+			<div class="copy-right">
+				<p>
+					<h:outputText value="@ All rights Reserved #{default.yrDfl()} |" />
+					<a href="http://www.investigacionsalud.gob.ec">INSPI-LIP</a> - <a
+						href="http://www.investigacionsalud.gob.ec/webs/episig/">EpiSIG</a>
+				</p>
+			</div>
+		</div>
+
+	</div>
+
+</h:body>
+</h:html>

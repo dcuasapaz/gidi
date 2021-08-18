@@ -1,0 +1,431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition template="/tpl/tpl_adm.xhtml">
+	<ui:define name="ttl">#{html.ttlPgePrf}</ui:define>
+	<ui:define name="ctt">
+		<h:form id="frm-scr-prl" styleClass="frm-stl">
+			<p:growl id="grw-scr-prl" redisplay="true" showDetail="true"
+				showSummary="true" />
+
+			<h:panelGroup id="pgr-scr-prl" layout="block" styleClass="brr-mnu ">
+
+				<p:menubar>
+
+					<p:menuitem id="#{html.hmeBtnId}" value="#{html.hmeBtnNme}"
+						icon="#{html.hmeBtnIcn}" disabled="#{scrCtlPrl.dsbBtnHme}"
+						rendered="#{scrCtlPrl.vsbBtnHme}"
+						action="#{webCtlMnu.home(scrCtlSss.prl.IRolId)}" update="@form" />
+
+					<p:menuitem id="#{html.newBtnId}" value="#{html.newBtnNme}"
+						icon="#{html.newBtnIcn}" action="#{scrCtlPrl.add()}"
+						update="@form" disabled="#{scrCtlPrl.dsbBtnAdd}"
+						rendered="#{scrCtlPrl.vsbBtnAdd}" />
+
+					<p:menuitem id="#{html.sveBtnId}" value="#{html.sveBtnNme}"
+						icon="#{html.sveBtnIcn}" action="#{scrCtlPrl.sve()}"
+						update="@form" disabled="#{scrCtlPrl.dsbBtnSve}"
+						rendered="#{scrCtlPrl.vsbBtnSve}" />
+
+					<p:menuitem id="#{html.updBtnId}" value="#{html.updBtnNme}"
+						icon="#{html.updBtnIcn}" action="#{scrCtlPrl.upd()}"
+						update="@form" disabled="#{scrCtlPrl.dsbBtnUpd}"
+						rendered="#{scrCtlPrl.vsbBtnUpd}" />
+
+					<p:menuitem id="#{html.rfrBtnId}" value="#{html.rfrBtnNme}"
+						icon="#{html.rfrBtnIcn}" disabled="#{scrCtlPrl.dsbBtnRtr}"
+						rendered="#{scrCtlPrl.vsbBtnRtr}"
+						onclick="window.location.reload()" />
+				</p:menubar>
+
+				<p:blockUI id="#{html.newBlcId}" block="frm-scr-prl"
+					trigger="#{html.newBtnId}">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+
+				<p:blockUI id="#{html.sveBlcId}" block="frm-scr-prl"
+					trigger="#{html.sveBtnId}">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+
+				<p:blockUI id="#{html.updBlcId}" block="frm-scr-prl"
+					trigger="#{html.updBtnId}">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+
+			</h:panelGroup>
+
+			<h:panelGroup id="pgr-scr-prl-tbl" layout="block"
+				styleClass="bdy-100 bdy-ctt" rendered="#{scrCtlPrl.vsbPgrTbl}">
+
+				<p:dataTable id="dtb-scr-prl" var="varPrl"
+					value="#{scrCtlPrl.lstTblPrl}" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					rowsPerPageTemplate="30,60,90" rows="30"
+					sortBy="#{varPrl.dtaTblPr.SPrsLstNme} #{varPrl.dtaTblPr.SPrsNme}">
+					<f:facet name="header">
+						<h:outputText value="#{html.ttlPgePrf}" />
+					</f:facet>
+
+					<p:column headerText="Status system"
+						sortBy="#{scrCtlOpt.rtrOpt(varPrl.ISttId).SOptNme}"
+						filterBy="#{scrCtlOpt.rtrOpt(varPrl.ISttId).SOptNme}"
+						styleClass="bdy-10" exportable="false">
+						<h:panelGroup layout="block" styleClass="tbl-inf-stt">
+							<div class='tbl-inf-stt-obj'
+								style='background: #{webCtlClr.rtrClr(scrCtlOpt.rtrOpt(varPrl.ISttId).IClrCde).SClrHex};' />
+							<p:spacer width="5" />
+							<h:outputText value="#{scrCtlOpt.rtrOpt(varPrl.ISttId).SOptNme}" />
+						</h:panelGroup>
+					</p:column>
+
+					<p:column headerText="Profesional"
+						sortBy="#{varPrl.dtaTblPr.SPrsLstNme} #{varPrl.dtaTblPr.SPrsNme}"
+						filterBy="#{varPrl.dtaTblPr.SPrsLstNme} #{varPrl.dtaTblPr.SPrsNme}"
+						styleClass="bdy-20">
+						<h:outputText
+							value="#{varPrl.dtaTblPr.SPrsLstNme} #{varPrl.dtaTblPr.SPrsNme}"
+							escape="false" />
+					</p:column>
+
+					<p:column headerText="Project"
+						sortBy="#{varPrl.dtaTblPr.SPrsLstNme} #{varPrl.dtaTblPr.SPrsNme}"
+						filterBy="#{varPrl.dtaTblPr.SPrsLstNme} #{varPrl.dtaTblPr.SPrsNme}"
+						styleClass="bdy-20">
+						<h:outputText value="#{sitCtlOpt.ent(varPrl.IPrjId).SOptAcr}"
+							escape="false" />
+					</p:column>
+
+					<p:column headerText="Email" sortBy="#{varPrl.dtaTblPr.SPrsEml}"
+						filterBy="#{varPrl.dtaTblPr.SPrsEml}" styleClass="bdy-20">
+						<h:outputText value="#{varPrl.dtaTblPr.SPrsEml}" escape="false" />
+					</p:column>
+
+					<p:column headerText="User" sortBy="#{varPrl.dtaTblPr.SPrsUsr}"
+						filterBy=" #{varPrl.dtaTblPr.SPrsUsr}" styleClass="bdy-10">
+						<h:outputText value="#{varPrl.dtaTblPr.SPrsUsr}" escape="false" />
+					</p:column>
+
+					<p:column headerText="Perfil"
+						sortBy="#{scrCtlOpt.rtrOpt(varPrl.IRolId).SOptNme}"
+						filterBy="#{scrCtlOpt.rtrOpt(varPrl.IRolId).SOptNme}"
+						styleClass="bdy-10">
+						<h:outputText value="#{scrCtlOpt.rtrOpt(varPrl.IRolId).SOptNme}" />
+					</p:column>
+
+					<p:column headerText="Status"
+						sortBy="#{method.chgBoolean(varPrl.BPrsRolStt)}"
+						filterBy="#{method.chgBoolean(varPrl.BPrsRolStt)}"
+						styleClass="bdy-10 alg-ctr">
+						<h:outputText value="#{method.chgBoolean(varPrl.BPrsRolStt)}" />
+					</p:column>
+
+					<p:column headerText="Options" styleClass="bdy-10 alg-ctr"
+						exportable="false">
+						<h:panelGrid styleClass="bdy-100" columns="2"
+							columnClasses="bdy-50,bdy-50">
+							<p:commandLink id="#{html.edtBtnId}" action="#{scrCtlPrl.edt()}"
+								title="#{html.edtBtnNme}" styleClass="btn-tbl alg-ctr"
+								update="@form" disabled="#{scrCtlPrl.dsbTblBtnEdt}"
+								rendered="#{scrCtlPrl.vsbTblBtnEdt}">
+								<p:graphicImage value="#{html.icn(html.edt,16,html.png)}" />
+								<f:setPropertyActionListener target="#{scrCtlPrl.prl}"
+									value="#{varPrl}" />
+							</p:commandLink>
+							<p:commandLink id="#{html.dltBtnId}" action="#{scrCtlPrl.dlt()}"
+								title="#{html.dltBtnNme}" styleClass="btn-tbl alg-ctr"
+								disabled="#{scrCtlPrl.dsbTblBtnDlt}"
+								rendered="#{scrCtlPrl.vsbTblBtnDlt}" update="@form">
+								<p:graphicImage value="#{html.icn(html.dlt,16,html.png)}" />
+								<f:setPropertyActionListener target="#{scrCtlPrl.prl}"
+									value="#{varPrl}" />
+							</p:commandLink>
+						</h:panelGrid>
+						<p:blockUI id="#{html.edtBlcId}" block="dtb-scr-prl"
+							trigger="#{html.edtBtnId}">
+							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+						</p:blockUI>
+						<p:blockUI id="#{html.dltBlcId}" block="dtb-scr-prl"
+							trigger="#{html.dltBtnId}">
+							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+						</p:blockUI>
+					</p:column>
+				</p:dataTable>
+			</h:panelGroup>
+
+			<h:panelGroup id="pgr-scr-prl-dta" layout="block"
+				styleClass="bdy-100 bdy-ctt" rendered="#{scrCtlPrl.vsbPgrDta}">
+
+				<h:panelGroup layout="block" styleClass="bdy-60 bdy-ctt-dta">
+					<p:focus context="pgr-scr-prl-dta" />
+
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80" cellpadding="3" cellspacing="3"
+						rendered="#{scrCtlPrl.vsbStt}">
+						<h:outputLabel for="som-scr-stt" value="Status system:" />
+						<h:panelGroup layout="block" styleClass="tbl-inf-stt">
+							<div class='tbl-inf-stt-obj'
+								style='background: #{webCtlClr.rtrClr(scrCtlOpt.rtrOpt(scrCtlPrl.prl.ISttId).IClrCde).SClrHex};' />
+							<p:spacer width="5" />
+							<h:outputText
+								value="#{scrCtlOpt.rtrOpt(scrCtlPrl.prl.ISttId).SOptNme}" />
+						</h:panelGroup>
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80" cellpadding="3" cellspacing="3">
+
+						<h:outputLabel for="som-dta-prs" value="Profesional *:" />
+						<p:selectOneMenu id="som-dta-prs" required="#{scrCtlPrl.rqrPrs}"
+							disabled="#{scrCtlPrl.dsbPrs}" rendered="#{scrCtlPrl.vsbPrs}"
+							requiredMessage="#{message.obl()}" value="#{scrCtlPrl.IPrsId}"
+							styleClass="cmb-nrm" style="width:92%;" filter="true"
+							filterMatchMode="contains">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{dtaCtlPrs.loadPrs()}" var="varPrs"
+								itemLabel="#{varPrs.SPrsLstNme} #{varPrs.SPrsNme} (#{varPrs.SPrsUsr}, #{varPrs.SPrsEml})"
+								itemValue="#{varPrs.IPrsId}" />
+							<p:ajax update="@form" listener="#{scrCtlPrl.chsPrs()}" />
+						</p:selectOneMenu>
+						<h:outputText
+							value="#{scrCtlPrl.prs.SPrsLstNme} #{scrCtlPrl.prs.SPrsNme}"
+							rendered="#{scrCtlPrl.vsbPrsLbl}" />
+					</h:panelGrid>
+
+					<p:blockUI block="pgr-scr-prl-dta" trigger="som-dta-prs">
+						<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+					</p:blockUI>
+
+					<div class="bdy-ctt-hr" />
+
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80" cellpadding="3" cellspacing="3">
+						<h:outputLabel for="som-scr-prf" value="Perfil *:" />
+						<p:selectOneMenu id="som-scr-prf" required="#{scrCtlPrl.rqrPrf}"
+							disabled="#{scrCtlPrl.dsbPrf}" rendered="#{scrCtlPrl.vsbPrf}"
+							requiredMessage="#{message.obl()}" value="#{scrCtlPrl.IPrfId}"
+							styleClass="cmb-nrm" style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{scrCtlOpt.loadLstOpt(code.scrRol())}"
+								var="varPrf" itemLabel="#{varPrf.SOptNme}"
+								itemValue="#{varPrf.IOptCde}" />
+							<p:ajax update="sbb-scr-prl-vle" listener="#{scrCtlPrl.chsPrf()}" />
+						</p:selectOneMenu>
+						<h:outputText
+							value="#{scrCtlOpt.rtrOpt(scrCtlPrl.prl.IRolId).SOptNme}"
+							rendered="#{scrCtlPrl.vsbPrfLbl}" />
+					</h:panelGrid>
+
+					<p:blockUI block="pgr-scr-prl-dta" trigger="som-scr-prf">
+						<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+					</p:blockUI>
+
+					<div class="bdy-ctt-hr" />
+
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80" cellpadding="3" cellspacing="3">
+						<h:outputLabel for="som-scr-prj" value="Project *:" />
+						<p:selectOneMenu id="som-scr-prj"
+							required="#{scrCtlPrl.rqrPrsPrj}"
+							disabled="#{scrCtlPrl.dsbPrsPrj}"
+							rendered="#{scrCtlPrl.vsbPrsPrj}"
+							requiredMessage="#{message.obl()}" value="#{scrCtlPrl.IPrjId}"
+							styleClass="cmb-nrm" style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{sitCtlOpt.lstEpiNme(code.sitPrj())}"
+								var="varPrf" itemLabel="#{varPrf.SOptAcr}"
+								itemValue="#{varPrf.IOptId}" />
+						</p:selectOneMenu>
+					</h:panelGrid>
+
+					<p:blockUI block="pgr-scr-prl-dta" trigger="som-scr-prf">
+						<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+					</p:blockUI>
+
+					<div class="bdy-ctt-hr" />
+
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80" cellpadding="3" cellspacing="3">
+						<h:outputLabel for="sbb-scr-prl-vle" value="Activar perfil *:" />
+						<p:selectBooleanButton id="sbb-scr-prl-vle"
+							value="#{scrCtlPrl.BPrlStt}" onLabel="Si" offLabel="No"
+							onIcon="pi pi-check" offIcon="pi pi-times" style="width:60px"
+							disabled="#{scrCtlPrl.dsbPrlStt}"
+							rendered="#{scrCtlPrl.vsbPrlStt}"
+							required="#{scrCtlPrl.rqrPrlStt}">
+							<p:ajax update="png-scr-prl-prs" listener="#{scrCtlPrl.chsStt()}" />
+						</p:selectBooleanButton>
+					</h:panelGrid>
+
+					<p:blockUI block="png-scr-prl-prs" trigger="sbb-scr-prl-vle">
+						<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+					</p:blockUI>
+
+					<div class="bdy-ctt-hr" />
+
+
+					<h:panelGrid id="png-scr-prl-prs" columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80">
+
+						<h:panelGrid columns="1" styleClass="bdy-100 alg-ctr">
+							<p:graphicImage value="/img/mdl/scr_icn.png"
+								styleClass="scr-prl-img" />
+						</h:panelGrid>
+
+
+						<h:panelGrid columns="1" styleClass="bdy-100">
+							<h:panelGrid id="png-scr-prl-prs-eml" columns="3"
+								styleClass="bdy-100" columnClasses="bdy-20,bdy-80"
+								cellpadding="2" cellspacing="3">
+								<p:selectBooleanCheckbox id="sbc-csr-prl-prs-eml"
+									value="#{scrCtlPrl.vlrEml}" disabled="#{scrCtlPrl.dsbEml}"
+									rendered="#{scrCtlPrl.vsbEml}" required="#{scrCtlPrl.rqrEml}"
+									itemLabel="Editar Email *:" styleClass="lbl">
+									<p:ajax update="png-scr-prl-prs-eml"
+										listener="#{scrCtlPrl.actEml()}" />
+								</p:selectBooleanCheckbox>
+								<h:panelGrid columns="2" styleClass="bdy-100"
+									columnClasses="bdy-60,bdy-40">
+									<p:inputText id="inp-scr-prl-prs-eml"
+										value="#{scrCtlPrl.prs.SPrsEml}"
+										required="#{scrCtlPrl.rqrPrsEml}"
+										requiredMessage="#{message.obl()}"
+										rendered="#{scrCtlPrl.vsbPrsEml}"
+										disabled="#{scrCtlPrl.dsbPrsEml}" styleClass="inp-nrm bdy-80"
+										placeholder="#{html.ttlAtrObl}">
+										<f:validator validatorId="custom.emailValidator" />
+									</p:inputText>
+									<h:panelGrid columns="2"
+										rendered="#{scrCtlPrl.vsbPnlBtnPrsEml}">
+										<p:commandButton id="btn-scr-prl-prs-eml-upd"
+											value="Guardar cambios" action="#{scrCtlPrl.updPrsEml()}"
+											update="png-scr-prl-prs-eml grw-scr-prl" />
+										<p:commandButton id="btn-scr-prl-prs-eml-rst" value="Cancelar"
+											action="#{scrCtlPrl.rstPrsEml()}"
+											update="png-scr-prl-prs-eml grw-scr-prl" />
+									</h:panelGrid>
+								</h:panelGrid>
+							</h:panelGrid>
+
+							<p:blockUI block="png-scr-prl-prs-eml"
+								trigger="sbc-csr-prl-prs-eml">
+								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+							</p:blockUI>
+							<p:blockUI block="png-scr-prl-prs-eml"
+								trigger="btn-scr-prl-prs-eml-upd">
+								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+							</p:blockUI>
+							<p:blockUI block="png-scr-prl-prs-eml"
+								trigger="btn-scr-prl-prs-eml-rst">
+								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+							</p:blockUI>
+
+
+							<h:panelGrid id="png-scr-prl-prs-usr" columns="2"
+								styleClass="bdy-100" columnClasses="bdy-20,bdy-80"
+								cellpadding="3" cellspacing="3">
+								<p:selectBooleanCheckbox id="sbc-csr-prl-prs-usr"
+									value="#{scrCtlPrl.vlrUsr}" disabled="#{scrCtlPrl.dsbUsr}"
+									rendered="#{scrCtlPrl.vsbUsr}" required="#{scrCtlPrl.rqrUsr}"
+									itemLabel="Editar Usuario *:" styleClass="lbl">
+									<p:ajax update="png-scr-prl-prs-usr"
+										listener="#{scrCtlPrl.actUsr()}" />
+								</p:selectBooleanCheckbox>
+								<h:panelGrid columns="2" styleClass="bdy-100"
+									columnClasses="bdy-60,bdy-40">
+									<p:inputText id="inp-scr-prl-prs-usr"
+										value="#{scrCtlPrl.prs.SPrsUsr}"
+										required="#{scrCtlPrl.rqrPrsUsr}"
+										requiredMessage="#{message.obl()}"
+										rendered="#{scrCtlPrl.vsbPrsUsr}"
+										disabled="#{scrCtlPrl.dsbPrsUsr}" styleClass="inp-nrm bdy-80"
+										placeholder="#{html.ttlAtrObl}" />
+									<h:panelGrid columns="2"
+										rendered="#{scrCtlPrl.vsbPnlBtnPrsUsr}">
+										<p:commandButton id="btn-scr-prl-prs-usr-upd"
+											value="Guardar cambios" action="#{scrCtlPrl.updPrsUsr()}"
+											update="png-scr-prl-prs-usr grw-scr-prl" />
+										<p:commandButton id="btn-scr-prl-prs-usr-rst" value="Cancelar"
+											action="#{scrCtlPrl.rstPrsUsr()}"
+											update="png-scr-prl-prs-usr grw-scr-prl" />
+									</h:panelGrid>
+								</h:panelGrid>
+							</h:panelGrid>
+
+							<p:blockUI block="png-scr-prl-prs-usr"
+								trigger="sbc-csr-prl-prs-usr">
+								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+							</p:blockUI>
+							<p:blockUI block="png-scr-prl-prs-usr"
+								trigger="btn-scr-prl-prs-usr-upd">
+								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+							</p:blockUI>
+							<p:blockUI block="png-scr-prl-prs-usr"
+								trigger="btn-scr-prl-prs-usr-rst">
+								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+							</p:blockUI>
+
+							<h:panelGrid id="png-scr-prl-prs-psw" columns="2"
+								styleClass="bdy-100" columnClasses="bdy-30,bdy-70"
+								cellpadding="3" cellspacing="3">
+								<p:selectBooleanCheckbox id="sbc-csr-prl-prs-psw"
+									value="#{scrCtlPrl.vlrPsw}" disabled="#{scrCtlPrl.dsbPsw}"
+									rendered="#{scrCtlPrl.vsbPsw}" required="#{scrCtlPrl.rqrPsw}"
+									itemLabel="Editar Contraseña *:" styleClass="lbl">
+									<p:ajax update="png-scr-prl-prs-psw"
+										listener="#{scrCtlPrl.actPsw()}" />
+								</p:selectBooleanCheckbox>
+								<h:panelGrid columns="2" styleClass="bdy-100"
+									columnClasses="bdy-60,bdy-40">
+									<p:password id="inp-scr-prl-prs-psw"
+										value="#{scrCtlPrl.prs.SPrsPsw}"
+										required="#{scrCtlPrl.rqrPrsPsw}"
+										requiredMessage="#{message.obl()}"
+										rendered="#{scrCtlPrl.vsbPrsPsw}"
+										disabled="#{scrCtlPrl.dsbPrsPsw}" styleClass="inp-nrm bdy-80"
+										placeholder="#{html.ttlAtrObl}"
+										promptLabel="la contraseña debe tener un mínimo de 8 caracteres y contener al menos 2: letras mayúsculas, letras minúsculas, números o símbolos."
+										feedback="true" inline="true" strongLabel="Excelente"
+										goodLabel="Bien" weakLabel="Débil" redisplay="true" />
+									<h:panelGrid columns="2"
+										rendered="#{scrCtlPrl.vsbPnlBtnPrsPsw}">
+										<p:commandButton id="btn-scr-prl-prs-psw-upd"
+											value="Guardar cambios" action="#{scrCtlPrl.updPrsPsw()}"
+											update="png-scr-prl-prs-psw grw-scr-prl" />
+										<p:commandButton id="btn-scr-prl-prs-psw-rst" value="Cancelar"
+											action="#{scrCtlPrl.rstPrsPsw()}"
+											update="png-scr-prl-prs-psw grw-scr-prl" />
+									</h:panelGrid>
+								</h:panelGrid>
+							</h:panelGrid>
+
+							<p:blockUI block="png-scr-prl-prs-psw"
+								trigger="sbc-csr-prl-prs-psw">
+								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+							</p:blockUI>
+							<p:blockUI block="png-scr-prl-prs-psw"
+								trigger="btn-scr-prl-prs-psw-upd">
+								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+							</p:blockUI>
+							<p:blockUI block="png-scr-prl-prs-psw"
+								trigger="btn-scr-prl-prs-psw-rst">
+								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+							</p:blockUI>
+
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</h:html>

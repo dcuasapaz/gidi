@@ -1,0 +1,286 @@
+html {
+	height: 100%;
+	width: 100%;
+	background: #fff;
+	font-family: Tahoma;
+	font-size: 11px;
+}
+
+.bdy {
+	width: 100%;
+}
+
+.ctt {
+	width: 70%;
+	margin: 0 auto;
+}
+
+.img-load {
+	width: 32px;
+}
+
+.bdy-ctt-head {
+	width: 100%;
+}
+
+.bdy-ctt-ctt {
+	width: 100%;
+}
+
+.bdy-ctt-ftr {
+	width: 100%;
+	text-align: center;
+}
+
+.ctt-img {
+	width: 100%;
+	text-align: center;
+	padding: 10px;
+}
+
+.ctt-obj {
+	width: 100%;
+}
+
+.img-lgo-episig {
+	width: 25%;
+}
+
+.img-lgo-inspi {
+	width: 15%;
+}
+
+.lnk-img {
+	position: relative;
+}
+
+.lnk-img:after {
+	display: block;
+	position: absolute;
+	left: 0;
+	bottom: 0px;
+	width: 0;
+	height: 3px;
+	background-color: #3498db;
+	content: "";
+	transition: width 0.2s;
+}
+
+.lnk-img:hover {
+	color: #3498db;
+}
+
+.lnk-img:hover:after {
+	width: 100%;
+}
+
+.cdr-msg {
+	background: #f9f9fc;
+	color: #abadad;
+	padding: 5px;
+}
+/**********************************************************************************/
+/** BODY PORCENTAJES **/
+/**********************************************************************************/
+.bdy-100 {
+	width: 100%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-95 {
+	width: 95%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-90 {
+	width: 90%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-80 {
+	width: 80%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-70 {
+	width: 70%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-60 {
+	width: 60%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-50 {
+	width: 50%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-45 {
+	width: 45%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-40 {
+	width: 40%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-35 {
+	width: 35%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-30 {
+	width: 30%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-20 {
+	width: 20%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-10 {
+	width: 10%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+
+.bdy-5 {
+	width: 5%;
+	margin: 0 auto;
+	border-spacing: 0px;
+}
+/**********************************************************************************/
+/** TAGS HTML **/
+/**********************************************************************************/
+hr {
+	border: 1px solid #07427d;
+	border-radius: 1000px/10px;
+}
+
+h3 {
+	font-weight: 500;
+	margin: 0;
+}
+
+p {
+	font-size: 12px;
+}
+
+.ttl-crt {
+	font-size: 20px;
+	font-weight: bold;
+	color: #059eff;
+}
+
+.ttl-error {
+	font-size: 20px;
+	font-weight: bold;
+	color: #730808;
+}
+
+.eml-crt {
+	font-weight: bold;
+	color: #279cff;
+	font-size: 12px;
+}
+
+.lnk-btn {
+	width: 50%;
+	border-radius: 0px;
+	background: #059eff;
+	text-decoration: none;
+	font-size: 12px;
+	color: #fff;
+	font-weight: bold;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+/**********************************************************************************/
+/** TAGS PRIMEFACES **/
+/**********************************************************************************/
+.ui-messages-info-summary, .ui-messages-warn-summary,
+	.ui-messages-error-summary, .ui-messages-fatal-summary,
+	.ui-message-info-summary, .ui-message-warn-summary,
+	.ui-message-error-summary, .ui-message-fatal-summary {
+	font-weight: 400;
+}
+
+.inp {
+	padding: 5px;
+	width: 90%;
+	border-radius: 0px;
+	height: 20px;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	opacity: 1;
+}
+
+.cmb {
+	border-radius: 0px;
+	height: 28px;
+	line-height: normal;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	background: #fff;
+}
+
+.btn {
+	width: 40%;
+	padding: 5px;
+	border-radius: 0px;
+}
+
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield
+	{
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.alg-rgh {
+	text-align: right;
+}
+
+.alg-lft {
+	text-align: left;
+}
+
+.alg-ctr {
+	text-align: center;
+}
+
+.alg-jst {
+	text-align: justify;
+}
+
+.lbl-ttl {
+	font-size: 20px;
+	font-weight: bold;
+	color: #07427d;
+}
+
+.lbl-txt {
+	font-size: 13px;
+}
+
+.lbl-sbt {
+	font-weight: bold;
+}

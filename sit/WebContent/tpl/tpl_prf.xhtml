@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<h:head>
+	<link href="#{request.contextPath}/css/stl_adm.css" rel="stylesheet"
+		type="text/css" />
+	<link rel="shortcut icon" href="/#{default.acr()}/ico/episig.ico" />
+	<h:outputScript name="validador.js"></h:outputScript>
+
+	<script type="text/javascript">
+    PrimeFaces.locales['es'] = {
+        closeText: 'Cerrar',
+        prevText: 'Anterior',
+        nextText: 'Siguiente',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+        weekHeader: 'Semana',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: '',
+        timeOnlyTitle: 'Sólo hora',
+        timeText: 'Tiempo',
+        hourText: 'Hora',
+        minuteText: 'Minuto',
+        secondText: 'Segundo',
+        currentText: 'Fecha actual',
+        ampm: false,
+        month: 'Mes',
+        week: 'Semana',
+        day: 'Día',
+        allDayText: 'Todo el día'
+    };
+</script>
+	<title><ui:insert name="ttl">Title Page</ui:insert> -
+		#{webCtlPrf.mnu.SMnuNme} | #{infCtlStm.stm.SStmAcr}</title>
+</h:head>
+
+<h:body>
+
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north">
+			<h:panelGroup id="pgr-hdr" layout="block" styleClass="tpl-hdr">
+				<h:panelGrid id="png-hdr-bdy" columns="2" styleClass="tpl-hdr-bdy"
+					columnClasses="bdy-50, bdy-50">
+					<h:panelGroup id="pgr-hdr-bdy-lft" layout="block"
+						styleClass="tpl-hdr-bdy-lft">
+						<h:panelGrid columns="2">
+							<p:link id="lnk-hdr-lgo-scn" href="#{infCtlStm.stm.SStmLnk}"
+								target="_blank"
+								title="#{insCtlUnt.rtrUnt(infCtlStm.stm.IUntId).SUntNme}">
+								<p:graphicImage value="/img/lgo/secundary_wht.png"
+									styleClass="hdr-lgo-obj" />
+							</p:link>
+							<h:outputLabel value="#{infCtlStm.stm.SStmNme}"
+								styleClass="lbl-ttl" />
+						</h:panelGrid>
+					</h:panelGroup>
+					<h:panelGroup id="pgr-hdr-bdy-rgh" layout="block"
+						styleClass="tpl-hdr-bdy-rgh">
+						<h:form id="frm-adm-cls">
+							<p:growl id="grw-adm-cls" closable="true" redisplay="true"
+								showDetail="true" />
+							<h:panelGroup layout="block" styleClass="usr-inf">
+								<div class='stt-crc' style='background: #33FF33' />
+								<p:spacer width="5" />
+								<h:panelGroup layout="block" styleClass="usr-inf-nme">
+									<h:outputText
+										value="#{scrCtlSss.prl.dtaTblPr.SPrsNme.charAt(0)}#{scrCtlSss.prl.dtaTblPr.SPrsLstNme.charAt(0)}" />
+								</h:panelGroup>
+								<p:spacer width="5" />
+								<h:outputText value="#{scrCtlSss.prl.dtaTblPr.SPrsEml} |" />
+								<p:spacer width="5" />
+								<h:outputText
+									value="#{scrCtlOpt.rtrOpt(scrCtlSss.prl.IRolId).SOptNme}" />
+								<p:spacer width="5" />
+								<p:commandButton value="Log Out" styleClass="usr-btn"
+									action="#{scrCtlSss.clsSss()}" update="@form"
+									icon="ui-icon-circle-close" />
+							</h:panelGroup>
+						</h:form>
+					</h:panelGroup>
+				</h:panelGrid>
+			</h:panelGroup>
+			<div class="hr" />
+		</p:layoutUnit>
+
+
+		<p:layoutUnit position="south">
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center" styleClass="bdy-frm">
+			<ui:insert name="ctt">
+				<h:outputLabel value="Content" />
+			</ui:insert>
+
+		</p:layoutUnit>
+
+	</p:layout>
+
+</h:body>
+</h:html>

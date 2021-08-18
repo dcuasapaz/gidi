@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition template="/tpl/tpl_adm.xhtml">
+	<ui:define name="ttl">#{html.ttlPgeApn}</ui:define>
+	<ui:define name="ctt">
+		<h:form id="frm-ins-apn" styleClass="frm-stl">
+			<p:growl id="grw-ins-apn" redisplay="true" showDetail="true"
+				showSummary="true" />
+
+			<h:panelGroup id="pgr-ins-apn-mnu" layout="block"
+				styleClass="brr-mnu ">
+				<p:menubar>
+					<p:menuitem id="itm-ins-apn-hme" value="Home" icon="ui-icon-home"
+						disabled="#{insCtlApn.dsbBtnHme}"
+						rendered="#{insCtlApn.vsbBtnHme}"
+						action="#{webCtlMnu.home(scrCtlSss.prl.IRolId)}" update="@form" />
+					<p:menuitem id="itm-ins-apn-add" value="Nuevo"
+						icon="ui-icon-document" action="#{insCtlApn.add()}" update="@form"
+						disabled="#{insCtlApn.dsbBtnAdd}"
+						rendered="#{insCtlApn.vsbBtnAdd}" />
+					<p:menuitem id="itm-ins-apn-sve" value="Guardar"
+						icon="ui-icon-disk" action="#{insCtlApn.sve()}" update="@form"
+						disabled="#{insCtlApn.dsbBtnSve}"
+						rendered="#{insCtlApn.vsbBtnSve}" />
+					<p:menuitem id="itm-ins-apn-upd" value="Guardar cambios"
+						icon="ui-icon-disk" action="#{insCtlApn.upd()}" update="@form"
+						disabled="#{insCtlApn.dsbBtnUpd}"
+						rendered="#{insCtlApn.vsbBtnUpd}" />
+					<p:menuitem value="Refrescar" icon="ui-icon-arrowrefresh-1-n"
+						disabled="#{insCtlApn.dsbBtnRtr}"
+						rendered="#{insCtlApn.vsbBtnRtr}"
+						onclick="window.location.reload()" />
+				</p:menubar>
+				<p:blockUI id="blc-ins-apn-add" block="frm-ins-apn"
+					trigger="itm-ins-apn-add">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+				<p:blockUI id="blc-ins-apn-sve" block="frm-ins-apn"
+					trigger="itm-ins-apn-sve">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+				<p:blockUI id="blc-ins-apn-upd" block="frm-ins-apn"
+					trigger="itm-ins-apn-upd">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+			</h:panelGroup>
+
+
+			<h:panelGroup id="pgr-ins-apn-tbl" layout="block"
+				styleClass="bdy-100 bdy-ctt" rendered="#{insCtlApn.vsbPgrTbl}">
+				<p:dataTable id="dtb-ins-apn" var="varApn"
+					value="#{insCtlApn.lstTblApn}"
+					sortBy="#{insCtlOpt.rtrOpt(varApn.insTblUnt.insTblEnt.ITpeId).SOptNmeSpn}"
+					paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					rowsPerPageTemplate="30,60,90" rows="30"
+					rowStyleClass="#{varApn.insTblUnt.IUntCde eq -99 ? 'row-clr' : null}">
+					<f:facet name="header">
+						<h:outputText value="#{html.ttlPgeApn}" />
+					</f:facet>
+					<p:column headerText="Tipo Entidad" styleClass="bdy-10"
+						sortBy="#{insCtlOpt.rtrOpt(insCtlUnt.vldEnt(varApn.insTblUnt).ITpeId).SOptNmeSpn}"
+						filterBy="#{insCtlOpt.rtrOpt(insCtlUnt.vldEnt(varApn.insTblUnt).ITpeId).SOptNmeSpn}">
+						<h:outputText
+							value="#{insCtlOpt.rtrOpt(insCtlUnt.vldEnt(varApn.insTblUnt).ITpeId).SOptNmeSpn}" />
+					</p:column>
+					<p:column headerText="Entidad" styleClass="bdy-20"
+						sortBy="#{insCtlUnt.vldEnt(varApn.insTblUnt).SEntNme}"
+						filterBy="#{insCtlUnt.vldEnt(varApn.insTblUnt).SEntNme}">
+						<h:outputText
+							value="#{insCtlUnt.vldEnt(varApn.insTblUnt).SEntNme}" />
+					</p:column>
+
+					<p:column headerText="Unidad" styleClass="bdy-20"
+						sortBy="#{insCtlUnt.vldUnt(varApn.insTblUnt).SUntNme}"
+						filterBy="#{insCtlUnt.vldUnt(varApn.insTblUnt).SUntNme}">
+						<h:outputText
+							value="#{insCtlUnt.vldUnt(varApn.insTblUnt).SUntNme}" />
+					</p:column>
+
+					<p:column headerText="Sub-Unidad" styleClass="bdy-20"
+						sortBy="#{insCtlUnt.vldUntSub(varApn.insTblUnt).SUntNme}"
+						filterBy="#{insCtlUnt.vldUntSub(varApn.insTblUnt).SUntNme}">
+						<h:outputText
+							value="#{insCtlUnt.vldUntSub(varApn.insTblUnt).SUntNme}" />
+					</p:column>
+
+					<p:column headerText="Cargo" styleClass="bdy-20"
+						sortBy="#{varApn.SApnNme}" filterBy="#{varApn.SApnNme}">
+						<h:outputText value="#{varApn.SApnNme}" />
+					</p:column>
+
+
+					<p:column headerText="Opciones" styleClass="bdy-10 alg-ctr"
+						exportable="false">
+
+						<h:panelGrid styleClass="bdy-100" columns="2"
+							columnClasses="bdy-50,bdy-50">
+
+							<p:commandLink id="cml-ins-apn-edt" action="#{insCtlApn.edt()}"
+								title="#{html.ttlBtnEdt}" styleClass="btn-tbl alg-ctr"
+								update="@form" disabled="#{insCtlApn.dsbTblBtnEdt}"
+								rendered="#{insCtlApn.vsbTblBtnEdt}">
+								<p:graphicImage value="#{html.icn(html.edt,16,html.png)}" />
+								<f:setPropertyActionListener target="#{insCtlApn.apn}"
+									value="#{varApn}" />
+							</p:commandLink>
+							<p:commandLink id="cml-ins-apn-dlt" action="#{insCtlApn.dlt()}"
+								title="#{html.ttlBtnDlt}" styleClass="btn-tbl alg-ctr"
+								disabled="#{insCtlApn.dsbTblBtnDlt}"
+								rendered="#{insCtlApn.vsbTblBtnDlt}" update="@form">
+								<p:graphicImage value="#{html.icn(html.dlt,16,html.png)}" />
+								<f:setPropertyActionListener target="#{insCtlApn.apn}"
+									value="#{varApn}" />
+							</p:commandLink>
+						</h:panelGrid>
+
+						<p:blockUI id="blc-ins-apn-edt" block="dtb-ins-apn"
+							trigger="cml-ins-apn-edt">
+							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+						</p:blockUI>
+						<p:blockUI id="blc-ins-apn-dlt" block="dtb-ins-apn"
+							trigger="cml-ins-apn-dlt">
+							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+						</p:blockUI>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:blockUI block="dtb-ins-apn" trigger="dtb-ins-apn">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+
+			</h:panelGroup>
+
+
+
+			<h:panelGroup id="pgr-ins-apn-dta" layout="block"
+				rendered="#{insCtlApn.vsbPgrDta}" styleClass="bdy-100 bdy-ctt">
+
+				<h:panelGroup layout="block" styleClass="bdy-60 bdy-ctt-dta">
+					<p:focus context="pgr-ins-apn-dta" />
+
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80">
+						<h:outputLabel for="sor-ins-apn-vle" value="Pertenece a *:"
+							styleClass="label" />
+						<p:selectOneRadio id="sor-ins-apn-vle"
+							value="#{insCtlApn.SUntBld}" rendered="#{insCtlApn.vsbUntBld}"
+							disabled="#{insCtlApn.dsbUntBld}"
+							required="#{insCtlApn.rqrUntBld}">
+							<f:selectItem itemLabel="Unidad" itemValue="-99" />
+							<f:selectItem itemLabel="Sub-unidad" itemValue="0" />
+							<p:ajax update="@form" listener="#{insCtlApn.chsUntBld()}"
+								event="change" />
+						</p:selectOneRadio>
+					</h:panelGrid>
+					<p:blockUI block="pgr-ins-apn-dta" trigger="sor-ins-apn-vle">
+						<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+					</p:blockUI>
+
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80" cellpadding="3" cellspacing="3">
+						<h:outputLabel for="inp-ins-apn-nme" value="Nombre *:"
+							styleClass="label" />
+						<h:panelGroup layout="block">
+							<p:inputTextarea id="inp-ins-apn-nme"
+								value="#{insCtlApn.apn.SApnNme}" rows="3" cols="100"
+								counter="out-ins-apn-nme" maxlength="100"
+								counterTemplate="{0} caracteres restantes." autoResize="true"
+								required="#{insCtlApn.rqrApn}" disabled="#{insCtlApn.dsbApn}"
+								rendered="#{insCtlApn.vsbApn}" styleClass="inp-big" />
+							<br />
+							<h:outputText id="out-ins-apn-nme" />
+						</h:panelGroup>
+					</h:panelGrid>
+
+
+
+					<div class="bdy-ctt-hr" />
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80" cellpadding="3" cellspacing="3">
+
+						<h:outputLabel for="som-ins-apn-unt-ent-tpe"
+							value="Tipo Entidad *:" styleClass="label" />
+						<p:selectOneMenu id="som-ins-apn-unt-ent-tpe"
+							required="#{insCtlApn.rqrEntTpe}"
+							disabled="#{insCtlApn.dsbEntTpe}"
+							rendered="#{insCtlApn.vsbEntTpe}"
+							requiredMessage="#{message.obl()}" value="#{insCtlApn.IEntTpeId}"
+							styleClass="cmb-nrm" style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{insCtlApn.lstEntTpe}" var="varEntTpe"
+								itemLabel="#{varEntTpe.SOptNmeSpn}"
+								itemValue="#{varEntTpe.IOptId}"
+								itemDescription="#{varEntTpe.SOptDsc}" />
+							<p:ajax listener="#{insCtlApn.chsEntTpe()}"
+								update="som-ins-apn-unt-ent" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="som-ins-apn-unt-ent" value="Entidad *:"
+							styleClass="label" />
+						<p:selectOneMenu id="som-ins-apn-unt-ent"
+							required="#{insCtlApn.rqrEnt}" disabled="#{insCtlApn.dsbEnt}"
+							rendered="#{insCtlApn.vsbEnt}" requiredMessage="#{message.obl()}"
+							value="#{insCtlApn.IEntId}" styleClass="cmb-nrm"
+							style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{insCtlApn.lstEnt}" var="varEnt"
+								itemLabel="#{varEnt.SEntNme}" itemValue="#{varEnt.IEntCde}"
+								itemDescription="#{varEnt.SEntAcr}" />
+							<p:ajax listener="#{insCtlApn.chsEnt()}" update="som-ins-apn-unt" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="som-ins-apn-unt" value="Unidad *:"
+							styleClass="label" />
+						<p:selectOneMenu id="som-ins-apn-unt"
+							required="#{insCtlApn.rqrUnt}" disabled="#{insCtlApn.dsbUnt}"
+							rendered="#{insCtlApn.vsbUnt}" requiredMessage="#{message.obl()}"
+							value="#{insCtlApn.IUntCde}" styleClass="cmb-nrm"
+							style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{insCtlApn.lstUnt}" var="varUnt"
+								itemLabel="#{varUnt.SUntNme} (#{varUnt.SUntAcr})"
+								itemValue="#{varUnt.IUntId}" />
+							<p:ajax listener="#{insCtlApn.chsUnt()}"
+								update="som-ins-apn-unt-sub" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="som-ins-apn-unt-sub" value="Sub-unidad *:"
+							styleClass="label" />
+						<p:selectOneMenu id="som-ins-apn-unt-sub"
+							required="#{insCtlApn.rqrUntSub}"
+							disabled="#{insCtlApn.dsbUntSub}"
+							rendered="#{insCtlApn.vsbUntSub}"
+							requiredMessage="#{message.obl()}" value="#{insCtlApn.IUntId}"
+							styleClass="cmb-nrm" style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{insCtlApn.lstUntSub}" var="varUntSub"
+								itemLabel="#{varUntSub.SUntNme} (#{varUntSub.SUntAcr})"
+								itemValue="#{varUntSub.IUntId}" />
+							<p:ajax listener="#{insCtlApn.chsUntSub()}"
+								update="som-ins-apn-unt-sub" />
+						</p:selectOneMenu>
+
+					</h:panelGrid>
+				</h:panelGroup>
+			</h:panelGroup>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</h:html>

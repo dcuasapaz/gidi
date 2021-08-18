@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition template="/tpl/tpl_adm.xhtml">
+	<ui:define name="ttl">#{html.ttlPgeEnt}</ui:define>
+	<ui:define name="ctt">
+		<h:form id="frm-ins-ent">
+			<p:growl id="grw-ins-ent" redisplay="true" showDetail="true"
+				showSummary="true" />
+			<h:panelGroup id="pgr-ins-ent-mnu" layout="block"
+				styleClass="brr-mnu ">
+
+				<p:menubar>
+					<p:menuitem id="itm-ins-ent-hme" value="Home" icon="ui-icon-home"
+						disabled="#{insCtlEnt.dsbBtnHme}"
+						rendered="#{insCtlEnt.vsbBtnHme}"
+						action="#{webCtlMnu.home(scrCtlSss.prl.IRolId)}" update="@form" />
+					<p:menuitem id="itm-ins-ent-add" value="Nuevo"
+						icon="ui-icon-document" action="#{insCtlEnt.add()}" update="@form"
+						disabled="#{insCtlEnt.dsbBtnAdd}"
+						rendered="#{insCtlEnt.vsbBtnAdd}" />
+					<p:menuitem id="itm-ins-ent-sve" value="Guardar"
+						icon="ui-icon-disk" action="#{insCtlEnt.sve()}" update="@form"
+						disabled="#{insCtlEnt.dsbBtnSve}"
+						rendered="#{insCtlEnt.vsbBtnSve}" />
+					<p:menuitem id="itm-ins-ent-upd" value="Guardar cambios"
+						icon="ui-icon-disk" action="#{insCtlEnt.upd()}" update="@form"
+						disabled="#{insCtlEnt.dsbBtnUpd}"
+						rendered="#{insCtlEnt.vsbBtnUpd}" />
+					<p:menuitem value="Refrescar" icon="ui-icon-arrowrefresh-1-n"
+						disabled="#{insCtlEnt.dsbBtnRtr}"
+						rendered="#{insCtlEnt.vsbBtnRtr}"
+						onclick="window.location.reload()" />
+				</p:menubar>
+				<p:blockUI id="blc-ins-ent-add" block="frm-ins-ent"
+					trigger="itm-ins-ent-add">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+				<p:blockUI id="blc-ins-ent-sve" block="frm-ins-ent"
+					trigger="itm-ins-ent-sve">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+				<p:blockUI id="blc-ins-ent-upd" block="frm-ins-ent"
+					trigger="itm-ins-ent-upd">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+			</h:panelGroup>
+			 
+			<h:panelGroup id="pgr-ins-ent-tbl" layout="block"
+				styleClass="bdy-100 bdy-ctt" rendered="#{insCtlEnt.vsbPgrTbl}">
+
+				<p:dataTable id="dtb-ins-ent" var="varEnt"
+					value="#{insCtlEnt.lstTblEnt}" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					rowsPerPageTemplate="30,60,90" rows="30"
+					sortBy="#{insCtlOpt.rtrOpt(varEnt.ITpeId).SOptNmeSpn}">
+					<f:facet name="header">
+						<h:outputText value="#{html.ttlPgeEnt}" />
+					</f:facet>
+					
+					<p:column headerText="Tipo Entidad"
+						sortBy="#{insCtlOpt.rtrOpt(varEnt.ITpeId).SOptNmeSpn}"
+						filterBy="#{insCtlOpt.rtrOpt(varEnt.ITpeId).SOptNmeSpn}"
+						styleClass="bdy-10">
+						<h:outputText
+							value="#{insCtlOpt.rtrOpt(varEnt.ITpeId).SOptNmeSpn}" />
+					</p:column>
+
+					<p:column headerText="Código" sortBy="#{varEnt.SEntCde}"
+						filterBy="#{varEnt.SEntCde}" styleClass="bdy-10 alg-ctr">
+						<h:outputText value="#{varEnt.SEntCde}" />
+					</p:column>
+
+					<p:column headerText="Nombre" sortBy="#{varEnt.SEntNme}"
+						filterBy="#{varEnt.SEntNme}" styleClass="bdy-40">
+						<h:outputText value="#{varEnt.SEntNme}" />
+					</p:column>
+
+					<p:column headerText="Sigla" sortBy="#{varEnt.SEntAcr}"
+						filterBy="#{varEnt.SEntAcr}" styleClass="bdy-10 alg-ctr">
+						<h:outputText value="#{varEnt.SEntAcr}" />
+					</p:column>
+
+					<p:column headerText="Nivel"
+						sortBy="#{insCtlOpt.rtrOpt(varEnt.ILvlId).SOptNmeSpn}"
+						filterBy="#{insCtlOpt.rtrOpt(varEnt.ILvlId).SOptNmeSpn}"
+						styleClass="bdy-10">
+						<h:outputText
+							value="#{insCtlOpt.rtrOpt(varEnt.ILvlId).SOptNmeSpn}" />
+					</p:column>
+
+					<p:column headerText="País"
+						sortBy="#{dpaCtlCnr.rtrCnr(varEnt.ICnrId).SCnrNmeSpn}"
+						filterBy="#{dpaCtlCnr.rtrCnr(varEnt.ICnrId).SCnrNmeSpn}"
+						styleClass="bdy-10">
+						<h:outputText
+							value="#{dpaCtlCnr.rtrCnr(varEnt.ICnrId).SCnrNmeSpn}" />
+					</p:column>
+
+					<p:column headerText="Opciones" styleClass="bdy-10 alg-ctr"
+						exportable="false">
+
+						<h:panelGrid styleClass="bdy-100" columns="2"
+							columnClasses="bdy-30,bdy-30">
+
+							<p:commandLink id="cml-ins-ent-edt" action="#{insCtlEnt.edt()}"
+								title="#{html.ttlBtnEdt}" styleClass="btn-tbl alg-ctr"
+								update="@form" disabled="#{insCtlEnt.dsbTblBtnEdt}"
+								rendered="#{insCtlEnt.vsbTblBtnEdt}">
+								<p:graphicImage value="#{html.icn(html.edt,16,html.png)}" />
+								<f:setPropertyActionListener target="#{insCtlEnt.ent}"
+									value="#{varEnt}" />
+							</p:commandLink>
+							<p:commandLink id="cml-ins-ent-dlt" action="#{insCtlEnt.dlt()}"
+								title="#{html.ttlBtnDlt}" styleClass="btn-tbl alg-ctr"
+								disabled="#{insCtlEnt.dsbTblBtnDlt}"
+								rendered="#{insCtlEnt.vsbTblBtnDlt}" update="@form">
+								<p:graphicImage value="#{html.icn(html.dlt,16,html.png)}" />
+								<f:setPropertyActionListener target="#{insCtlEnt.ent}"
+									value="#{varEnt}" />
+							</p:commandLink>
+						</h:panelGrid>
+						<p:blockUI id="blc-ins-ent-edt" block="dtb-ins-ent"
+							trigger="cml-ins-ent-edt">
+							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+						</p:blockUI>
+						<p:blockUI id="blc-ins-ent-dlt" block="dtb-ins-ent"
+							trigger="cml-ins-ent-dlt">
+							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+						</p:blockUI>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:blockUI block="dtb-ins-ent" trigger="dtb-ins-ent">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+			</h:panelGroup>
+			 
+			<h:panelGroup id="pgr-ins-ent-dta" layout="block"
+				styleClass="bdy-100 bdy-ctt" rendered="#{insCtlEnt.vsbPgrDta}">
+
+				<h:panelGroup layout="block" styleClass="bdy-60 bdy-ctt-dta">
+
+					<p:focus context="pgr-ins-ent-dta" />
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80" cellpadding="3" cellspacing="3">
+
+						<h:outputLabel for="inp-ins-ent-nme" value="Nombre *:" />
+						<h:panelGroup layout="block">
+							<p:inputTextarea id="inp-ins-ent-nme"
+								value="#{insCtlEnt.ent.SEntNme}" rows="3" cols="100"
+								counter="out-ins-ent-nme" maxlength="100"
+								counterTemplate="{0} caracteres restantes." autoResize="true"
+								required="#{insCtlEnt.rqrEnt}" disabled="#{insCtlEnt.dsbEnt}"
+								rendered="#{insCtlEnt.vsbEnt}" styleClass="inp-big" />
+							<br />
+							<h:outputText id="out-ins-ent-nme" />
+						</h:panelGroup>
+
+						<h:outputLabel for="inp-ins-ent-cde" value="Código :" />
+						<p:inputText id="inp-ins-ent-cde" value="#{insCtlEnt.ent.SEntCde}"
+							disabled="#{insCtlEnt.dsbEntCde}"
+							rendered="#{insCtlEnt.vsbEntCde}"
+							required="#{insCtlEnt.rqrEntCde}" styleClass="inp-nrm" />
+
+						<h:outputLabel for="inp-ins-ent-acr" value="Sigla :" />
+						<p:inputText id="inp-ins-ent-acr" value="#{insCtlEnt.ent.SEntAcr}"
+							disabled="#{insCtlEnt.dsbEntAcr}"
+							rendered="#{insCtlEnt.vsbEntAcr}"
+							required="#{insCtlEnt.rqrEntAcr}" styleClass="inp-nrm" />
+
+						<h:outputLabel for="som-ins-ent-tpe" value="Tipo Entidad *:" />
+						<p:selectOneMenu id="som-ins-ent-tpe"
+							required="#{insCtlEnt.rqrEnt}" disabled="#{insCtlEnt.dsbEnt}"
+							rendered="#{insCtlEnt.vsbEnt}" requiredMessage="#{message.obl()}"
+							value="#{insCtlEnt.IEntTpeId}" styleClass="cmb-nrm"
+							style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{insCtlEnt.lstEntTpe}" var="varEntTpe"
+								itemLabel="#{varEntTpe.SOptNmeSpn}"
+								itemValue="#{varEntTpe.IOptId}"
+								itemDescription="#{varEntTpe.SOptDsc}" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="som-ins-ent-lvl" value="Nivel *:" />
+						<p:selectOneMenu id="som-ins-ent-lvl"
+							required="#{insCtlEnt.rqrEnt}" disabled="#{insCtlEnt.dsbEnt}"
+							rendered="#{insCtlEnt.vsbEnt}" requiredMessage="#{message.obl()}"
+							value="#{insCtlEnt.ILvlId}" styleClass="cmb-nrm"
+							style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{insCtlEnt.lstLvl}" var="varLvl"
+								itemLabel="#{varLvl.SOptNmeSpn}" itemValue="#{varLvl.IOptId}"
+								itemDescription="#{varLvl.SOptDsc}" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="som-ins-ent-cnr" value="País *:" />
+						<p:selectOneMenu id="som-ins-ent-cnr"
+							required="#{insCtlEnt.rqrEnt}" disabled="#{insCtlEnt.dsbEnt}"
+							rendered="#{insCtlEnt.vsbEnt}" requiredMessage="#{message.obl()}"
+							value="#{insCtlEnt.ICnrId}" styleClass="cmb-nrm"
+							style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{insCtlEnt.lstCnr}" var="varCnr"
+								itemLabel="#{varCnr.SCnrNmeSpn}" itemValue="#{varCnr.ICnrId}" />
+						</p:selectOneMenu>
+
+					</h:panelGrid>
+
+				</h:panelGroup>
+			</h:panelGroup>
+			 
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</h:html>

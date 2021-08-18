@@ -1,0 +1,30 @@
+.ui-widget-content {
+	border: 0px;
+}
+
+.ui-selectonemenu {
+	height: 25px;
+	border-radius: 0px;
+}
+
+.ui-panelgrid .ui-panelgrid-cell {
+	border-width: 0px;
+	border-style: none;
+}
+
+.ui-paginator {
+	height: 40px;
+	background: #fff;
+}
+
+.ui-datatable .ui-datatable-header {
+	font-weight: bold;
+	text-transform: uppercase;
+	background: #10b317;
+	color: #fff;
+	padding: 5px;
+}
+
+.ui-datatable .ui-sortable-column {
+	font-weight: bold;
+}

@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition template="/tpl/tpl_adm.xhtml">
+	<ui:define name="ttl">#{html.ttlPgeUnt}</ui:define>
+
+	<ui:define name="ctt">
+
+		<h:form id="frm-ins-unt" styleClass="frm-stl">
+
+			<p:growl redisplay="true" showDetail="true" showSummary="true" />
+		
+			<h:panelGroup id="pgr-ins-unt-mnu" layout="block"
+				styleClass="brr-mnu ">
+				<p:menubar>
+					<p:menuitem id="itm-ins-unt-hme" value="Home" icon="ui-icon-home"
+						disabled="#{insCtlUnt.dsbBtnHme}"
+						rendered="#{insCtlUnt.vsbBtnHme}"
+						action="#{webCtlMnu.home(scrCtlSss.prl.IRolId)}" update="@form" />
+					<p:menuitem id="itm-ins-unt-add" value="Nuevo"
+						icon="ui-icon-document" action="#{insCtlUnt.add()}" update="@form"
+						disabled="#{insCtlUnt.dsbBtnAdd}"
+						rendered="#{insCtlUnt.vsbBtnAdd}" />
+					<p:menuitem id="itm-ins-unt-sve" value="Guardar"
+						icon="ui-icon-disk" action="#{insCtlUnt.sve()}" update="@form"
+						disabled="#{insCtlUnt.dsbBtnSve}"
+						rendered="#{insCtlUnt.vsbBtnSve}" />
+					<p:menuitem id="itm-ins-unt-upd" value="Guardar cambios"
+						icon="ui-icon-disk" action="#{insCtlUnt.upd()}" update="@form"
+						disabled="#{insCtlUnt.dsbBtnUpd}"
+						rendered="#{insCtlUnt.vsbBtnUpd}" />
+					<p:menuitem value="Refrescar" icon="ui-icon-arrowrefresh-1-n"
+						disabled="#{insCtlUnt.dsbBtnRtr}"
+						rendered="#{insCtlUnt.vsbBtnRtr}"
+						onclick="window.location.reload()" />
+				</p:menubar>
+				<p:blockUI id="blc-ins-unt-add" block="frm-ins-unt"
+					trigger="itm-ins-unt-add">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+				<p:blockUI id="blc-ins-unt-sve" block="frm-ins-unt"
+					trigger="itm-ins-unt-sve">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+				<p:blockUI id="blc-ins-unt-upd" block="frm-ins-unt"
+					trigger="itm-ins-unt-upd">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+			</h:panelGroup>
+			 
+			<h:panelGroup id="pgr-ins-unt-tbl" layout="block"
+				styleClass="bdy-100 bdy-ctt" rendered="#{insCtlUnt.vsbPgrTbl}">
+				<p:dataTable id="dtb-ins-unt" var="varUnt"
+					value="#{insCtlUnt.lstTblUnt}"
+					sortBy="#{insCtlOpt.rtrOpt(insCtlUnt.vldEnt(varUnt).ITpeId).SOptNmeSpn}"
+					paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					rowsPerPageTemplate="30,60,90" rows="30"
+					rowStyleClass="#{varUnt.IUntCde eq -99 ? 'row-clr' : null}">
+					<f:facet name="header">
+						<h:outputText value="#{html.ttlPgeUnt}" />
+					</f:facet>
+					<p:column headerText="Tipo Entidad"
+						sortBy="#{insCtlOpt.rtrOpt(insCtlUnt.vldEnt(varUnt).ITpeId).SOptNmeSpn}"
+						filterBy="#{insCtlOpt.rtrOpt(insCtlUnt.vldEnt(varUnt).ITpeId).SOptNmeSpn}"
+						styleClass="bdy-10">
+						<h:outputText
+							value="#{insCtlOpt.rtrOpt(insCtlUnt.vldEnt(varUnt).ITpeId).SOptNmeSpn}" />
+					</p:column>
+					<p:column headerText="Entidad"
+						sortBy="#{insCtlUnt.vldEnt(varUnt).SEntNme}"
+						filterBy="#{insCtlUnt.vldEnt(varUnt).SEntNme}" styleClass="bdy-15">
+						<h:outputText value="#{insCtlUnt.vldEnt(varUnt).SEntNme}" />
+					</p:column>
+
+					<p:column headerText="Unidad"
+						sortBy="#{insCtlUnt.vldUnt(varUnt).SUntNme}"
+						filterBy="#{insCtlUnt.vldUnt(varUnt).SUntNme}" styleClass="bdy-15">
+						<h:outputText value="#{insCtlUnt.vldUnt(varUnt).SUntNme}" />
+					</p:column>
+					<p:column headerText="Sigla"
+						sortBy="#{insCtlUnt.vldUnt(varUnt).SUntAcr}"
+						filterBy="#{insCtlUnt.vldUnt(varUnt).SUntAcr}" styleClass="bdy-10">
+						<h:outputText value="#{insCtlUnt.vldUnt(varUnt).SUntAcr}" />
+					</p:column>
+					<p:column headerText="Nivel" styleClass="bdy-5"
+						sortBy="#{insCtlOpt.rtrOpt(insCtlUnt.vldUnt(varUnt).ILvlId).SOptNmeSpn}"
+						filterBy="#{insCtlOpt.rtrOpt(insCtlUnt.vldUnt(varUnt).ILvlId).SOptNmeSpn}">
+						<h:outputText
+							value="#{insCtlOpt.rtrOpt(insCtlUnt.vldUnt(varUnt).ILvlId).SOptNmeSpn}" />
+					</p:column>
+
+					<p:column headerText="Sub-unidad"
+						sortBy="#{insCtlUnt.vldUntSub(varUnt).SUntNme}"
+						filterBy="#{insCtlUnt.vldUntSub(varUnt).SUntNme}"
+						styleClass="bdy-15">
+						<h:outputText value="#{insCtlUnt.vldUntSub(varUnt).SUntNme}" />
+					</p:column>
+					<p:column headerText="Sigla"
+						sortBy="#{insCtlUnt.vldUntSub(varUnt).SUntAcr}"
+						filterBy="#{insCtlUnt.vldUntSub(varUnt).SUntAcr}"
+						styleClass="bdy-10">
+						<h:outputText value="#{insCtlUnt.vldUntSub(varUnt).SUntAcr}" />
+					</p:column>
+					<p:column headerText="Nivel" styleClass="bdy-5"
+						sortBy="#{insCtlOpt.rtrOpt(insCtlUnt.vldUntSub(varUnt).ILvlId).SOptNmeSpn}"
+						filterBy="#{insCtlOpt.rtrOpt(insCtlUnt.vldUntSub(varUnt).ILvlId).SOptNmeSpn}">
+						<h:outputText
+							value="#{insCtlOpt.rtrOpt(insCtlUnt.vldUntSub(varUnt).ILvlId).SOptNmeSpn}" />
+					</p:column>
+					<p:column headerText="Opciones" styleClass="bdy-10 alg-ctr"
+						exportable="false">
+
+						<h:panelGrid styleClass="bdy-100" columns="2"
+							columnClasses="bdy-50,bdy-50">
+
+							<p:commandLink id="cml-ins-unt-edt" action="#{insCtlUnt.edt()}"
+								title="#{html.ttlBtnEdt}" styleClass="btn-tbl alg-ctr"
+								update="@form" disabled="#{insCtlUnt.dsbTblBtnEdt}"
+								rendered="#{insCtlUnt.vsbTblBtnEdt}">
+								<p:graphicImage value="#{html.icn(html.edt,16,html.png)}" />
+								<f:setPropertyActionListener target="#{insCtlUnt.untTbl}"
+									value="#{varUnt}" />
+							</p:commandLink>
+							<p:commandLink id="cml-ins-unt-dlt" action="#{insCtlUnt.dlt()}"
+								title="#{html.ttlBtnDlt}" styleClass="btn-tbl alg-ctr"
+								disabled="#{insCtlUnt.dsbTblBtnDlt}"
+								rendered="#{insCtlUnt.vsbTblBtnDlt}" update="@form">
+								<p:graphicImage value="#{html.icn(html.dlt,16,html.png)}" />
+								<f:setPropertyActionListener target="#{insCtlUnt.untTbl}"
+									value="#{varUnt}" />
+							</p:commandLink>
+						</h:panelGrid>
+
+						<p:blockUI id="blc-ins-unt-edt" block="dtb-ins-unt"
+							trigger="cml-ins-unt-edt">
+							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+						</p:blockUI>
+						<p:blockUI id="blc-ins-unt-dlt" block="dtb-ins-unt"
+							trigger="cml-ins-unt-dlt">
+							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+						</p:blockUI>
+
+					</p:column>
+				</p:dataTable>
+
+				<p:blockUI block="dtb-ins-unt" trigger="dtb-ins-unt">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+			</h:panelGroup>
+			 
+			<h:panelGroup id="pgr-ins-unt-dta" layout="block"
+				rendered="#{insCtlUnt.vsbPgrDta}" styleClass="bdy-100 bdy-ctt">
+
+				<h:panelGroup layout="block" styleClass="bdy-60 bdy-ctt-dta">
+					<p:focus context="pgr-ins-unt-dta" />
+
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80">
+						<h:outputLabel for="sor-ins-unt-vle" value="Tipo *:"
+							styleClass="label" />
+						<p:selectOneRadio id="sor-ins-unt-vle"
+							value="#{insCtlUnt.SBldUnt}" rendered="#{insCtlUnt.vsbBldUnt}"
+							disabled="#{insCtlUnt.dsbBldUnt}"
+							required="#{insCtlUnt.rqrBldUnt}">
+							<f:selectItem itemLabel="Unidad" itemValue="-99" />
+							<f:selectItem itemLabel="Sub-unidad" itemValue="0" />
+							<p:ajax update="@form" listener="#{insCtlUnt.chsUnt()}"
+								event="change" />
+						</p:selectOneRadio>
+					</h:panelGrid>
+					<p:blockUI block="pgr-ins-unt-dta" trigger="sor-ins-unt-vle">
+						<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+					</p:blockUI>
+
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80" cellpadding="3" cellspacing="3">
+						<h:outputLabel for="inp-ins-unt-nme" value="Nombre *:"
+							styleClass="label" />
+						<h:panelGroup layout="block">
+							<p:inputTextarea id="inp-ins-unt-nme"
+								value="#{insCtlUnt.untTbl.SUntNme}" rows="3" cols="100"
+								counter="out-ins-unt-nme" maxlength="100"
+								counterTemplate="{0} caracteres restantes." autoResize="true"
+								required="#{insCtlUnt.rqrUntSub}"
+								disabled="#{insCtlUnt.dsbUntSub}"
+								rendered="#{insCtlUnt.vsbUntSub}" styleClass="inp-big" />
+							<br />
+							<h:outputText id="out-ins-unt-nme" />
+						</h:panelGroup>
+
+						<h:outputLabel for="inp-ins-unt-acr" value="Sigla *:"
+							styleClass="label" />
+						<p:inputText id="inp-ins-unt-acr"
+							value="#{insCtlUnt.untTbl.SUntAcr}"
+							required="#{insCtlUnt.rqrUntSub}"
+							disabled="#{insCtlUnt.dsbUntSub}"
+							rendered="#{insCtlUnt.vsbUntSub}" styleClass="inp-nrm" />
+
+						<h:outputLabel for="som-ins-unt-lvl" value="Nivel *:"
+							styleClass="label" />
+						<p:selectOneMenu id="som-ins-unt-lvl"
+							required="#{insCtlUnt.rqrUntSub}"
+							disabled="#{insCtlUnt.dsbUntSub}"
+							rendered="#{insCtlUnt.vsbUntSub}"
+							requiredMessage="#{message.obl()}" value="#{insCtlUnt.ILvlId}"
+							styleClass="cmb-nrm" style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{insCtlUnt.lstLvl}" var="varLvl"
+								itemLabel="#{varLvl.SOptNmeSpn}" itemValue="#{varLvl.IOptId}"
+								itemDescription="#{varLvl.SOptDsc}" />
+						</p:selectOneMenu>
+
+					</h:panelGrid>
+
+					 
+
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80" cellpadding="3" cellspacing="3">
+
+						<h:outputLabel for="som-ins-unt-ent-tpe" value="Tipo Entidad *:"
+							styleClass="label" />
+						<p:selectOneMenu id="som-ins-unt-ent-tpe"
+							required="#{insCtlUnt.rqrUnt}" disabled="#{insCtlUnt.dsbUnt}"
+							rendered="#{insCtlUnt.vsbUnt}" requiredMessage="#{message.obl()}"
+							value="#{insCtlUnt.IEntTpeId}" styleClass="cmb-nrm"
+							style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{insCtlUnt.lstEntTpe}" var="varEntTpe"
+								itemLabel="#{varEntTpe.SOptNmeSpn}"
+								itemValue="#{varEntTpe.IOptId}"
+								itemDescription="#{varEntTpe.SOptDsc}" />
+							<p:ajax listener="#{insCtlUnt.chsEntTpe()}"
+								update="som-ins-unt-ent" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="som-ins-unt-ent" value="Entidad *:"
+							styleClass="label" />
+						<p:selectOneMenu id="som-ins-unt-ent"
+							required="#{insCtlUnt.rqrUnt}" disabled="#{insCtlUnt.dsbUnt}"
+							rendered="#{insCtlUnt.vsbUnt}" requiredMessage="#{message.obl()}"
+							value="#{insCtlUnt.IEntId}" styleClass="cmb-nrm"
+							style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{insCtlUnt.lstEnt}" var="varEnt"
+								itemLabel="#{varEnt.SEntNme}" itemValue="#{varEnt.IEntCde}"
+								itemDescription="#{varEnt.SEntAcr}" />
+							<p:ajax listener="#{insCtlUnt.chsEnt()}" update="som-ins-unt-unt" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="som-ins-unt-unt" value="Padre *:"
+							styleClass="label" />
+						<p:selectOneMenu id="som-ins-unt-unt"
+							required="#{insCtlUnt.rqrUntAtr}"
+							disabled="#{insCtlUnt.dsbUntAtr}"
+							rendered="#{insCtlUnt.vsbUntAtr}"
+							requiredMessage="#{message.obl()}" value="#{insCtlUnt.IUntCde}"
+							styleClass="cmb-nrm" style="width:92%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{insCtlUnt.lstTblAtr}" var="varUntAtr"
+								itemLabel="#{varUntAtr.SUntNme} (#{varUntAtr.SUntAcr})"
+								itemValue="#{varUntAtr.IUntId}"
+								itemDescription="#{varUntAtr.SUntAcr}" />
+							<p:ajax listener="#{insCtlUnt.chsUntAtr()}" />
+						</p:selectOneMenu>
+
+					</h:panelGrid>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</h:html>
