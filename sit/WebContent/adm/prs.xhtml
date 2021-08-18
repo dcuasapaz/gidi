@@ -10,6 +10,18 @@
 	<ui:define name="ttl">#{html.ttlPgePrs}</ui:define>
 	<ui:define name="ctt">
 		<h:form id="frm-dta-prs" styleClass="frm-stl">
+
+			<script type="text/javascript">
+//<![CDATA[
+    function handleForm(xhr,status,args) {
+if(args.validationFailed)
+    PF('spot').show();
+else
+    PF('spot').hide();
+    }
+//]]>
+        </script>
+
 			<p:growl id="grw-dta-prs" redisplay="true" showDetail="true"
 				showSummary="true" />
 			<h:panelGroup id="pgr-dta-prs-apn" layout="block"
@@ -28,7 +40,8 @@
 					<p:menuitem id="#{html.sveBtnId}" value="#{html.sveBtnNme}"
 						icon="#{html.sveBtnIcn}" action="#{dtaCtlPrs.sve()}"
 						update="@form" disabled="#{dtaCtlPrs.dsbBtnSve}"
-						rendered="#{dtaCtlPrs.vsbBtnSve}" />
+						rendered="#{dtaCtlPrs.vsbBtnSve}"
+						oncomplete="handleForm(xhr, status, args)" />
 
 					<p:menuitem id="#{html.updBtnId}" value="#{html.updBtnNme}"
 						icon="#{html.updBtnIcn}" action="#{dtaCtlPrs.upd()}"
@@ -117,7 +130,8 @@
 							escape="false" />
 					</p:column>
 
-					<p:column headerText="Country" sortBy="#{varPrs.dpaTblCnr.SCnrNmeSpn}"
+					<p:column headerText="Country"
+						sortBy="#{varPrs.dpaTblCnr.SCnrNmeSpn}"
 						filterBy="#{varPrs.dpaTblCnr.SCnrNmeSpn}" styleClass="bdy-10">
 						<h:outputText value="#{varPrs.dpaTblCnr.SCnrNmeSpn}"
 							escape="false" />
@@ -163,6 +177,7 @@
 
 			<h:panelGroup id="pgr-dta-prs" layout="block"
 				styleClass="bdy-100 bdy-ctt" rendered="#{dtaCtlPrs.vsbPgrDta}">
+
 				<h:panelGroup layout="block" styleClass="bdy-50 bdy-ctt-dta">
 					<p:focus context="pgr-dta-prs" />
 					<h:panelGroup layout="block" styleClass="bdy-ctt-dta-scc-ttl">
@@ -173,8 +188,7 @@
 					<h:panelGrid columns="2" styleClass="bdy-100"
 						columnClasses="bdy-20,bdy-80">
 
-						<h:outputLabel for="som-dta-prs-idn-tpe"
-							value="ID Type:" />
+						<h:outputLabel for="som-dta-prs-idn-tpe" value="ID Type:" />
 						<p:selectOneMenu id="som-dta-prs-idn-tpe"
 							required="#{dtaCtlPrs.rqrPrsIdnTpe}"
 							disabled="#{dtaCtlPrs.dsbPrsIdnTpe}"
@@ -267,6 +281,9 @@
 					</h:panelGrid>
 					<div class="bdy-ctt-hr" />
 				</h:panelGroup>
+
+				<p:spotlight target="pgr-dta-prs" widgetVar="spot" />
+
 			</h:panelGroup>
 		</h:form>
 	</ui:define>
