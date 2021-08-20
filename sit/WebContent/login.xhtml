@@ -35,6 +35,7 @@
 								rendered="#{scrCtlLgn.vsbCmpPrsEml}"
 								requiredMessage=" #{message.dtaPrsPswObl(message.msgEmlRqr)} " />
 						</h:panelGrid>
+						
 						<h:panelGrid columns="1" styleClass="episig-wdt-80"
 							cellpadding="3" cellspacing="3">
 							<p:password id="inp-frm-pss" value="#{scrCtlLgn.prs.SPrsPsw}"
@@ -52,12 +53,13 @@
 								rendered="#{scrCtlLgn.vsbCmpRol}"
 								disabled="#{scrCtlLgn.dsbCmpRol}"
 								required="#{scrCtlLgn.rqrCmpRol}"
-								requiredMessage="#{message.msgErr(message.msgPrfRqr)}">
-								<f:selectItem itemLabel="Seleccione perfil" itemValue=""
+								requiredMessage="#{message.msgErr(message.msgPrfRqr)}"
+								filter="true" filterMatchMode="contains" >
+								<f:selectItem itemLabel="#{html.SOptScrRol}" itemValue=""
 									noSelectionOption="true" />
 								<f:selectItems value="#{scrCtlLgn.lstRol}" var="varPrsRol"
 									itemValue="#{varPrsRol.IPrsRolId}"
-									itemLabel="#{scrCtlOpt.rtrOpt(varPrsRol.IRolId).SOptNme}" />
+									itemLabel="[#{sitCtlOpt.ent(varPrsRol.IPrjId).SOptAcr}] #{scrCtlOpt.rtrOpt(varPrsRol.IRolId).SOptNme}" />
 							</p:selectOneMenu>
 
 							<p:blockUI block="png-frm-ctt-dta" trigger="som-frm-rol">
@@ -89,7 +91,7 @@
 							<p:graphicImage value="#{html.imgLdn}" styleClass="img-load" />
 						</p:blockUI>
 					</h:panelGrid>
-					
+
 				</h:panelGrid>
 			</h:panelGrid>
 		</h:form>

@@ -171,6 +171,7 @@ public class SitCtlGnr {
 			gnr.setIGnrNmbEgsUsd(0);
 			gnr.setIGnrNmbEgsVlb(0);
 			this.newAdlSlc();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

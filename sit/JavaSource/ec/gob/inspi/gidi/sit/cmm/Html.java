@@ -4,9 +4,23 @@ import javax.faces.bean.ManagedBean;
 
 @ManagedBean
 public class Html {
+
 	public Html() {
-		// TODO Auto-generated constructor stub
+
 	}
+
+	/*---------------------------------------------------------------------------------------------------------*/
+	/* PAGE: LOGIN */
+	/*---------------------------------------------------------------------------------------------------------*/
+	public String SOptScrRol = "Select Profile";
+
+	/*---------------------------------------------------------------------------------------------------------*/
+	/* PAGE: ADMIN */
+	/*---------------------------------------------------------------------------------------------------------*/
+	public String ttlAdmin = "Menu ";
+	public String ttlAtrSlc = "Selected";
+	public String ttlAtrObl = "Mandatory";
+	public String ttlAtrOpt = "OPtional";
 
 	/*---------------------------------------------------------------------------------------------------------*/
 	/* PAGE: Title */
@@ -30,58 +44,6 @@ public class Html {
 	private String sitTtlPfs = "Professional";
 	private String sitLblPfsAgn = "Field agent:";
 	private String sitLblPfsTch = "Lab technician:";
-
-	public String getImgLoad() {
-		return imgLoad;
-	}
-
-	public String getSlcOne() {
-		return slcOne;
-	}
-
-	public String getDteYr() {
-		return dteYr;
-	}
-
-	public String getDteMth() {
-		return dteMth;
-	}
-
-	public String getDteDay() {
-		return dteDay;
-	}
-
-	public String getDteEpiWek() {
-		return dteEpiWek;
-	}
-
-	public String getSitTtlPfs() {
-		return sitTtlPfs;
-	}
-
-	public String getSitLblPfsAgn() {
-		return sitLblPfsAgn;
-	}
-
-	public String getSitLblPfsTch() {
-		return sitLblPfsTch;
-	}
-
-	public String getSitTtlAdl() {
-		return sitTtlAdl;
-	}
-
-	public String getSitLblAdlNmb() {
-		return sitLblAdlNmb;
-	}
-
-	public String getSitLblAdlSex() {
-		return sitLblAdlSex;
-	}
-
-	public String getSitLblAdlSpc() {
-		return sitLblAdlSpc;
-	}
 
 	/*---------------------------------------------------------------------------------------------------------*/
 	/* IMAGES: */
@@ -153,9 +115,9 @@ public class Html {
 	/* PAGE: Login */
 	/*---------------------------------------------------------------------------------------------------------*/
 
-	public String plhEml = "Email/User *";
+	public String plhEml = "Enter User/Email *";
 	public String plhEmlAln = "Email *";
-	public String plhPss = "Password *";
+	public String plhPss = "Enter Password *";
 	public String lblBtn = "Login";
 	public String lblLnkCrt = "Crear Cuenta";
 	public String lblLnkRst = "Recuperar Contrase�a";
@@ -579,14 +541,6 @@ public class Html {
 	public String getRfrBtnIcn() {
 		return rfrBtnIcn;
 	}
-
-	/*---------------------------------------------------------------------------------------------------------*/
-	/* PAGE: ADMIN */
-	/*---------------------------------------------------------------------------------------------------------*/
-	public String ttlAdmin = "Menu ";
-	public String ttlAtrSlc = "Selected";
-	public String ttlAtrObl = "Mandatory";
-	public String ttlAtrOpt = "OPtional";
 
 	public String getTtlAtrObl() {
 		return ttlAtrObl;
@@ -1204,6 +1158,62 @@ public class Html {
 
 	public String getLgoOeia() {
 		return lgoOeia;
+	}
+
+	public String getImgLoad() {
+		return imgLoad;
+	}
+
+	public String getSlcOne() {
+		return slcOne;
+	}
+
+	public String getDteYr() {
+		return dteYr;
+	}
+
+	public String getDteMth() {
+		return dteMth;
+	}
+
+	public String getDteDay() {
+		return dteDay;
+	}
+
+	public String getDteEpiWek() {
+		return dteEpiWek;
+	}
+
+	public String getSitTtlPfs() {
+		return sitTtlPfs;
+	}
+
+	public String getSitLblPfsAgn() {
+		return sitLblPfsAgn;
+	}
+
+	public String getSitLblPfsTch() {
+		return sitLblPfsTch;
+	}
+
+	public String getSitTtlAdl() {
+		return sitTtlAdl;
+	}
+
+	public String getSitLblAdlNmb() {
+		return sitLblAdlNmb;
+	}
+
+	public String getSitLblAdlSex() {
+		return sitLblAdlSex;
+	}
+
+	public String getSitLblAdlSpc() {
+		return sitLblAdlSpc;
+	}
+
+	public String getSOptScrRol() {
+		return SOptScrRol;
 	}
 
 }

@@ -12,6 +12,9 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import org.jboss.logging.Logger;
+import org.jboss.logging.Logger.Level;
+
 import ec.gob.inspi.gidi.sit.cmm.Code;
 import ec.gob.inspi.gidi.sit.cmm.Default;
 import ec.gob.inspi.gidi.sit.cmm.Log;
@@ -33,6 +36,7 @@ public class ScrCtlLgn implements ScrItfLgn {
 	protected Log log;
 	protected Message msg;
 	protected Default dfl;
+	protected static Logger LOG;
 
 	private HttpSession session;
 
@@ -47,6 +51,7 @@ public class ScrCtlLgn implements ScrItfLgn {
 		lstPrsRol = new ArrayList<ScrTblPrsRol>();
 		prl = new ScrTblPrsRol();
 		prlSlc = new ScrTblPrsRol();
+		LOG = Logger.getLogger(ScrCtlLgn.class);
 	}
 
 	@Override
@@ -65,11 +70,9 @@ public class ScrCtlLgn implements ScrItfLgn {
 		prlSlc = new ScrTblPrsRol();
 		boolean bemail = false;
 		boolean bclave = false;
-
 		try {
 			lstPrsRol = sprl.lstPrsRol(cde.scrRolMng(), cde.scrRolTchGlp());
 			for (ScrTblPrsRol auxPrl : lstPrsRol) {
-
 				try {
 					if (auxPrl.getDtaTblPr().getSPrsEml().trim().compareToIgnoreCase(prs.getSPrsEml()) == 0
 							|| auxPrl.getDtaTblPr().getSPrsUsr().trim().compareToIgnoreCase(prs.getSPrsEml()) == 0) {
@@ -81,20 +84,19 @@ public class ScrCtlLgn implements ScrItfLgn {
 								break;
 							}
 						} catch (Exception e) {
-							e.printStackTrace();
+							LOG.log(Level.ERROR, Message.E_MSG_DTA_PRS_NOT_PSW + Message.C_MSG + e.getMessage());
 							this.log.impMsg("Password", e.getLocalizedMessage());
 						}
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
-					this.log.impMsg("Busqueda por usuario/email", e.getLocalizedMessage());
+					LOG.log(Level.WARN, Message.W_MSG_DTA_PRS_NOT_FOUND + Message.C_MSG + e.getMessage());
+					this.log.impMsg("User/email not found", e.getLocalizedMessage());
 				}
-
 			}
 			if (!bemail) {
-				this.msg.msgWrn(msg.msgWrnEml);
+				this.msg.msgWrn(Message.E_MSG_DTA_PRS_NOT_USR);
 			} else if (bemail == true && bclave == false) {
-				this.msg.msgWrn(msg.msgWrnPsw);
+				this.msg.msgWrn(Message.E_MSG_DTA_PRS_NOT_PSW);
 			} else if (bemail && bclave) {
 				this.actCmpPrsEml(true, true, false);
 				this.actCmpPrsPss(true, false, false);
@@ -109,13 +111,11 @@ public class ScrCtlLgn implements ScrItfLgn {
 						}
 					});
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.log(Level.ERROR, Message.E_MSG_SCR_ROL_NOT_FOUND + Message.C_MSG + e.getMessage());
 				}
 			}
-		} catch (
-
-		Exception e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.log(Level.ERROR, Message.E_MSG_DTA_PRS_NOT_FOUND + Message.C_MSG + e.getMessage());
 		}
 	}
 
@@ -128,13 +128,13 @@ public class ScrCtlLgn implements ScrItfLgn {
 				sprl.update(prlSlc);
 				session.setAttribute("prl", prlSlc);
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.log(Level.ERROR, Message.E_MSG_SCR_PRS_ROL_UPD_STT + Message.C_MSG + e.getMessage());
 			}
 
 			try {
 				session.setAttribute("sss", sSss.save(prlSlc, msg.txtStrSss(dfl.currentTime())));
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.log(Level.ERROR, Message.E_MSG_SCR_SSS_ADD + Message.C_MSG + e.getMessage());
 			}
 
 			try {
@@ -143,10 +143,10 @@ public class ScrCtlLgn implements ScrItfLgn {
 				FacesContext contex = FacesContext.getCurrentInstance();
 				contex.getExternalContext().redirect(mnu.getSMnuLnk());
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.log(Level.ERROR, Message.E_MSG_WEB_ROL_MNU + Message.C_MSG + e.getMessage());
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.ERROR, Message.E_MSG_SCR_PRS_ROL_MNU + Message.C_MSG + e.getMessage());
 		}
 
 	}

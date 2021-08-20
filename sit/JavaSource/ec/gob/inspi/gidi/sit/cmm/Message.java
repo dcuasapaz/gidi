@@ -11,6 +11,22 @@ import javax.faces.validator.ValidatorException;
 @ViewScoped
 public class Message {
 
+	public static final String C_MSG = " ---> ";
+	public static final String E_MSG_DTA_PRS_NOT_USR = "User/Email not found";
+	public static final String E_MSG_DTA_PRS_NOT_PSW = "Incorrect password";
+	public static final String E_MSG_DTA_PRS_NOT_FOUND = "Person not found";
+
+	public static final String W_MSG_DTA_PRS_NOT_FOUND = "User/Email not found";
+
+	public static final String E_MSG_SCR_ROL_NOT_FOUND = "Perfil not found";
+	
+	public static final String E_MSG_SCR_PRS_ROL_UPD_STT = "There was a problem with the update status of the person in the system";
+	public static final String E_MSG_SCR_PRS_ROL_MNU = "There was a problem loading the menu to the user";
+	
+	public static final String E_MSG_SCR_SSS_ADD = "There was a problem with the add sss in session";
+	
+	public static final String E_MSG_WEB_ROL_MNU = "There was a problem loading the menu to the user";
+
 	public Message() {
 
 	}
@@ -273,7 +289,7 @@ public class Message {
 
 	public String msgUsrRqr = "Usuario Obligatorio *";
 	public String msgPssRqr = "Contrase�a Obligatoria *";
-	public String msgWrnEml = "! Correo electr�nico/Usuario ingresado no existe !";
+	public String msgWrnEml = "! User/Email not found !";
 	public String msgWrnEmlAln = "! Correo electr�nico ingresado no existe !";
 	public String msgWrnPsw = "Contrase�a incorrecta";
 	public String msgPrfRqr = "Perfil Obligatorio";
