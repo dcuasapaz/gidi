@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition template="/tpl/tpl_login.xhtml">
+
+	<ui:define name="ttl">#{html.ttlPgeLgn}</ui:define>
+	<ui:define name="ctt">
+		<h:form id="frm-lgn">
+
+			<h:panelGrid id="png-frm-ctt-dta" columns="1" cellpadding="2"
+				cellspacing="2" styleClass="frm-ctt-bdy">
+
+				<p:messages id="msg-frm-lgn" escape="false" showDetail="true"
+					showIcon="true" closable="true" redisplay="false" />
+
+				<p:focus context="png-frm-dta" />
+
+				<h:panelGrid styleClass="wdt-100" columns="1" cellspacing="3"
+					cellpadding="3">
+
+					<h:panelGrid id="png-frm-dta" columns="1" cellspacing="3"
+						cellpadding="3" styleClass="wdt-100">
+
+						<h:panelGrid columns="1" styleClass="wdt-80" cellpadding="3"
+							cellspacing="3">
+							<h:outputLabel for="inp-frm-eml" value="#{html.L_PRS_USR()}"
+								styleClass="lbl-lgn" />
+							<p:inputText id="inp-frm-eml" value="#{scrCtlLgn.prs.SPrsEml}"
+								placeholder="#{html.P_PRS_USR()}" styleClass="frm-inp aln-ctr"
+								required="#{scrCtlLgn.rqrCmpPrsEml}"
+								disabled="#{scrCtlLgn.dsbCmpPrsEml}"
+								rendered="#{scrCtlLgn.vsbCmpPrsEml}"
+								requiredMessage=" #{message.M_PRS_USR_MND()}" autocomplete="off" />
+							<h:panelGroup styleClass="focus" layout="block" />
+							<p:message for="inp-frm-eml" escape="false" styleClass="prm-msg" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="1" styleClass="wdt-80" cellpadding="3"
+							cellspacing="3" rendered="#{scrCtlLgn.vsbCmpPrsPss}">
+							<h:outputLabel for="inp-frm-pss" value="#{html.L_PRS_PSW()}"
+								styleClass="lbl-lgn" />
+							<p:password id="inp-frm-pss" value="#{scrCtlLgn.prs.SPrsPsw}"
+								placeholder="#{html.P_PRS_PSW()}" styleClass="frm-inp aln-ctr"
+								required="#{scrCtlLgn.rqrCmpPrsPss}"
+								disabled="#{scrCtlLgn.dsbCmpPrsPss}"
+								rendered="#{scrCtlLgn.vsbCmpPrsPss}"
+								requiredMessage="#{message.M_PRS_PSW_MND()}" autocomplete="off" />
+							<p:message for="inp-frm-pss" escape="false" styleClass="prm-msg" />
+						</h:panelGrid>
+
+						<h:panelGrid styleClass="wdt-80" columns="1" cellpadding="5"
+							cellspacing="5" rendered="#{scrCtlLgn.vsbCmpRol}">
+							<h:outputLabel for="som-frm-rol" value="#{html.L_SCR_PRF()}"
+								styleClass="lbl-lgn" />
+							<p:selectOneMenu id="som-frm-rol" styleClass="frm-cmb"
+								style="width: 85%;" value="#{scrCtlLgn.IRolId}" autoWidth="true"
+								rendered="#{scrCtlLgn.vsbCmpRol}"
+								disabled="#{scrCtlLgn.dsbCmpRol}"
+								required="#{scrCtlLgn.rqrCmpRol}"
+								requiredMessage="#{message.M_SCR_PRF_MND()}" filter="true"
+								filterMatchMode="contains">
+								<f:selectItem itemLabel="#{html.O_SCR_PRF()}" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{scrCtlLgn.lstRol}" var="varPrsRol"
+									itemValue="#{varPrsRol.IPrsRolId}"
+									itemLabel="[#{sitCtlOpt.ent(varPrsRol.IPrjId).SOptAcr}] #{scrCtlOpt.rtrOpt(varPrsRol.IRolId).SOptNme}" />
+							</p:selectOneMenu>
+							<p:message for="som-frm-rol" escape="false" styleClass="prm-msg" />
+							<p:blockUI block="png-frm-ctt-dta" trigger="som-frm-rol">
+								<p:graphicImage value="#{html.imgLdn}" styleClass="img-load" />
+							</p:blockUI>
+
+						</h:panelGrid>
+
+					</h:panelGrid>
+
+					<h:panelGrid styleClass="wdt-80" columns="1" cellpadding="5"
+						cellspacing="5">
+						<p:commandButton id="cmb-frm-act-btn" title="#{html.lblBtn}"
+							action="#{scrCtlLgn.login()}" value="#{html.lblBtn}"
+							styleClass="cmb-frm-lgn" update="@form msg-frm-lgn"
+							disabled="#{scrCtlLgn.dsbBtnLgn}"
+							rendered="#{scrCtlLgn.vsbBtnLgn}" icon="ui-icon-circle-arrow-e" />
+
+						<p:commandButton id="cmb-frm-rol" title="#{html.lblBtnNxt}"
+							action="#{scrCtlLgn.vld()}" value="#{html.lblBtnNxt}"
+							styleClass="cmb-frm-lgn" update="@form"
+							rendered="#{scrCtlLgn.vsbBtnNxt}"
+							disabled="#{scrCtlLgn.dsbBtnNxt}" icon="ui-icon-circle-arrow-e" />
+
+						<p:blockUI block="png-frm-ctt-dta" trigger="cmb-frm-rol">
+							<p:graphicImage value="#{html.imgLdn}" styleClass="img-load" />
+						</p:blockUI>
+						<p:blockUI block="png-frm-ctt-dta" trigger="cmb-frm-act-btn">
+							<p:graphicImage value="#{html.imgLdn}" styleClass="img-load" />
+						</p:blockUI>
+					</h:panelGrid>
+
+				</h:panelGrid>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</h:html>

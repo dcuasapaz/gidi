@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition template="/tpl/tpl_adm.xhtml">
+	<ui:define name="ttl">#{html.ttlPgePrs}</ui:define>
+	<ui:define name="ctt">
+		<h:form id="frm-dta-prs" styleClass="frm-stl">
+			<p:growl id="grw-dta-prs" redisplay="true" showDetail="true"
+				showSummary="true" />
+			<h:panelGroup id="pgr-dta-prs-apn" layout="block"
+				styleClass="brr-mnu ">
+				<p:menubar>
+
+					<p:menuitem id="#{html.hmeBtnId}" value="#{html.hmeBtnNme}"
+						icon="#{html.hmeBtnIcn}" disabled="#{dtaCtlPrs.dsbBtnHme}"
+						rendered="#{dtaCtlPrs.vsbBtnHme}"
+						action="#{webCtlMnu.home(scrCtlSss.prl.IRolId)}" update="@form" />
+					<p:menuitem id="#{html.newBtnId}" value="#{html.newBtnNme}"
+						icon="#{html.newBtnIcn}" action="#{dtaCtlPrs.add()}"
+						update="@form" disabled="#{dtaCtlPrs.dsbBtnAdd}"
+						rendered="#{dtaCtlPrs.vsbBtnAdd}" />
+
+					<p:menuitem id="#{html.sveBtnId}" value="#{html.sveBtnNme}"
+						icon="#{html.sveBtnIcn}" action="#{dtaCtlPrs.sve()}"
+						update="@form" disabled="#{dtaCtlPrs.dsbBtnSve}"
+						rendered="#{dtaCtlPrs.vsbBtnSve}" />
+
+					<p:menuitem id="#{html.updBtnId}" value="#{html.updBtnNme}"
+						icon="#{html.updBtnIcn}" action="#{dtaCtlPrs.upd()}"
+						update="@form" disabled="#{dtaCtlPrs.dsbBtnUpd}"
+						rendered="#{dtaCtlPrs.vsbBtnUpd}" />
+
+					<p:menuitem id="#{html.rfrBtnId}" value="#{html.rfrBtnNme}"
+						icon="#{html.rfrBtnIcn}" disabled="#{dtaCtlPrs.dsbBtnRtr}"
+						rendered="#{dtaCtlPrs.vsbBtnRtr}"
+						onclick="window.location.reload()" />
+				</p:menubar>
+
+				<p:blockUI id="#{html.newBlcId}" block="frm-dta-prs"
+					trigger="#{html.newBtnId}">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+
+				<p:blockUI id="#{html.sveBlcId}" block="frm-dta-prs"
+					trigger="#{html.sveBtnId}">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+
+				<p:blockUI id="#{html.updBlcId}" block="frm-dta-prs"
+					trigger="#{html.updBtnId}">
+					<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+				</p:blockUI>
+
+			</h:panelGroup>
+
+			<h:panelGroup id="pgr-dta-prs-tbl" layout="block"
+				styleClass="bdy-100 bdy-ctt" rendered="#{dtaCtlPrs.vsbPgrTbl}">
+
+				<p:dataTable id="dtb-dta-prs" var="varPrs"
+					value="#{dtaCtlPrs.lstTblPrs}" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+					rowsPerPageTemplate="30,60,90" rows="30"
+					sortBy="#{varPrs.SPrsLstNme}">
+					<f:facet name="header">
+						<h:outputText value="#{html.ttlPgePrs}" />
+					</f:facet>
+
+					<p:column headerText="Greeting"
+						sortBy="#{dtaCtlOpt.rtrOpt(varPrs.IGrtId).SOptNmeSpn}"
+						filterBy="#{dtaCtlOpt.rtrOpt(varPrs.IGrtId).SOptNmeSpn}"
+						styleClass="bdy-10 alg-ctr">
+						<h:outputText
+							value="#{dtaCtlOpt.rtrOpt(varPrs.IGrtId).SOptNmeSpn}"
+							escape="false" />
+					</p:column>
+
+					<p:column headerText="Last Name" sortBy="#{varPrs.SPrsLstNme}"
+						filterBy="#{varPrs.SPrsLstNme}" styleClass="bdy-10">
+						<h:outputText value="#{varPrs.SPrsLstNme}" escape="false" />
+					</p:column>
+
+					<p:column headerText="Name" sortBy="#{varPrs.SPrsNme}"
+						filterBy="#{varPrs.SPrsNme}" styleClass="bdy-10">
+						<h:outputText value="#{varPrs.SPrsNme}" escape="false" />
+					</p:column>
+
+					<p:column headerText="Email" sortBy="#{varPrs.SPrsEml}"
+						filterBy="#{varPrs.SPrsEml}" styleClass="bdy-20">
+						<h:outputText value="#{varPrs.SPrsEml}" escape="false" />
+					</p:column>
+
+					<p:column headerText="ID Type"
+						sortBy="#{dtaCtlOpt.rtrOpt(varPrs.IIdnId).SOptNmeSpn}"
+						filterBy="#{dtaCtlOpt.rtrOpt(varPrs.IIdnId).SOptNmeSpn}"
+						styleClass="bdy-10">
+						<h:outputText
+							value="#{dtaCtlOpt.rtrOpt(varPrs.IIdnId).SOptNmeSpn}"
+							escape="false" />
+					</p:column>
+
+					<p:column headerText="ID" sortBy="#{varPrs.SPrsIdn}"
+						filterBy="#{varPrs.SPrsIdn}" styleClass="bdy-10 alg-ctr">
+						<h:outputText value="#{varPrs.SPrsIdn}" escape="false" />
+					</p:column>
+
+					<p:column headerText="Sex"
+						sortBy="#{dtaCtlOpt.rtrOpt(varPrs.IGndCde).SOptNmeSpn}"
+						filterBy="#{dtaCtlOpt.rtrOpt(varPrs.IGndCde).SOptNmeSpn}"
+						styleClass="bdy-10">
+						<h:outputText
+							value="#{dtaCtlOpt.rtrOpt(varPrs.IGndCde).SOptNmeSpn}"
+							escape="false" />
+					</p:column>
+
+					<p:column headerText="Country" sortBy="#{varPrs.dpaTblCnr.SCnrNmeSpn}"
+						filterBy="#{varPrs.dpaTblCnr.SCnrNmeSpn}" styleClass="bdy-10">
+						<h:outputText value="#{varPrs.dpaTblCnr.SCnrNmeSpn}"
+							escape="false" />
+					</p:column>
+
+					<p:column headerText="Option" styleClass="bdy-10 alg-ctr"
+						exportable="false">
+
+						<h:panelGrid styleClass="bdy-100" columns="2"
+							columnClasses="bdy-50,bdy-50">
+
+							<p:commandLink id="#{html.edtBtnId}" action="#{dtaCtlPrs.edt()}"
+								title="#{html.edtBtnNme}" styleClass="btn-tbl alg-ctr"
+								update="@form" disabled="#{dtaCtlPrs.dsbTblBtnEdt}"
+								rendered="#{dtaCtlPrs.vsbTblBtnEdt}">
+								<p:graphicImage value="#{html.icn(html.edt,16,html.png)}" />
+								<f:setPropertyActionListener target="#{dtaCtlPrs.prs}"
+									value="#{varPrs}" />
+							</p:commandLink>
+							<p:commandLink id="#{html.dltBtnId}" action="#{dtaCtlPrs.dlt()}"
+								title="#{html.dltBtnNme}" styleClass="btn-tbl alg-ctr"
+								disabled="#{dtaCtlPrs.dsbTblBtnDlt}"
+								rendered="#{dtaCtlPrs.vsbTblBtnDlt}" update="@form">
+								<p:graphicImage value="#{html.icn(html.dlt,16,html.png)}" />
+								<f:setPropertyActionListener target="#{dtaCtlPrs.prs}"
+									value="#{varPrs}" />
+							</p:commandLink>
+						</h:panelGrid>
+
+						<p:blockUI id="#{html.edtBlcId}" block="dtb-dta-prs"
+							trigger="#{html.edtBtnId}">
+							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+						</p:blockUI>
+						<p:blockUI id="#{html.dltBlcId}" block="dtb-dta-prs"
+							trigger="#{html.dltBtnId}">
+							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+						</p:blockUI>
+					</p:column>
+
+				</p:dataTable>
+			</h:panelGroup>
+
+
+			<h:panelGroup id="pgr-dta-prs" layout="block"
+				styleClass="bdy-100 bdy-ctt" rendered="#{dtaCtlPrs.vsbPgrDta}">
+				<h:panelGroup layout="block" styleClass="bdy-50 bdy-ctt-dta">
+					<p:focus context="pgr-dta-prs" />
+					<h:panelGroup layout="block" styleClass="bdy-ctt-dta-scc-ttl">
+						<h:outputText value="Datos Personales" />
+					</h:panelGroup>
+					<div class="bdy-ctt-hr" />
+
+					<h:panelGrid columns="2" styleClass="bdy-100"
+						columnClasses="bdy-20,bdy-80">
+
+						<h:outputLabel for="som-dta-prs-idn-tpe"
+							value="ID Type:" />
+						<p:selectOneMenu id="som-dta-prs-idn-tpe"
+							required="#{dtaCtlPrs.rqrPrsIdnTpe}"
+							disabled="#{dtaCtlPrs.dsbPrsIdnTpe}"
+							rendered="#{dtaCtlPrs.vsbPrsIdnTpe}"
+							requiredMessage="#{message.obl()}" value="#{dtaCtlPrs.IIdnId}"
+							styleClass="cmb-nrm" style="width:83%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{dtaCtlOpt.loadLstOpt(code.dtaIdn())}"
+								var="varIdn" itemLabel="#{varIdn.SOptNmeSpn}"
+								itemValue="#{varIdn.IOptId}" itemDescription="#{varIdn.SOptDsc}" />
+							<p:ajax listener="#{dtaCtlPrs.chsIdn()}" update="inp-dta-prs-idn" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="inp-dta-prs-idn" value="ID:" />
+						<p:inputText id="inp-dta-prs-idn" value="#{dtaCtlPrs.prs.SPrsIdn}"
+							required="#{dtaCtlPrs.rqrPrsIdn}"
+							disabled="#{dtaCtlPrs.dsbPrsIdn}"
+							rendered="#{dtaCtlPrs.vsbPrsIdn}"
+							requiredMessage="#{message.obl()}"
+							styleClass="inp-nrm bdy-85 alg-ctr"
+							placeholder="#{html.ttlAtrOpt}" />
+
+						<h:outputLabel for="som-dta-prs-grt" value="Greeting *:" />
+						<p:selectOneMenu id="som-dta-prs-grt"
+							required="#{dtaCtlPrs.rqrPrsGrt}"
+							disabled="#{dtaCtlPrs.dsbPrsGrt}"
+							rendered="#{dtaCtlPrs.vsbPrsGrt}"
+							requiredMessage="#{message.obl()}" value="#{dtaCtlPrs.IGrtId}"
+							styleClass="cmb-nrm" style="width:83%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{dtaCtlOpt.loadLstOpt(code.dtaGrt())}"
+								var="varGrt" itemLabel="#{varGrt.SOptNmeSpn}"
+								itemValue="#{varGrt.IOptId}" itemDescription="#{varGrt.SOptDsc}" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="inp-dta-prs-lst-nme" value="Last Name *:" />
+						<p:inputText id="inp-dta-prs-lst-nme"
+							value="#{dtaCtlPrs.prs.SPrsLstNme}"
+							required="#{dtaCtlPrs.rqrPrsNme}"
+							disabled="#{dtaCtlPrs.dsbPrsNme}"
+							rendered="#{dtaCtlPrs.vsbPrsNme}"
+							requiredMessage="#{message.obl()}" styleClass="inp-nrm bdy-85"
+							placeholder="#{html.ttlAtrObl}" />
+
+						<h:outputLabel for="inp-dta-prs-nme" value="Name *:" />
+						<p:inputText id="inp-dta-prs-nme" value="#{dtaCtlPrs.prs.SPrsNme}"
+							required="#{dtaCtlPrs.rqrPrsNme}"
+							disabled="#{dtaCtlPrs.dsbPrsNme}"
+							rendered="#{dtaCtlPrs.vsbPrsNme}"
+							requiredMessage="#{message.obl()}" styleClass="inp-nrm bdy-85"
+							placeholder="#{html.ttlAtrObl}" />
+
+						<h:outputLabel for="inp-dta-prs-eml" value="Email *:" />
+						<p:inputText id="inp-dta-prs-eml" value="#{dtaCtlPrs.prs.SPrsEml}"
+							required="#{dtaCtlPrs.rqrPrsNme}"
+							disabled="#{dtaCtlPrs.dsbPrsNme}"
+							rendered="#{dtaCtlPrs.vsbPrsNme}"
+							requiredMessage="#{message.obl()}" styleClass="inp-nrm bdy-85"
+							placeholder="#{html.ttlAtrObl}" />
+
+						<h:outputLabel for="som-dta-prs-gnd" value="Sex *:" />
+						<p:selectOneMenu id="som-dta-prs-gnd"
+							required="#{dtaCtlPrs.rqrPrsGnd}"
+							disabled="#{dtaCtlPrs.dsbPrsGnd}"
+							rendered="#{dtaCtlPrs.vsbPrsGnd}"
+							requiredMessage="#{message.obl()}" value="#{dtaCtlPrs.IGndId}"
+							styleClass="cmb-nrm" style="width:83%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{dtaCtlOpt.loadLstOpt(code.dtaGnd())}"
+								var="varGnd" itemLabel="#{varGnd.SOptNmeSpn}"
+								itemValue="#{varGnd.IOptId}" />
+						</p:selectOneMenu>
+
+						<h:outputLabel for="som-dta-prs-cnr" value="Country *:" />
+						<p:selectOneMenu id="som-dta-prs-cnr"
+							required="#{dtaCtlPrs.rqrPrsCnr}"
+							disabled="#{dtaCtlPrs.dsbPrsCnr}"
+							rendered="#{dtaCtlPrs.vsbPrsCnr}"
+							requiredMessage="#{message.obl()}" value="#{dtaCtlPrs.ICnrId}"
+							styleClass="cmb-nrm" style="width:83%;" filter="true">
+							<f:selectItem noSelectionOption="true"
+								itemLabel="#{html.ttlAtrSlc}" itemValue="" />
+							<f:selectItems value="#{dpaCtlCnr.loadLstCnr()}" var="varCnr"
+								itemLabel="#{varCnr.SCnrNmeSpn}" itemValue="#{varCnr.ICnrId}" />
+						</p:selectOneMenu>
+
+					</h:panelGrid>
+					<div class="bdy-ctt-hr" />
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</h:html>
