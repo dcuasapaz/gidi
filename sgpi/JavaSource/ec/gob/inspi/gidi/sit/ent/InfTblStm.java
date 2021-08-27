@@ -51,6 +51,28 @@ public class InfTblStm implements Serializable {
 
 	@Column(name="s_stm_usr")
 	private String sStmUsr;
+	
+	@Column(name="s_stm_srv")
+	private String SStmSrv;
+
+	@Column(name="i_stt_cde")
+	private Integer ISttCde;
+	
+	public String getSStmSrv() {
+		return SStmSrv;
+	}
+
+	public void setSStmSrv(String sStmSrv) {
+		SStmSrv = sStmSrv;
+	}
+
+	public Integer getISttCde() {
+		return ISttCde;
+	}
+
+	public void setISttCde(Integer iSttCde) {
+		ISttCde = iSttCde;
+	}
 
 	public InfTblStm() {
 	}

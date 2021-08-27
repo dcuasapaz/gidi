@@ -33,11 +33,12 @@ public class SitSrvGnrDtl extends SrvDb<SitTblGnrDtl> {
 		}
 	}
 
-	public List<SitTblGnrDtl> lstGnrDtl(SitTblGnr gnr) {
+	public List<SitTblGnrDtl> lstGnrDtl(SitTblGnr gnr, int ITpeDtl) {
 		try {
-			String sql = "SELECT gnr FROM SitTblGnrDtl gnr WHERE gnr.sitTblGnr = :param";
+			String sql = "SELECT gnr FROM SitTblGnrDtl gnr WHERE gnr.sitTblGnr = :param1 AND gnr.iTpeDtl = :param2";
 			Query q = em.createQuery(sql);
-			q.setParameter("param", gnr);
+			q.setParameter("param1", gnr);
+			q.setParameter("param2", ITpeDtl);
 			return q.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -204,10 +204,6 @@ public class SitCtlGnr {
 		ISexId = 0;
 		ISpcId = 0;
 		ITtlLrsId = 0;
-		this.newPrsPrfAgnAdd();
-		this.newPrsPrfTchAdd();
-		this.newPrsPrfAgnSlc();
-		this.newPrsPrfTchSlc();
 		this.actGnrPrfAgn(false, true, false);
 		this.actGnrPrfTch(false, true, false);
 		this.actBtnSve(false, true);
@@ -372,10 +368,15 @@ public class SitCtlGnr {
 		}
 	}
 
-	public List<SitTblGnrDtl> lstGnrDtl(SitTblGnr gnr) {
+	public List<SitTblGnrDtl> lstGnrDtl(SitTblGnr gnr, int ITpeDtl) {
 		try {
 			List<SitTblGnrDtl> auxLstGnrDtl = new ArrayList<SitTblGnrDtl>();
-			auxLstGnrDtl = SGnrDtl.lstGnrDtl(gnr);
+			auxLstGnrDtl = SGnrDtl.lstGnrDtl(gnr, ITpeDtl);
+			Collections.sort(auxLstGnrDtl, new Comparator<SitTblGnrDtl>() {
+				public int compare(SitTblGnrDtl o1, SitTblGnrDtl o2) {
+					return o1.getDGnrDtlDtePrc().compareTo(o2.getDGnrDtlDtePrc());
+				}
+			});
 			return auxLstGnrDtl;
 		} catch (Exception e) {
 			e.printStackTrace();

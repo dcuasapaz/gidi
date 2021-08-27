@@ -41,9 +41,40 @@ public class Html {
 	public String P_PRS_PSW() {
 		return "Enter Password";
 	}
-	
+
 	public String I_LGO_SECUNDATY() {
 		return "/img/lgo/gidi.png";
+	}
+
+	/****************************************************************************/
+	/* +++++++++++++++++++++++++++++++ PAGE: MAIN ++++++++++++++++++++++++++++ */
+	/****************************************************************************/
+	public final String L_MAIN_SCR_DTE_RGS() {
+		return "Registration date:";
+	}
+
+	public final String L_MAIN_PRS_EML() {
+		return "Email:";
+	}
+
+	public final String L_MAIN_PRS_USR() {
+		return "User:";
+	}
+
+	public final String L_MAIN_PRS_PSW() {
+		return "Password:";
+	}
+
+	public final String L_MAIN_SCR_PRF_SSS() {
+		return "Profile in session:";
+	}
+
+	public final String L_MAIN_SCR_PRF() {
+		return "Profiles:";
+	}
+
+	public final String L_MAIN_PRS_PSW_NOT() {
+		return "Not view (edit)";
 	}
 
 	/*---------------------------------------------------------------------------------------------------------*/
@@ -150,7 +181,7 @@ public class Html {
 	public String lnkOeia = "https://www.iaea.org/";
 
 	public String lgoMain = "/img/lgo/main.png";
-	
+
 	public String lgoOeia = "/img/lgo/oiea_nrm.png";
 
 	public String getPlhEmlAln() {

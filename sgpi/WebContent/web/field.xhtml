@@ -835,35 +835,62 @@
 
 							</h:panelGroup>
 							<p:spacer height="10" />
-							<h:panelGroup styleClass="main-70 pnl-view-dta" layout="block">
 
-								<p:dataTable value="#{sitCtlGnr.lstGnrDtl(varGnr)}"
-									var="varGnDtl">
-									<p:column headerText="Record date" styleClass="main-10 alg-ctr">
-										<h:outputText
-											value="#{method.SConvert(varGnDtl.DGnrDtlDteRgs)}" />
-									</p:column>
-									<p:column headerText="Type" styleClass="main-20">
-										<h:outputText
-											value="#{sitCtlOpt.ent(varGnDtl.ITpeDtl).SOptNme}" />
-									</p:column>
-									<p:column headerText="Number" styleClass="main-10 alg-ctr">
-										<h:outputText value="#{varGnDtl.IGnrDtlNmb}" />
-									</p:column>
-									<p:column headerText="Stage" styleClass="main-20">
-										<h:outputText
-											value="#{sitCtlOpt.ent(varGnDtl.IStgId).SOptNme}" />
-									</p:column>
-									<p:column headerText="Sex" styleClass="main-20">
-										<h:outputText
-											value="#{sitCtlOpt.ent(varGnDtl.ISexId).SOptNme}" />
-									</p:column>
-									<p:column headerText="Genus/Species" styleClass="main-20">
-										<h:outputText
-											value="#{sitCtlOpt.ent(varGnDtl.IGnsId).SOptNme}" />
-									</p:column>
-								</p:dataTable>
-							</h:panelGroup>
+							<h:panelGrid columnClasses="main-50, main-50"
+								styleClass="main-70 pnl-view-dta" columns="2">
+								<h:panelGroup styleClass="main-100" layout="block">
+									<p:dataTable
+										value="#{sitCtlGnr.lstGnrDtl(varGnr,code.sitLrv())}"
+										var="varGnDtl" paginator="true"
+										paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+										rows="10" styleClass="main-100">
+										<f:facet name="header">
+											<h:outputText value="Tracing register Larvae" />
+										</f:facet>
+										<p:column headerText="Record date"
+											styleClass="main-10 alg-ctr">
+											<h:outputText
+												value="#{method.SConvert(varGnDtl.DGnrDtlDteRgs)}" />
+										</p:column>
+										<p:column headerText="Record process"
+											styleClass="main-10 alg-ctr"
+											sortBy="#{method.SConvert(varGnDtl.DGnrDtlDtePrc)}"
+											filterBy="#{method.SConvert(varGnDtl.DGnrDtlDtePrc)}">
+											<h:outputText
+												value="#{method.SConvert(varGnDtl.DGnrDtlDtePrc)}" />
+										</p:column>
+										<p:column headerText="Process" styleClass="main-20"
+											sortBy="#{sitCtlOpt.ent(varGnDtl.IPrcId).SOptNme}"
+											filterBy="#{sitCtlOpt.ent(varGnDtl.IPrcId).SOptNme}">
+											<h:outputText
+												value="#{sitCtlOpt.ent(varGnDtl.IPrcId).SOptNme}" />
+										</p:column>
+										<p:column headerText="Contain" styleClass="main-20">
+											<h:outputText
+												value="#{sitCtlOpt.ent(varGnDtl.ICtnId).SOptNme}" />
+										</p:column>
+										<p:column headerText="Type" styleClass="main-20">
+											<h:outputText
+												value="#{sitCtlOpt.ent(varGnDtl.ITpeDtl).SOptNme}" />
+										</p:column>
+										<p:column headerText="Number" styleClass="main-10 alg-ctr">
+											<h:outputText value="#{varGnDtl.IGnrDtlNmb}" />
+										</p:column>
+										<p:column headerText="Stage" styleClass="main-20">
+											<h:outputText
+												value="#{sitCtlOpt.ent(varGnDtl.IStgId).SOptNme}" />
+										</p:column>
+										<f:facet name="footer">
+											<h:outputText
+												value="Size --> #{sitCtlGnr.lstGnrDtl(varGnr,code.sitLrv())}" />
+										</f:facet>
+									</p:dataTable>
+								</h:panelGroup>
+								<h:panelGroup styleClass="main-100 pnl-view-dta" layout="block">
+
+								</h:panelGroup>
+							</h:panelGrid>
+
 
 							<p:spacer height="10" />
 							<h:panelGroup styleClass="main-70 pnl-view-dta" layout="block">

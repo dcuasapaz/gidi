@@ -8,33 +8,15 @@
 <h:head>
 	<link href="#{request.contextPath}/css/stl_adm.css" rel="stylesheet"
 		type="text/css" />
-	<link rel="shortcut icon" href="/#{default.acr()}/ico/episig.ico" />
+	<link rel="shortcut icon" href="/#{default.acr()}/ico/gidi.ico" />
 	<h:outputScript name="validador.js"></h:outputScript>
 	<title>#{webCtlPrf.mnu.SMnuNme} | #{infCtlStm.stm.SStmAcr}</title>
 </h:head>
 <h:body>
 	<div id="adm-bdy">
 
-		<div id="adm-hdr">
-			<div class="hdr-ttl">
-				<h:panelGrid columns="2">
-					<p:graphicImage value="#{html.icono(html.arw,24,html.png)}" />
-					<h:outputText value="#{webCtlPrf.mnu.SMnuNme}" />
-				</h:panelGrid>
-			</div>
-			<div class="hdr-lgo">
-				<h:panelGrid columns="2">
-					<p:link id="lnk-hdr-lgo" href="#{infCtlStm.stm.SStmLnk}"
-						target="_blank"
-						title="#{insCtlUnt.rtrUnt(infCtlStm.stm.IUntId).SUntNme}">
-						<p:graphicImage value="/img/lgo/secundary_wht.png"
-							styleClass="hdr-lgo-obj" />
-					</p:link>
+		<div id="adm-hdr"></div>
 
-					<h:outputLabel value="#{infCtlStm.stm.SStmNme}" />
-				</h:panelGrid>
-			</div>
-		</div>
 		<div class="hr" />
 
 		<h:form id="frm-adm-mnu">
@@ -70,15 +52,13 @@
 				<h:outputLabel value="Menú Principal" styleClass="lbl-ttl-mnu" />
 				<h:panelGroup layout="block" styleClass="hr-ttl" />
 
-				<h:panelGrid id="png-adm-mnu-ctt" columns="2" styleClass="bdy-100 "
-					columnClasses="bdy-70,bdy-30 block" cellpadding="5" cellspacing="5">
+				<h:panelGrid id="png-adm-mnu-ctt" columns="2" styleClass="bdy-90"
+					columnClasses="bdy-60,bdy-30" cellpadding="5" cellspacing="5">
 
-
-
-					<h:panelGroup styleClass="bdy-100" layout="block">
+					<h:panelGroup styleClass="ctt-act-mnu" layout="block">
 						<p:dataGrid id="dgd-mnu-sub" var="varMnuSub"
 							value="#{webCtlPrf.lstMnuSub}" columns="4" layout="grid"
-							styleClass="bdy-80" style="border: solid 1px #fff;">
+							styleClass="bdy-80">
 							<p:link href="#{varMnuSub.SMnuSubLnk}" styleClass="mnu-lnk"
 								rendered="#{varMnuSub.BMnuSubStt}">
 								<h:panelGrid styleClass="mnu-lnk-bdy">
@@ -94,32 +74,35 @@
 						</p:dataGrid>
 					</h:panelGroup>
 
-					<h:panelGroup styleClass="bdy-100" layout="block">
+					<h:panelGroup styleClass="ctt-act-inf" layout="block">
 
 						<h:panelGrid columns="1" styleClass="adm-inf-ttl">
-							<h:outputLabel value="Información Cuenta" />
+							<h:outputLabel value="Account info" />
 						</h:panelGrid>
 
-						<h:panelGrid columns="1" styleClass="bdy-100" cellpadding="3"
-							cellspacing="3">
+						<h:panelGrid columns="1" styleClass="adm-inf-bdy" cellpadding="1"
+							cellspacing="1">
 
 							<h:panelGrid id="png-prs-dte" columns="2" styleClass="bdy-100"
-								columnClasses="bdy-40,bdy-60">
-								<h:outputLabel for="out-prs-dte" value="Fecha Registro:" />
+								columnClasses="bdy-40 alg-lft,bdy-60">
+								<h:outputLabel for="out-prs-dte"
+									value="#{html.L_MAIN_SCR_DTE_RGS()}"
+									styleClass="adm-inf-ttl-lbl" />
 								<h:outputText id="out-prs-dte"
 									value="#{scrCtlSss.prl.DPrsRolDteRgs}" styleClass="lnk-shw" />
 							</h:panelGrid>
 
 							<h:panelGrid id="png-prs-eml" columns="2" styleClass="bdy-100"
-								columnClasses="bdy-40,bdy-60">
-								<h:outputLabel for="inp-prs-eml" value="Correo electrónico:" />
+								columnClasses="bdy-40 alg-lft,bdy-60">
+								<h:outputLabel for="inp-prs-eml"
+									value="#{html.L_MAIN_PRS_EML()}" styleClass="adm-inf-ttl-lbl" />
 								<p:inplace id="inp-prs-eml" editor="true" styleClass="lnk-edt">
 									<p:ajax event="save" listener="#{scrCltPfl.UpdPrsEml()}"
 										update="grw-adm-mnu" />
 									<h:inputText value="#{scrCltPfl.prl.dtaTblPr.SPrsEml}"
 										styleClass="inp" required="#{scrCltPfl.rqrPrsEml}"
 										disabled="#{scrCltPfl.dsbPrsEml}"
-										requiredMessage="#{message.msgEmlRqr}"
+										requiredMessage="#{message.M_PRS_USR_MND()}"
 										rendered="#{scrCltPfl.vsbPrsEml}">
 										<f:validator validatorId="custom.emailValidator" />
 									</h:inputText>
@@ -130,15 +113,16 @@
 							</h:panelGrid>
 
 							<h:panelGrid id="png-prs-usr" columns="2" styleClass="bdy-100"
-								columnClasses="bdy-40,bdy-60">
-								<h:outputLabel for="inp-prs-usr" value="Usuario:" />
+								columnClasses="bdy-40 alg-lft,bdy-60">
+								<h:outputLabel for="inp-prs-usr"
+									value="#{html.L_MAIN_PRS_USR()}" styleClass="adm-inf-ttl-lbl" />
 								<p:inplace id="inp-prs-usr" editor="true" styleClass="lnk-edt">
 									<p:ajax event="save" listener="#{scrCltPfl.UpdPrsUsr()}"
 										update="grw-adm-mnu" />
 									<h:inputText value="#{scrCltPfl.prl.dtaTblPr.SPrsUsr}"
 										styleClass="inp" required="#{scrCltPfl.rqrPrsUsr}"
 										disabled="#{scrCltPfl.dsbPrsUsr}"
-										requiredMessage="#{message.msgUsrRqr}"
+										requiredMessage="#{message.M_PRS_USR_MND()}"
 										rendered="#{scrCltPfl.vsbPrsUsr}" />
 								</p:inplace>
 								<p:blockUI block="png-prs-usr" trigger="inp-prs-usr">
@@ -147,10 +131,11 @@
 							</h:panelGrid>
 
 							<h:panelGrid id="png-prs-psw" columns="2" styleClass="bdy-100"
-								columnClasses="bdy-40,bdy-60">
-								<h:outputLabel for="inp-prs-psw" value="Contraseña:" />
+								columnClasses="bdy-40 alg-lft,bdy-60">
+								<h:outputLabel for="inp-prs-psw"
+									value="#{html.L_MAIN_PRS_PSW()}" styleClass="adm-inf-ttl-lbl" />
 								<p:inplace id="inp-prs-psw" editor="true"
-									label="No mostrar (editar)" styleClass="lnk-edt">
+									label="#{html.L_MAIN_PRS_PSW_NOT()}" styleClass="lnk-edt">
 									<p:ajax event="save" listener="#{scrCltPfl.UpdPrsPsw()}"
 										update="grw-adm-mnu png-prs-psw" />
 									<h:inputText value="#{scrCltPfl.prl.dtaTblPr.SPrsPsw}"
@@ -165,20 +150,33 @@
 							</h:panelGrid>
 
 							<h:panelGrid id="png-prs-rol-ind" columns="2"
-								styleClass="bdy-100" columnClasses="bdy-40,bdy-60">
-								<h:outputLabel for="inp-prs-rol-ind" value="Rol en sesión:" />
+								styleClass="bdy-100" columnClasses="bdy-40 alg-lft,bdy-60">
+								<h:outputLabel for="inp-prs-rol-ind"
+									value="#{html.L_MAIN_SCR_PRF_SSS()}"
+									styleClass="adm-inf-ttl-lbl" />
 								<h:outputText id="inp-prs-rol-ind"
 									value="#{scrCtlOpt.rtrOpt(scrCtlSss.prl.IRolId).SOptNme}"
 									styleClass="lnk-shw" />
 							</h:panelGrid>
 
 							<h:panelGrid id="png-prs-rol" columns="2" styleClass="bdy-100"
-								columnClasses="bdy-40,bdy-60">
-								<h:outputLabel value="Roles:" />
+								columnClasses="bdy-40 alg-lft,bdy-60">
+								<h:outputLabel value="#{html.L_MAIN_SCR_PRF()}"
+									styleClass="adm-inf-ttl-lbl" />
 								<p:dataList value="#{scrCltPfl.lstPrsRol}" var="varPrsRol"
-									type="ordered" styleClass="lnk-shw">
-									<h:outputText
-										value=" #{scrCtlOpt.rtrOpt(varPrsRol.IRolId).SOptNme}" />
+									type="definition" styleClass="adm-inf-dtl-lbl"
+									style="color: #fff;">
+
+									<h:panelGrid columns="2" columnClasses="bdy-20, bdy-80"
+										styleClass="bdy-100">
+										<h:outputText
+											value="[#{sitCtlOpt.ent(varPrsRol.IPrjId).SOptAcr}]"
+											style="color: #fff;" />
+										<h:outputText
+											value="#{scrCtlOpt.rtrOpt(varPrsRol.IRolId).SOptNme}"
+											style="color: #fff;" />
+									</h:panelGrid>
+
 								</p:dataList>
 							</h:panelGrid>
 

@@ -23,6 +23,10 @@ public class SitTblGnrDtl implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="d_gnr_dtl_dte_rgs")
 	private Date dGnrDtlDteRgs;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="d_gnr_dtl_dte_prc")
+	private Date DGnrDtlDtePrc;
 
 	@Column(name="i_gnr_dtl_nmb")
 	private Integer iGnrDtlNmb;
@@ -38,7 +42,13 @@ public class SitTblGnrDtl implements Serializable {
 
 	@Column(name="i_tpe_dtl")
 	private Integer iTpeDtl;
-
+	
+	@Column(name="i_ctn_id")
+	private Integer ICtnId;
+	
+	@Column(name="i_prc_id")
+	private Integer IPrcId;
+	
 	@Column(name="s_gnr_dtl_tme_rgs")
 	private String sGnrDtlTmeRgs;
 
@@ -120,6 +130,30 @@ public class SitTblGnrDtl implements Serializable {
 
 	public void setSitTblGnr(SitTblGnr sitTblGnr) {
 		this.sitTblGnr = sitTblGnr;
+	}
+
+	public Date getDGnrDtlDtePrc() {
+		return DGnrDtlDtePrc;
+	}
+
+	public void setDGnrDtlDtePrc(Date dGnrDtlDtePrc) {
+		DGnrDtlDtePrc = dGnrDtlDtePrc;
+	}
+
+	public Integer getICtnId() {
+		return ICtnId;
+	}
+
+	public void setICtnId(Integer iCtnId) {
+		ICtnId = iCtnId;
+	}
+
+	public Integer getIPrcId() {
+		return IPrcId;
+	}
+
+	public void setIPrcId(Integer iPrcId) {
+		IPrcId = iPrcId;
 	}
 
 }
