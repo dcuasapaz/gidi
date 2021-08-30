@@ -194,7 +194,7 @@
 										rendered="#{scrCtlPrsRol.vsbPrsLstNme}"
 										required="#{scrCtlPrsRol.rqrPrsLstNme}"
 										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
-										onkeypress="return validarNombres(event)" />
+										onkeypress="return validarNombres(event)" autocomplete="false" />
 
 									<h:outputLabel for="inp-prs-nme" value="#{html.SPrsNme}" />
 									<p:inputText id="inp-prs-nme"
@@ -204,7 +204,7 @@
 										rendered="#{scrCtlPrsRol.vsbPrsNme}"
 										required="#{scrCtlPrsRol.rqrPrsNme}"
 										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
-										onkeypress="return validarNombres(event)" />
+										onkeypress="return validarNombres(event)" autocomplete="false" />
 								</h:panelGrid>
 
 								<h:panelGroup layout="block" styleClass="blc-inf-lbl"
@@ -227,7 +227,8 @@
 												rendered="#{scrCtlPrsRol.vsbPrsEml}"
 												required="#{scrCtlPrsRol.rqrPrsEml}"
 												requiredMessage="#{message.msgErr(message.SMsgRqr)}"
-												validatorMessage="#{message.msgErr(message.SMsgErrFrmPrsEml)}">
+												validatorMessage="#{message.msgErr(message.SMsgErrFrmPrsEml)}"
+												autocomplete="false">
 												<f:validateRegex
 													pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 											</p:inputText>
@@ -256,7 +257,8 @@
 												disabled="#{scrCtlPrsRol.dsbPrsUsr}"
 												rendered="#{scrCtlPrsRol.vsbPrsUsr}"
 												required="#{scrCtlPrsRol.rqrPrsUsr}"
-												requiredMessage="#{message.msgErr(message.SMsgRqr)}" />
+												requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+												autocomplete="false" />
 											<p:commandButton id="btn-src-prs-usr"
 												action="#{scrCtlPrsRol.srcPrsUsr()}"
 												value="#{html.vldBtnNme}" icon="ui-icon-search"
@@ -282,7 +284,7 @@
 												rendered="#{scrCtlPrsRol.vsbPrsPsw}"
 												required="#{scrCtlPrsRol.rqrPrsPsw}"
 												requiredMessage="#{message.msgErr(message.SMsgRqr)}"
-												redisplay="true" />
+												redisplay="true" autocomplete="false" />
 											<p:commandButton id="btn-gntr-prs-psw"
 												action="#{scrCtlPrsRol.gntrPrsPsw()}"
 												value="#{html.gntrBtnNme}" icon="ui-icon-locked"
