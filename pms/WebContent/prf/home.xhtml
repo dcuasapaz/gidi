@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition template="/tpl/tpl_pms.xhtml">
+	<ui:define name="ttl">#{html.tmncTtlPgeMain}</ui:define>
+	<ui:define name="ctt">
+		<h:form id="frm-pms-home" styleClass="bdy-100">
+			<h:panelGroup layout="block" styleClass="pms-100">
+
+				<h:panelGrid columns="1" styleClass="pms-rng-ctn">
+					<h:panelGroup styleClass="pms-cmp-ttl-main" layout="block">
+						<h1>
+							<h:outputText value="#{html.mainTtl}" />
+						</h1>
+						<h:panelGrid columns="2" columnClasses="pms-20 alg-ctr, pms-80">
+							<h:panelGroup layout="block" styleClass="pms-100">
+								<p:graphicImage value="#{html.mainLgo}"
+									styleClass="pms-hdr-lgo-bdy-obj" />
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="pms-100">
+								<p>
+									<h:outputText value="#{html.mainDsc}" />
+								</p>
+							</h:panelGroup>
+
+						</h:panelGrid>
+					</h:panelGroup>
+
+
+					<h:panelGroup styleClass="pms-cmp-ttl-main-crt" layout="block">
+						<h2>
+							<h:outputText value="#{html.mainTtlCrt}" />
+						</h2>
+						<p>
+							<h:outputText value="#{html.mainCrt}" />
+						</p>
+					</h:panelGroup>
+
+
+
+					<p:ring id="rng-pms-cmp" value="#{indCtlLvl.lstLv1()}" var="varCmp"
+						styleClass="image-ring" easing="easeInOutBack">
+						<h:panelGrid columns="1" styleClass="pms-rng-bdy">
+							<p:graphicImage id="gpi-pms-cmp" value="#{varCmp.SLvlPth}" />
+							<p:tooltip for="gpi-pms-cmp" value="#{varCmp.SLvlNme}"
+								position="top" />
+							<p:spacer height="15" />
+							<h:outputText value="#{varCmp.SLvlNme}" />
+							<p:commandButton id="btn-pms-cmp-view"
+								update=":frm-pms-home:out-pms-cmp" icon="ui-icon-circle-zoomout"
+								oncomplete="PF('pms-dlg-cmp').show();">
+								<f:setPropertyActionListener value="#{varCmp}"
+									target="#{indCtlLvl.cmp}" />
+							</p:commandButton>
+							<p:tooltip for="btn-pms-cmp-view" value="#{html.shwBtnNme}"
+								position="top" />
+						</h:panelGrid>
+					</p:ring>
+
+					<p:dialog header="#{html.tmncTtlPgeCmp} (Esc para salir)"
+						widgetVar="pms-dlg-cmp" modal="true" showEffect="fade"
+						hideEffect="fade" resizable="false" closeOnEscape="true"
+						width="700" draggable="false">
+						<p:outputPanel id="out-pms-cmp" layout="block"
+							styleClass="pms-100">
+							<h:panelGroup id="pgr-pms-cmp-inf" layout="block"
+								styleClass="pms-cmp-inf">
+								<h:panelGroup styleClass="pms-cmp-ttl" layout="block">
+									<h:outputText
+										value=" #{indCtlLvl.cmp.ILvlCde} --> #{indCtlLvl.cmp.SLvlNme}" />
+								</h:panelGroup>
+								<h:panelGrid columns="2" columnClasses="pms-30, pms-70"
+									styleClass="pms-100">
+									<h:panelGroup layout="block" styleClass="pms-100 alg-ctr">
+										<p:graphicImage value="#{indCtlLvl.cmp.SLvlPth}"
+											styleClass="pms-cmp-img" />
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="pms-100">
+
+										<p:dataTable id="dtb-pms-cmp-eje"
+											value="#{indCtlLvl.lstLvl(indCtlLvl.cmp)}" var="varCmp"
+											styleClass="pms-100">
+											<f:facet name="header">
+												<h:outputText value="Ejes por componente" />
+											</f:facet>
+											<p:column headerText="Código" styleClass="pms-20 alg-ctr">
+												<h:outputText value="#{varCmp.ILvlCde}" />
+											</p:column>
+											<p:column headerText="Nombre" styleClass="pms-80">
+												<h:outputText value="#{varCmp.SLvlNme}" />
+											</p:column>
+											<f:facet name="footer">
+												<h:outputText
+													value="Total ejes: #{indCtlLvl.lstLvl(indCtlLvl.cmp).size()}" />
+											</f:facet>
+										</p:dataTable>
+									</h:panelGroup>
+								</h:panelGrid>
+							</h:panelGroup>
+						</p:outputPanel>
+					</p:dialog>
+
+
+					<h:panelGroup styleClass="pms-cmp-ttl-main-ind-mnc" layout="block">
+
+						<h3>
+							<h:outputText
+								value="#{html.mainTtlSmrInd} #{scrCtlSss.prl.dpaTblCnt.SCntNme}" />
+						</h3>
+
+						<h:panelGrid columns="2" columnClasses="pms-50, pms-50">
+
+							<h:panelGroup styleClass="pms-100" layout="block">
+
+
+							</h:panelGroup>
+
+							<h:panelGroup styleClass="pms-100" layout="block">
+							</h:panelGroup>
+
+
+
+						</h:panelGrid>
+					</h:panelGroup>
+
+				</h:panelGrid>
+
+
+
+
+			</h:panelGroup>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</h:html>

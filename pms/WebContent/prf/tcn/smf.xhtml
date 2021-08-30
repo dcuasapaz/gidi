@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/tpl/tpl_pms.xhtml">
+	<ui:define name="ttl"> Semaforización </ui:define>
+	<ui:define name="ctt">
+
+		<h:form id="frm-mnc-smf">
+			<h:panelGroup id="pgr-mnc-smf" styleClass="pms-100" layout="block">
+
+
+
+				<h:panelGroup id="pgr-mnc-smf-tbl" styleClass="mnc-tbl"
+					layout="block">
+
+					<h:panelGrid id="pgr-mnc-smf-ttl" styleClass="mnc-ttl">
+						<h:outputText value="Categorización de valores de indicador" />
+						<h:panelGrid id="pgr-mnc-smf-sbt" styleClass="pms-100 mnc-sbt">
+							<h:outputText
+								value="Municipio: #{scrCtlSss.prl.dpaTblCnt.ICntCde} - #{scrCtlSss.prl.dpaTblCnt.SCntNme}" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+
+					<p:dataTable var="varMnc" value="#{pmsCtlSmf.lstMnc}"
+						styleClass="pms-90" sortBy="#{varMnc.indTblMain.IMainCde}"
+						rows="20" paginator="true"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						paginatorPosition="top" rowsPerPageTemplate="20,40,60">
+
+						<p:column headerText="Estado" styleClass="pms-10"
+							sortBy="#{pmsCtlOpt.rtrEnt(varMnc.ISttId).SOptNme}"
+							filterBy="#{pmsCtlOpt.rtrEnt(varMnc.ISttId).SOptNme}">
+							<h:panelGrid columns="2" columnClasses="pms-10 alg-ctr, pms-90"
+								styleClass="pms-100">
+								<h:panelGroup layout="block"
+									style="background:#{webCtlClr.rtrClr(pmsCtlOpt.rtrEnt(varMnc.ISttId).IClrId).SClrHex};"
+									styleClass="pms-tbl-stt">
+									<h:outputText
+										value="#{webCtlClr.rtrClr(pmsCtlOpt.rtrEnt(varMnc.ISttId).IClrId).SClrDsc}" />
+								</h:panelGroup>
+								<h:outputText id="txt"
+									value="#{pmsCtlOpt.rtrEnt(varMnc.ISttId).SOptNme}" />
+							</h:panelGrid>
+							<p:tooltip for="txt"
+								value="#{pmsCtlOpt.rtrEnt(varMnc.ISttId).SOptDsc}"
+								position="top" />
+						</p:column>
+
+						<p:column headerText="Número"
+							filterBy="#{varMnc.indTblMain.IMainCde}"
+							sortBy="#{varMnc.indTblMain.IMainCde}"
+							styleClass="pms-10 alg-ctr">
+							<h:outputText value="#{varMnc.indTblMain.IMainCde}" />
+						</p:column>
+
+						<p:column headerText="Indicador"
+							filterBy="#{varMnc.indTblMain.SMainNme}"
+							sortBy="#{varMnc.indTblMain.SMainNme}" styleClass="pms-50">
+							<h:panelGrid columns="2" columnClasses="pms-10 alg-ctr, pms-90"
+								styleClass="pms-100">
+								<p:graphicImage id="img"
+									value="#{indCtlLvl.entLvl(varMnc.indTblMain.indTblLvl.ILvlFth).SLvlPth}"
+									styleClass="pms-tbl-img"
+									title="#{indCtlLvl.entLvl(varMnc.indTblMain.indTblLvl.ILvlFth).SLvlNme}" />
+								<h:outputText value="#{varMnc.indTblMain.SMainNme}" />
+							</h:panelGrid>
+							<p:tooltip for="img"
+								value="#{indCtlLvl.entLvl(varMnc.indTblMain.indTblLvl.ILvlFth).SLvlNme}"
+								position="top" />
+						</p:column>
+
+						<p:column headerText="Valor" styleClass="pms-10 alg-rgh"
+							sortBy="#{pmsCtlSmf.smfVld(varMnc.indTblMain,varMnc)}">
+							<h:outputText
+								value="#{pmsCtlSmf.smfVld(varMnc.indTblMain,varMnc)}" />
+						</p:column>
+
+						<p:column headerText="Unidad" styleClass="pms-10"
+							sortBy="#{varMnc.indTblMain.SMainUnt}">
+							<h:outputText value="#{varMnc.indTblMain.SMainUnt}" />
+						</p:column>
+
+						<p:column headerText="Clasificación" styleClass="pms-10 alg-ctr">
+							<h:panelGroup styleClass="pms-100" layout="block">
+								<h:panelGroup styleClass="pms-cls"
+									style="background: #{webCtlClr.rtrClrSmf(pmsCtlSmf.smfCls(varMnc.indTblMain,varMnc)).SClrHex};"
+									layout="block" />
+							</h:panelGroup>
+						</p:column>
+
+						<f:facet name="footer">
+							<h:outputText
+								value="Total indicadores ingresados: #{pmsCtlMnc.lstMnc.size()}" />
+						</f:facet>
+
+					</p:dataTable>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</h:html>

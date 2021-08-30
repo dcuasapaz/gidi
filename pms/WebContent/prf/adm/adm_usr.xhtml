@@ -1,0 +1,567 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition template="/tpl/tpl_pms.xhtml">
+	<ui:define name="ttl">#{html.TBLPmsPfsRgs}</ui:define>
+	<ui:define name="ctt">
+		<h:form id="frm-prs-rol" styleClass="pms-100">
+
+			<h:panelGrid id="png-pmd-mnc-usr-bdy" columns="1"
+				styleClass="pms-100">
+				<h:panelGroup id="pgr-pmd-mnc-usr-bdy-mnu" layout="block"
+					styleClass="brr-mnu">
+
+					<p:menubar>
+						<p:menuitem id="#{html.newBtnId}" value="#{html.newBtnNme}"
+							icon="#{html.newBtnIcn}" action="#{scrCtlPrsRol.add()}"
+							update="@form" disabled="#{scrCtlPrsRol.dsbBtnAdd}"
+							rendered="#{scrCtlPrsRol.vsbBtnAdd}" title="#{html.newBtnDsc}" />
+						<p:menuitem id="#{html.sveBtnId}" value="#{html.sveBtnNme}"
+							icon="#{html.sveBtnIcn}" action="#{scrCtlPrsRol.sve()}"
+							update="@form" disabled="#{scrCtlPrsRol.dsbBtnSve}"
+							rendered="#{scrCtlPrsRol.vsbBtnSve}" title="#{html.sveBtnDsc}" />
+						<p:menuitem id="#{html.updBtnId}" value="#{html.updBtnNme}"
+							icon="#{html.updBtnIcn}" action="#{scrCtlPrsRol.upd()}"
+							update="@form" disabled="#{scrCtlPrsRol.dsbBtnUpd}"
+							rendered="#{scrCtlPrsRol.vsbBtnUpd}" title="#{html.updBtnDsc}" />
+						<p:menuitem id="#{html.rfrBtnId}" value="#{html.rfrBtnNme}"
+							icon="#{html.rfrBtnIcn}" disabled="#{scrCtlPrsRol.dsbBtnRfr}"
+							rendered="#{scrCtlPrsRol.vsbBtnRfr}"
+							onclick="window.location.reload()" title="#{html.rfrBtnDsc}" />
+						<f:facet name="options">
+							<h:commandLink id="#{html.pdfBtnId}" title="#{html.pdfBtnDsc}"
+								rendered="#{scrCtlPrsRol.vsbBtnPdf}"
+								disabled="#{scrCtlPrsRol.dsbBtnPdf}">
+								<p:graphicImage value="#{html.icn(html.pdf,24,html.png)}" />
+								<p:dataExporter type="pdf" target="dtb-dta-prs"
+									fileName="MSP_PMS_Pfs_#{default.sCurrentDateFile()}"
+									encoding="UTF-8" />
+							</h:commandLink>
+
+							<h:commandLink id="#{html.csvBtnId}" title="#{html.csvBtnDsc}"
+								rendered="#{scrCtlPrsRol.vsbBtnCsv}"
+								disabled="#{scrCtlPrsRol.dsbBtnCsv}">
+								<p:graphicImage value="#{html.icn(html.csv,24,html.png)}" />
+								<p:dataExporter type="csv" target="dtb-dta-prs"
+									fileName="MSP_PMS_Pfs_#{default.sCurrentDateFile()}"
+									encoding="UTF-8" />
+							</h:commandLink>
+						</f:facet>
+					</p:menubar>
+					<p:tooltip for="#{html.newBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:tooltip for="#{html.sveBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:tooltip for="#{html.updBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:tooltip for="#{html.rfrBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:tooltip for="#{html.pdfBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:tooltip for="#{html.csvBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:blockUI block="frm-prs-rol" trigger="#{html.newBtnId}">
+						<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+					</p:blockUI>
+					<p:blockUI block="frm-prs-rol" trigger="#{html.sveBtnId}">
+						<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+					</p:blockUI>
+					<p:blockUI block="frm-prs-rol" trigger="#{html.updBtnId}">
+						<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+					</p:blockUI>
+					<p:blockUI block="frm-prs-rol" trigger="#{html.pdfBtnId}">
+						<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+					</p:blockUI>
+					<p:blockUI block="frm-prs-rol" trigger="#{html.csvBtnId}">
+						<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+					</p:blockUI>
+				</h:panelGroup>
+
+				<h:panelGroup id="pgr-pms-mnc-usr-bdy" layout="block"
+					styleClass="pms-100 bdy-ctt">
+
+					<p:messages id="messages" showDetail="true" redisplay="true"
+						closable="true" escape="true" showIcon="true" />
+
+					<h:panelGroup id="pgr-pms-mnc-usr-bdy-tbl" layout="block"
+						styleClass="pms-100" rendered="#{scrCtlPrsRol.vsbSpcTbl}">
+
+						<p:dataTable id="dtb-dta-prs" var="varPrs"
+							value="#{dtaCtlPrs.loadPrs()}" paginator="true"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="30,60,90" rows="30" reflow="true"
+							emptyMessage="#{html.dtaEmpty()}">
+							<f:facet name="header">
+								<h:outputText value="#{html.TBLPmsPfsRgs}" escape="false" />
+							</f:facet>
+							<p:columnGroup type="header">
+								<p:row>
+									<p:column colspan="2" headerText="#{html.SPmsSys}" />
+									<p:column colspan="4" headerText="#{html.SPmsPfs}" />
+									<p:column colspan="1" headerText="#{html.SPmsAct}" />
+								</p:row>
+								<p:row>
+									<p:column headerText="#{html.SPmsPrf}" />
+									<p:column headerText="#{html.SPmsIns}" />
+									<p:column headerText="#{html.SPrsUsr}"
+										sortBy="#{varPrs.SPrsUsr}" filterBy="#{varPrs.SPrsUsr}" />
+									<p:column headerText="#{html.SPrsEml}"
+										sortBy="#{varPrs.SPrsEml}" filterBy="#{varPrs.SPrsEml}" />
+									<p:column headerText="#{html.SPrsLstNme}"
+										sortBy="#{varPrs.SPrsLstNme}" filterBy="#{varPrs.SPrsLstNme}" />
+									<p:column headerText="#{html.SPrsNme}"
+										sortBy="#{varPrs.SPrsNme}" filterBy="#{varPrs.SPrsNme}" />
+									<p:column headerText="#{html.edtBtnNme}" />
+								</p:row>
+							</p:columnGroup>
+
+
+							<p:column>
+								<h:outputText value="#{scrCtlPrsRol.rtrRls(varPrs)}"
+									escape="false" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{dpaCtlCnt.rtrCnt(varPrs)}" escape="false" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{varPrs.SPrsUsr}" escape="false" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{varPrs.SPrsEml}" escape="false" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{varPrs.SPrsLstNme}" escape="false" />
+							</p:column>
+
+							<p:column>
+								<h:outputText value="#{varPrs.SPrsNme}" escape="false" />
+							</p:column>
+							<p:column exportable="false" styleClass="alg-ctr">
+								<p:commandLink id="#{html.edtBtnId}"
+									action="#{scrCtlPrsRol.edt()}" title="#{html.edtBtnDsc}"
+									update="@form" disabled="#{scrCtlPrsRol.dsbBtnEdt}"
+									rendered="#{scrCtlPrsRol.vsbBtnEdt}">
+									<p:graphicImage value="#{html.icn(html.edt,16,html.png)}" />
+									<f:setPropertyActionListener target="#{scrCtlPrsRol.prs}"
+										value="#{varPrs}" />
+								</p:commandLink>
+								<p:blockUI block="dtb-dta-prs" trigger="#{html.edtBtnId}">
+									<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+								</p:blockUI>
+							</p:column>
+						</p:dataTable>
+						<p:blockUI block="dtb-dta-prs" trigger="dtb-dta-prs">
+							<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+						</p:blockUI>
+					</h:panelGroup>
+
+					<h:panelGroup id="pgr-pmd-mnc-usr-bdy-dta" layout="block"
+						styleClass="pms-100" rendered="#{scrCtlPrsRol.vsbSpcDta}">
+						<h:panelGroup id="pgr-pmd-mnc-usr-bdy-dta-ttl" layout="block"
+							styleClass="blc-inf-ttl">
+							<h:outputText value="#{html.SPmsRgsInf}" escape="false" />
+						</h:panelGroup>
+						<h:panelGrid styleClass="pms-100" columns="2"
+							columnClasses="pms-50, pms-50" cellpadding="3" cellspacing="3">
+
+							<h:panelGroup id="pgr-pmd-mnc-usr-bdy-dta-blc01" layout="block"
+								styleClass="blc-inf">
+
+								<h:panelGroup layout="block" styleClass="blc-inf-lbl"
+									style="background: #{webCtlClr.rtrClr(code.IMdlDta()).SClrHex}">
+									<h:outputText
+										value="#{scrCtlOpt.rtrEnt(code.IMdlDta()).SOptAcr}"
+										escape="false" />
+								</h:panelGroup>
+
+								<h:panelGrid styleClass="pms-100" columns="1" cellpadding="3"
+									cellspacing="3">
+									<p:focus context="pgr-pmd-mnc-usr-bdy-dta-blc01" />
+									<h:outputLabel for="inp-prs-lst-nme" value="#{html.SPrsLstNme}" />
+									<p:inputText id="inp-prs-lst-nme"
+										value="#{scrCtlPrsRol.prs.SPrsLstNme}" styleClass="inp-txt"
+										placeholder="#{html.SObl}"
+										disabled="#{scrCtlPrsRol.dsbPrsLstNme}"
+										rendered="#{scrCtlPrsRol.vsbPrsLstNme}"
+										required="#{scrCtlPrsRol.rqrPrsLstNme}"
+										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+										onkeypress="return validarNombres(event)" />
+
+									<h:outputLabel for="inp-prs-nme" value="#{html.SPrsNme}" />
+									<p:inputText id="inp-prs-nme"
+										value="#{scrCtlPrsRol.prs.SPrsNme}" styleClass="inp-txt"
+										placeholder="#{html.SObl}"
+										disabled="#{scrCtlPrsRol.dsbPrsNme}"
+										rendered="#{scrCtlPrsRol.vsbPrsNme}"
+										required="#{scrCtlPrsRol.rqrPrsNme}"
+										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+										onkeypress="return validarNombres(event)" />
+								</h:panelGrid>
+
+								<h:panelGroup layout="block" styleClass="blc-inf-lbl"
+									style="background: #{webCtlClr.rtrClr(code.IMdlScr()).SClrHex}">
+									<h:outputText
+										value="#{scrCtlOpt.rtrEnt(code.IMdlScr()).SOptAcr}"
+										escape="false" />
+								</h:panelGroup>
+								<h:panelGrid styleClass="pms-100" columns="1" cellpadding="3"
+									cellspacing="3">
+
+									<h:panelGroup id="pgr-prs-eml" layout="block">
+										<h:outputLabel for="inp-prs-eml" value="#{html.SPrsEml}" />
+										<h:panelGrid styleClass="pms-100" columns="2"
+											columnClasses="pms-70,pms-30 alg-ctr ">
+											<p:inputText id="inp-prs-eml"
+												value="#{scrCtlPrsRol.prs.SPrsEml}" styleClass="inp-txt-cst"
+												placeholder="#{html.SObl}"
+												disabled="#{scrCtlPrsRol.dsbPrsEml}"
+												rendered="#{scrCtlPrsRol.vsbPrsEml}"
+												required="#{scrCtlPrsRol.rqrPrsEml}"
+												requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+												validatorMessage="#{message.msgErr(message.SMsgErrFrmPrsEml)}">
+												<f:validateRegex
+													pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+											</p:inputText>
+											<p:commandButton id="btn-src-prs-eml"
+												action="#{scrCtlPrsRol.srcPrsEml()}"
+												value="#{html.vldBtnNme}" icon="ui-icon-search"
+												title="#{html.vldBtnDsc}"
+												update=":frm-prs-rol:pgr-prs-eml messages pgr-prs-usr"
+												disabled="#{scrCtlPrsRol.dsbBtnVldPrsEml}"
+												rendered="#{scrCtlPrsRol.vsbBtnVldPrsEml}" />
+										</h:panelGrid>
+										<p:blockUI block="pgr-prs-eml" trigger="btn-src-prs-eml">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+									</h:panelGroup>
+
+									<h:panelGroup id="pgr-prs-usr" layout="block">
+										<p:focus context="pgr-prs-usr" />
+										<h:outputLabel for="inp-prs-usr" value="#{html.SPrsUsr}" />
+										<h:panelGrid styleClass="pms-100" columns="2"
+											columnClasses="pms-70,pms-30 alg-ctr ">
+											<p:inputText id="inp-prs-usr"
+												value="#{scrCtlPrsRol.prs.SPrsUsr}" styleClass="inp-txt-cst"
+												placeholder="#{html.SObl}"
+												disabled="#{scrCtlPrsRol.dsbPrsUsr}"
+												rendered="#{scrCtlPrsRol.vsbPrsUsr}"
+												required="#{scrCtlPrsRol.rqrPrsUsr}"
+												requiredMessage="#{message.msgErr(message.SMsgRqr)}" />
+											<p:commandButton id="btn-src-prs-usr"
+												action="#{scrCtlPrsRol.srcPrsUsr()}"
+												value="#{html.vldBtnNme}" icon="ui-icon-search"
+												title="#{html.vldBtnDsc}"
+												update=":frm-prs-rol:pgr-prs-usr  messages pgr-prs-psw"
+												disabled="#{scrCtlPrsRol.dsbBtnVldPrsUsr}"
+												rendered="#{scrCtlPrsRol.vsbBtnVldPrsUsr}" />
+										</h:panelGrid>
+
+										<p:blockUI block="pgr-prs-usr" trigger="btn-src-prs-usr">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+									</h:panelGroup>
+									<h:panelGroup id="pgr-prs-psw" layout="block">
+										<h:outputLabel for="inp-prs-psw" value="#{html.SPrsPsw}" />
+										<h:panelGrid styleClass="pms-100" columns="2"
+											columnClasses="pms-70,pms-30 alg-ctr ">
+											<p:password id="inp-prs-psw"
+												value="#{scrCtlPrsRol.prs.SPrsPsw}" styleClass="inp-txt-cst"
+												placeholder="#{html.SObl}"
+												disabled="#{scrCtlPrsRol.dsbPrsPsw}"
+												rendered="#{scrCtlPrsRol.vsbPrsPsw}"
+												required="#{scrCtlPrsRol.rqrPrsPsw}"
+												requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+												redisplay="true" />
+											<p:commandButton id="btn-gntr-prs-psw"
+												action="#{scrCtlPrsRol.gntrPrsPsw()}"
+												value="#{html.gntrBtnNme}" icon="ui-icon-locked"
+												title="#{html.gntrBtnDsc}"
+												update=":frm-prs-rol:pgr-prs-psw messages inp-prs-psw pgr-pmd-mnc-usr-bdy-dta-blc02"
+												disabled="#{scrCtlPrsRol.dsbBtnGntrPrsPsw}"
+												rendered="#{scrCtlPrsRol.vsbBtnGntrPrsPsw}" />
+										</h:panelGrid>
+										<p:blockUI block="pgr-prs-psw" trigger="btn-gntr-prs-psw">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+									</h:panelGroup>
+								</h:panelGrid>
+
+							</h:panelGroup>
+
+							<h:panelGroup id="pgr-pmd-mnc-usr-bdy-dta-blc02" layout="block"
+								styleClass="blc-inf">
+
+								<h:panelGroup layout="block" styleClass="blc-inf-lbl"
+									style="background: #{webCtlClr.rtrClr(code.IMdlPrf()).SClrHex}">
+									<h:outputText
+										value="#{scrCtlOpt.rtrEnt(code.IMdlPrf()).SOptAcr}"
+										escape="false" />
+								</h:panelGroup>
+
+								<h:panelGrid styleClass="pms-100" columns="2"
+									columnClasses="pms-50,pms-50" cellpadding="3" cellspacing="3">
+									<h:panelGrid styleClass="pms-100" columns="1">
+										<h:outputLabel value="#{html.SPrsRolNme}" />
+										<p:selectOneMenu id="som-prs-rol-rol"
+											disabled="#{scrCtlPrsRol.dsbPrsRolRol}"
+											rendered="#{scrCtlPrsRol.vsbPrsRolRol}"
+											required="#{scrCtlPrsRol.rqrPrsRolRol}"
+											requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+											value="#{scrCtlPrsRol.IRolId}" styleClass="cmb-slc "
+											filter="true" style="width: 92%;">
+											<f:selectItem itemLabel="#{html.SObl}"
+												itemValue="#{default.IVleInt()}" />
+											<f:selectItems value="#{scrCtlPrsRol.lstRol}" var="varRol"
+												itemLabel="#{varRol.SOptNmeSpn} "
+												itemValue="#{varRol.IOptId}" />
+											<p:ajax listener="#{scrCtlPrsRol.chsRol()}"
+												update="pgr-prs-rol-rol-inf pgr-prs-rol-mnc messages sbc-cnt-prv som-prs-rol-stt" />
+										</p:selectOneMenu>
+										<p:blockUI block="pgr-pmd-mnc-usr-bdy-dta-blc02"
+											trigger="som-prs-rol-rol">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+
+										<h:panelGroup id="pgr-prs-rol-rol-inf" layout="block"
+											styleClass="box-inf">
+											<h:outputText value="#{scrCtlPrsRol.rol.SOptDsc}" />
+										</h:panelGroup>
+
+									</h:panelGrid>
+
+									<h:panelGrid styleClass="pms-100" columns="1">
+										<h:outputLabel value="#{html.SPrsRolStt}" />
+										<p:selectOneMenu id="som-prs-rol-stt"
+											disabled="#{scrCtlPrsRol.dsbPrsRolStt}"
+											rendered="#{scrCtlPrsRol.vsbPrsRolStt}"
+											required="#{scrCtlPrsRol.rqrPrsRolStt}"
+											requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+											value="#{scrCtlPrsRol.ISttId}" styleClass="cmb-slc "
+											filter="true" style="width: 92%;">
+											<f:selectItem itemLabel="#{html.SObl}"
+												itemValue="#{default.IVleInt()}" />
+											<f:selectItems
+												value="#{scrCtlOpt.lstEnt(code.IScrStt(),default.BVleT())}"
+												var="varStt" itemLabel="#{varStt.SOptNmeSpn} "
+												itemValue="#{varStt.IOptId}" />
+											<p:ajax listener="#{scrCtlPrsRol.chsStt()}"
+												update="pgr-prs-rol-stt-inf pgr-prs-rol-opt " />
+										</p:selectOneMenu>
+										<p:blockUI block="pgr-pmd-mnc-usr-bdy-dta-blc02"
+											trigger="som-prs-rol-stt">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+
+										<h:panelGroup id="pgr-prs-rol-stt-inf" layout="block"
+											styleClass="box-inf">
+											<h:outputText value="#{scrCtlPrsRol.stt.SOptDsc}" />
+										</h:panelGroup>
+
+									</h:panelGrid>
+								</h:panelGrid>
+
+
+								<h:panelGroup layout="block" styleClass="blc-inf-lbl"
+									style="background: #{webCtlClr.rtrClr(code.IMdlIns()).SClrHex}">
+									<h:outputText
+										value="#{scrCtlOpt.rtrEnt(code.IMdlIns()).SOptAcr}"
+										escape="false" />
+								</h:panelGroup>
+
+								<h:panelGroup id="pgr-prs-rol-mnc" layout="block"
+									styleClass="pms-100">
+
+									<h:panelGrid styleClass="pms-100" columns="1" cellpadding="3"
+										cellspacing="3">
+
+										<p:selectBooleanCheckbox id="sbc-cnt-prv"
+											value="#{scrCtlPrsRol.chkPrv}" itemLabel="#{html.SCntPrv}"
+											styleClass="label" disabled="#{scrCtlPrsRol.dsbCntPrvChk}"
+											rendered="#{scrCtlPrsRol.vsbCntPrvChk}"
+											required="#{scrCtlPrsRol.rqrCntPrvChk}">
+											<p:ajax update="pgr-prs-rol-mnc"
+												listener="#{scrCtlPrsRol.slcPrv()}" />
+										</p:selectBooleanCheckbox>
+										<p:selectOneMenu id="som-cnt-prv"
+											disabled="#{scrCtlPrsRol.dsbCntPrv}"
+											rendered="#{scrCtlPrsRol.vsbCntPrv}"
+											required="#{scrCtlPrsRol.rqrCntPrv}"
+											requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+											value="#{scrCtlPrsRol.IPrvCde}" styleClass="cmb-slc "
+											filter="true" style="width: 92%;">
+											<f:selectItem itemLabel="#{html.SObl}"
+												itemValue="#{default.IVleInt()}" />
+											<f:selectItems value="#{scrCtlPrsRol.lstPrv}" var="varPrv"
+												itemLabel="#{varPrv.SOptNme} " itemValue="#{varPrv.IOptCde}" />
+											<p:ajax listener="#{scrCtlPrsRol.chsPrv()}"
+												update="pgr-prs-rol-mnc" />
+										</p:selectOneMenu>
+										<p:blockUI block="pgr-prs-rol-mnc" trigger="som-cnt-prv">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+
+										<h:outputLabel value="#{html.SCntNme}" />
+										<p:selectOneMenu id="som-cnt"
+											disabled="#{scrCtlPrsRol.dsbCnt}"
+											rendered="#{scrCtlPrsRol.vsbCnt}"
+											required="#{scrCtlPrsRol.rqrCnt}"
+											requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+											value="#{scrCtlPrsRol.ICntCde}" styleClass="cmb-slc "
+											filter="true" style="width: 92%;">
+											<f:selectItem itemLabel="#{html.SObl}"
+												itemValue="#{default.IVleInt()}" />
+											<f:selectItems value="#{scrCtlPrsRol.lstCnt}" var="varCnt"
+												itemLabel="#{varCnt.SCntNme} " itemValue="#{varCnt.ICntCde}" />
+											<p:ajax listener="#{scrCtlPrsRol.chsCnt()}"
+												update="pgr-prs-rol-mnc png-prs-rol-opt" />
+										</p:selectOneMenu>
+										<p:blockUI block="pgr-prs-rol-mnc" trigger="som-cnt-prv">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+										<p:blockUI block="pgr-prs-rol-mnc" trigger="som-cnt">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+									</h:panelGrid>
+								</h:panelGroup>
+
+								<h:panelGroup id="pgr-prs-rol-opt" layout="block"
+									styleClass="box-opt">
+									<h:panelGrid id="png-prs-rol-opt" columns="4" cellspacing="3"
+										cellpadding="3">
+										<p:commandLink id="btn-prs-rol-new"
+											action="#{scrCtlPrsRol.newPrsRol()}"
+											title="#{html.newBtnDsc}"
+											disabled="#{scrCtlPrsRol.dsbBtnPrsRolNew}"
+											rendered="#{scrCtlPrsRol.vsbBtnPrsRolNew}"
+											update="pgr-pmd-mnc-usr-bdy-dta-blc02 messages">
+											<p:graphicImage value="#{html.icn(html.nvo,24,html.png)}" />
+										</p:commandLink>
+										<p:commandLink id="btn-prs-rol-add"
+											action="#{scrCtlPrsRol.addPrsRol()}"
+											title="#{html.addBtnDsc}"
+											disabled="#{scrCtlPrsRol.dsbBtnPrsRolAdd}"
+											rendered="#{scrCtlPrsRol.vsbBtnPrsRolAdd}"
+											update="pgr-pmd-mnc-usr-bdy-dta-blc02 @parent messages">
+											<p:graphicImage value="#{html.icn(html.add,24,html.png)}" />
+											<p:collector value="#{scrCtlPrsRol.prsRol}"
+												addTo="#{scrCtlPrsRol.lstPrsRol}" unique="true" />
+										</p:commandLink>
+										<p:commandLink id="btn-prs-rol-upd"
+											action="#{scrCtlPrsRol.updPrsRol()}"
+											title="#{html.updBtnDsc}"
+											disabled="#{scrCtlPrsRol.dsbBtnPrsRolUpd}"
+											rendered="#{scrCtlPrsRol.vsbBtnPrsRolUpd}"
+											update="pgr-pmd-mnc-usr-bdy-dta-blc02 messages">
+											<p:graphicImage value="#{html.icn(html.upd,24,html.png)}" />
+										</p:commandLink>
+										<p:commandLink id="btn-prs-rol-rfr"
+											action="#{scrCtlPrsRol.rtrPrsRol()}"
+											title="#{html.rfrBtnDsc}"
+											disabled="#{scrCtlPrsRol.dsbBtnPrsRolAdd}"
+											rendered="#{scrCtlPrsRol.vsbBtnPrsRolAdd}"
+											update="pgr-pmd-mnc-usr-bdy-dta-blc02 messages">
+											<p:graphicImage value="#{html.icn(html.rfr,24,html.png)}" />
+										</p:commandLink>
+
+										<p:blockUI block=":frm-prs-rol:pgr-pmd-mnc-usr-bdy-dta-blc02"
+											trigger="btn-prs-rol-new">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+
+										<p:blockUI block=":frm-prs-rol:pgr-pmd-mnc-usr-bdy-dta-blc02"
+											trigger="btn-prs-rol-add">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+
+										<p:blockUI block=":frm-prs-rol:pgr-pmd-mnc-usr-bdy-dta-blc02"
+											trigger="btn-prs-rol-upd">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+
+										<p:blockUI block=":frm-prs-rol:pgr-pmd-mnc-usr-bdy-dta-blc02"
+											trigger="btn-prs-rol-rfr">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+									</h:panelGrid>
+								</h:panelGroup>
+
+								<p:dataList id="dtl-prs-rol" value="#{scrCtlPrsRol.lstPrsRol}"
+									var="varPrsRol" type="unordered" itemType="none"
+									paginator="true" rows="2" styleClass="paginated dtl-prs-rol"
+									emptyMessage="#{html.dtaEmpty()}" paginatorPosition="bottom"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+									<f:facet name="header">
+										<h:outputText value="Perfiles" />
+									</f:facet>
+									<h:panelGrid columns="5" styleClass="pms-100"
+										columnClasses="pms-10,pms-20,pms-30,pms-30,pms-10"
+										cellpadding="0" cellspacing="0">
+
+										<h:panelGroup layout="block" styleClass="tbl-stt-shp"
+											style="background: #{webCtlClr.rtrClr(scrCtlOpt.rtrEnt(varPrsRol.ISttId).IClrId).SClrHex};" />
+										<h:outputText
+											value="#{scrCtlOpt.rtrEnt(varPrsRol.ISttId).SOptNmeSpn}"
+											escape="false" />
+										<h:outputText
+											value="#{scrCtlOpt.rtrEnt(varPrsRol.IRolId).SOptNmeSpn}"
+											escape="false" />
+										<h:outputText
+											value="#{varPrsRol.dpaTblCnt.SCntNme} (#{varPrsRol.dpaTblCnt.ICntCde})"
+											escape="false" />
+
+										<h:panelGrid columns="1" styleClass="pms-100 alg-ctr">
+											<p:commandLink id="btn-prs-rol-edt"
+												action="#{scrCtlPrsRol.edtPrsRol()}"
+												title="#{html.edtBtnDsc}"
+												disabled="#{scrCtlPrsRol.dsbBtnPrsRolEdt}"
+												rendered="#{scrCtlPrsRol.vsbBtnPrsRolEdt}"
+												update=":frm-prs-rol:pgr-pmd-mnc-usr-bdy-dta-blc02 :frm-prs-rol:messages">
+												<p:graphicImage value="#{html.icn(html.edt,16,html.png)}" />
+												<f:setPropertyActionListener value="#{varPrsRol}"
+													target="#{scrCtlPrsRol.prsRol}" />
+											</p:commandLink>
+
+											<p:blockUI block=":frm-prs-rol:pgr-pmd-mnc-usr-bdy-dta-blc02"
+												trigger="btn-prs-rol-edt">
+												<p:graphicImage value="#{html.imgLdn()}"
+													styleClass="img-load" />
+											</p:blockUI>
+
+										</h:panelGrid>
+									</h:panelGrid>
+								</p:dataList>
+
+
+
+
+
+							</h:panelGroup>
+						</h:panelGrid>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</h:html>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="pms.jpa">
+		<jta-data-source>java:/PmsDS</jta-data-source>
+		<class>ec.gob.msp.pms.ent.DpaTblCnt</class>
+		<class>ec.gob.msp.pms.ent.DpaTblOpt</class>
+		<class>ec.gob.msp.pms.ent.DtaTblOpt</class>
+		<class>ec.gob.msp.pms.ent.DtaTblPr</class>
+		<class>ec.gob.msp.pms.ent.DteTblDay</class>
+		<class>ec.gob.msp.pms.ent.DteTblMnt</class>
+		<class>ec.gob.msp.pms.ent.DteTblYr</class>
+		<class>ec.gob.msp.pms.ent.HstTblCntPrsRol</class>
+		<class>ec.gob.msp.pms.ent.IndTblLvl</class>
+		<class>ec.gob.msp.pms.ent.IndTblMain</class>
+		<class>ec.gob.msp.pms.ent.InfTblStm</class>
+		<class>ec.gob.msp.pms.ent.PmsTblMnc</class>
+		<class>ec.gob.msp.pms.ent.PmsTblOpt</class>
+		<class>ec.gob.msp.pms.ent.ScrTblOpt</class>
+		<class>ec.gob.msp.pms.ent.ScrTblPrsRol</class>
+		<class>ec.gob.msp.pms.ent.ScrTblSss</class>
+		<class>ec.gob.msp.pms.ent.VrfTblIn</class>
+		<class>ec.gob.msp.pms.ent.VrfTblInsMnc</class>
+		<class>ec.gob.msp.pms.ent.WebTblClr</class>
+		<class>ec.gob.msp.pms.ent.WebTblMnu</class>
+		<class>ec.gob.msp.pms.ent.WebTblMnuSub</class>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
+		</properties>
+	</persistence-unit>
+</persistence>

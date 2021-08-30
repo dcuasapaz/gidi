@@ -1,0 +1,32 @@
+#pgr-hdr {
+	background: #2c2d33;
+	height: 48px;
+}
+
+.ui-layout-unit {
+	padding: 0px;
+}
+
+.ui-widget-content {
+	border: none;
+}
+
+.ui-layout-unit .ui-layout-unit-content {
+	padding: 0px;
+}
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+	border-bottom-right-radius: 0px;
+}
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+	border-bottom-left-radius: 0px;
+}
+
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+	border-top-right-radius: 0px;
+}
+
+.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+	border-top-left-radius: 0px;
+}

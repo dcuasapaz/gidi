@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/pms.css" />
+	<script src="js/jquery.min.js"></script>
+	<script src="js/index.js"></script>
+	<link rel="shortcut icon" href="/pms/ico/pms.ico" />
+	<title>Iniciar sesión | Municipios Saludables</title>
+
+</h:head>
+<h:body>
+	<div class="wrapper">
+		<div class="container">
+			<h:panelGrid columns="2" styleClass="bdy-100">
+				<h:graphicImage value="/img/lgo/lgo_pms.png" styleClass="lgo_pms" />
+				<h1>Programa de Municipios Saludables Ecuador | MSP</h1>
+
+			</h:panelGrid>
+
+			<h:form id="frm-scr-lgn" styleClass="form">
+				<p:messages id="msg-lgn" closable="true" showIcon="true"
+					redisplay="true" showDetail="true" showSummary="true">
+					<p:autoUpdate disabled="false" />
+				</p:messages>
+				<h:panelGrid id="png-scr-lgn" columns="1" styleClass="bdy-100">
+
+					<p:inputText id="inp-dta-prs-usr" value="#{scrCtlLgn.prs.SPrsUsr}"
+						disabled="#{scrCtlLgn.dsbAtrPrsUsr}"
+						rendered="#{scrCtlLgn.vsbAtrPrsUsr}"
+						required="#{scrCtlLgn.rqrAtrPrsUsr}" placeholder="Usuario"
+						styleClass="inp-lgn" />
+
+
+					<p:password id="inp-dta-prs-psw" value="#{scrCtlLgn.prs.SPrsPsw}"
+						disabled="#{scrCtlLgn.dsbAtrPrsPsw}"
+						rendered="#{scrCtlLgn.vsbAtrPrsPsw}"
+						required="#{scrCtlLgn.rqrAtrPrsPsw}" placeholder="Contraseña"
+						styleClass="inp-lgn" />
+
+					<h:panelGrid columns="1" cellpadding="5" cellspacing="5"
+						styleClass="bdy-100 alg-ctr bdy-btn-lgn">
+						<p:commandLink id="btn-scr-prs-lgn" value="Iniciar sesión"
+							disabled="#{scrCtlLgn.dsbBtnLgn}"
+							rendered="#{scrCtlLgn.vsbBtnLgn}" action="#{scrCtlLgn.login()}"
+							update="@form" styleClass="btn-lgn" title="Iniciar sesión" />
+						<p:blockUI block="frm-scr-lgn" trigger="btn-scr-prs-lgn">
+							<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+						</p:blockUI>
+					</h:panelGrid>
+				</h:panelGrid>
+
+			</h:form>
+		</div>
+
+		<ul class="bg-bubbles">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+</h:body>
+</h:html>

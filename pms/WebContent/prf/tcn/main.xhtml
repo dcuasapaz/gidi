@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition template="/tpl/tpl_pms.xhtml">
+	<ui:define name="ttl">#{html.tmncTtlPgeMain}</ui:define>
+	<ui:define name="ctt">
+		<h:form id="frm-pms-home" styleClass="bdy-100">
+			<h:panelGroup layout="block" styleClass="pms-100">
+
+				<h:panelGrid styleClass="pms-rng-ctn">
+
+					<p:ring id="custom" value="#{indCtlLvl.lstLv1()}" var="varCmp"
+						styleClass="image-ring" easing="easeInOutBack">
+
+						<h:panelGrid columns="1" styleClass="pms-rng-bdy">
+							<p:graphicImage id="gpi-pms-cmp" value="#{varCmp.SLvlPth}" />
+							<p:tooltip for="gpi-pms-cmp" value="#{varCmp.SLvlNme}"
+								position="top" />
+							<p:spacer height="15" />
+							<h:outputText value="#{varCmp.SLvlNme}" />
+							<p:commandButton id="btn-pms-cmp-view"
+								update=":frm-pms-home:out-pms-cmp" icon="ui-icon-circle-zoomout"
+								title="View" oncomplete="PF('pms-dlg-cmp').show();">
+								<f:setPropertyActionListener value="#{varCmp}"
+									target="#{indCtlLvl.cmp}" />
+							</p:commandButton>
+							<p:tooltip for="btn-pms-cmp-view" value="#{html.shwBtnNme}"
+								position="top" />
+						</h:panelGrid>
+					</p:ring>
+				</h:panelGrid>
+			</h:panelGroup>
+			<p:dialog header="Componente" widgetVar="pms-dlg-cmp" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<p:outputPanel id="out-pms-cmp" style="text-align:center;"
+					layout="block">
+					<p:panelGrid columns="2" columnClasses="value">
+						<h:outputText value="Componente:" />
+						<h:outputText value="#{indCtlLvl.cmp.SLvlNme}" />
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</h:html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+
+	<link rel="stylesheet" href="#{request.contextPath}/css/stl_pms.css"
+		type="text/css" />
+	<link rel="shortcut icon" href="/pms/ico/pms.ico" />
+	<h:outputScript name="validador.js"></h:outputScript>
+	<title><ui:insert name="ttl">Title Page</ui:insert> | PMS-MSP</title>
+</h:head>
+
+<h:body>
+
+	<h:panelGrid id="pms-png-hdr" styleClass="pms-100 pms-png-hdr">
+		<h:form id="frm-hdr">
+			<h:panelGroup id="pms-pgr-lgo" layout="block"
+				styleClass="pms-hdr-lgo">
+				<p:link id="pms-lnk-lgo-main" href="https://www.salud.gob.ec/"
+					target="_blank">
+					<p:graphicImage value="/img/lgo/lgo_msp.png"
+						styleClass="pms-hdr-lgo-img" />
+				</p:link>
+				<p:tooltip id="pms-tlt-main" for="pms-lnk-lgo-main"
+					value="#{html.msp()}" position="top" showEffect="clip"
+					hideEffect="explode" trackMouse="true" />
+				<p:link id="pms-lnk-lgo-scd"
+					href="https://www.investigacionsalud.gob.ec/" target="_blank">
+					<p:graphicImage value="/img/lgo/lgo_inspi.png"
+						styleClass="pms-hdr-lgo-img" />
+				</p:link>
+				<p:tooltip id="pms-tlt-scn" for="pms-lnk-lgo-scd"
+					value="#{html.inspi()}" position="top" showEffect="clip"
+					hideEffect="explode" trackMouse="true" />
+				<p:link id="pms-lnk-lgo-area"
+					href="https://www.investigacionsalud.gob.ec/webs/episig/"
+					target="_blank">
+					<p:graphicImage value="/img/lgo/lgo_episig.png"
+						styleClass="pms-hdr-lgo-img" />
+				</p:link>
+				<p:tooltip id="pms-tlt-area" for="pms-lnk-lgo-area"
+					value="#{html.episig()}" position="top" showEffect="clip"
+					hideEffect="explode" trackMouse="true" />
+			</h:panelGroup>
+			<h:panelGroup id="pms-pgr-hdr-bdy" layout="block"
+				styleClass="pms-hdr-lgo-bdy">
+				<h:panelGrid id="pms-png-hdr-bdy" columns="2" styleClass="pms-60">
+					<h:panelGroup layout="block" styleClass="pms-png-hdr-bdy-ttl">
+						<p:link>
+							<h:panelGrid columns="2">
+								<p:graphicImage value="#{html.mainLgo}"
+									styleClass="pms-hdr-lgo-bdy-obj" />
+								<h:outputText value="#{html.mainTtl}"
+									styleClass="pms-png-hdr-bdy-ttl-lnk" />
+							</h:panelGrid>
+						</p:link>
+					</h:panelGroup>
+					<h:panelGrid columns="2" styleClass="pms-30">
+
+						<h:panelGrid columns="1" styleClass="pms-25">
+							<p:selectOneMenu id="pms-som-prf" value="#{tplPms.IRolPgeCde}">
+								<f:selectItem itemLabel="Seleccione perfil"
+									noSelectionOption="true" />
+								<f:selectItems value="#{tplPms.loadRol(scrCtlSss.prl.dtaTblPr)}"
+									var="varPrsRol"
+									itemLabel="#{scrCtlOpt.rtrEnt(varPrsRol.IRolId).SOptNmeSpn}"
+									itemValue="#{varPrsRol.IPrsRolId}" />
+								<p:ajax listener="#{tplPms.chsRol()}"
+									update=":frm-hdr :frm-hdr:pms-png-hdr-inf" />
+							</p:selectOneMenu>
+							<p:blockUI block="pms-pgr-hdr-bdy" trigger="pms-som-prf" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="1" styleClass="pms-25">
+							<p:commandLink id="pms-btn-end-sss"
+								action="#{scrCtlSss.clsSss()}" update="@form">
+								<p:graphicImage value="/img/icn/end_sss.png"
+									styleClass="pms-hdr-lgo-bdy-end" />
+							</p:commandLink>
+							<p:tooltip id="pms-tlt-end-sss" for="pms-btn-end-sss"
+								value="Cerrar sesión" position="top" showEffect="clip"
+								hideEffect="explode" />
+						</h:panelGrid>
+
+					</h:panelGrid>
+				</h:panelGrid>
+				<h:panelGrid id="pms-png-hdr-inf" columns="2"
+					styleClass="pms-60 pms-png-hdr-inf">
+					<h:outputText value="#{tplPms.rtrPrsRol(scrCtlSss.prl)}"
+						escape="false" />
+				</h:panelGrid>
+			</h:panelGroup>
+
+			<h:panelGroup id="pms-pgr-hdr-mnu" layout="block"
+				styleClass="pms-hdr-lgo-mnu" rendered="#{tplPms.vsbPnlMnu}">
+				<p:panelMenu id="pnm-chs-prf" styleClass="pms-hdr-lgo-mnu-bdy"
+					model="#{tplPms.lstMnuSub(tplPms.prsRol)}" />
+			</h:panelGroup>
+
+		</h:form>
+	</h:panelGrid>
+
+	<h:panelGrid id="pms-png-bdy" styleClass="pms-90">
+		<h:panelGroup styleClass="pms-png-bdy" layout="block">
+			<ui:insert name="ctt">
+				<h:outputLabel value="Content" />
+			</ui:insert>
+		</h:panelGroup>
+	</h:panelGrid>
+</h:body>
+
+</h:html>

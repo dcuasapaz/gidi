@@ -1,0 +1,681 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+
+<ui:composition template="/tpl/tpl_pms.xhtml">
+	<ui:define name="ttl">Datos Municipio </ui:define>
+	<ui:define name="ctt">
+		<h:form id="frm-mnc">
+			<p:growl id="grw-mnc" showDetail="true" sticky="true" />
+
+			<h:panelGroup id="pgr-mnc" layout="block" styleClass="pms-bdy">
+
+				<h:panelGrid id="png-pms-mnu" columns="1" styleClass="pms-100">
+					<p:menubar styleClass="mnu">
+						<p:menuitem id="#{html.addBtnId}" icon="ui-icon-document"
+							action="#{pmsCtlMnc.add()}" update="@form" value="Nuevo"
+							disabled="#{pmsCtlMnc.dsbBtnNvo}"
+							rendered="#{pmsCtlMnc.vsbBtnNvo}" />
+						<p:menuitem id="#{html.sveBtnId}" icon="ui-icon-disk"
+							action="#{pmsCtlMnc.sve()}" update="@form"
+							disabled="#{pmsCtlMnc.dsbBtnSve}"
+							rendered="#{pmsCtlMnc.vsbBtnSve}" value="Guardar" />
+						<p:menuitem id="#{html.rfrBtnId}" value="#{html.rfrBtnNme}"
+							icon="#{html.rfrBtnIcn}" disabled="#{dpaCtlCnt.dsbBtnRfr}"
+							rendered="#{dpaCtlCnt.vsbBtnRfr}"
+							onclick="window.location.reload()" title="#{html.rfrBtnDsc}" />
+					</p:menubar>
+					<h:panelGroup layout="block" styleClass="pms-100">
+						<p:blockUI block="pgr-mnc" trigger="#{html.addBtnId}">
+							<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+						</p:blockUI>
+						<p:blockUI block="pgr-mnc" trigger="#{html.addBtnId}">
+							<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+						</p:blockUI>
+					</h:panelGroup>
+				</h:panelGrid>
+
+
+				<h:panelGrid id="png-pms-tbl" columns="1" styleClass="pms-100"
+					rendered="#{pmsCtlMnc.vsbTbl}">
+					<p:dataTable id="dtb-pms-tbl-ind" value="#{pmsCtlMnc.lstMnc}"
+						var="varMnc" rows="10" paginator="true"
+						paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						styleClass="pms-100" emptyMessage="#{html.msgTblEmp}"
+						paginatorPosition="bottom" rowsPerPageTemplate="10,20,30"
+						widgetVar="dtb-pms-tbl-ind">
+
+						<f:facet name="header">
+							<h:outputText
+								value=" #{pmsCtlMnc.lstMnc.size()} indicadores ingresados"
+								escape="false" />
+						</f:facet>
+
+						<p:column styleClass="pms-5">
+							<p:rowToggler />
+						</p:column>
+
+
+
+						<p:column headerText="Año" styleClass="pms-5 alg-ctr"
+							filterBy="#{varMnc.ICrtYr}" sortBy="#{varMnc.ICrtYr}">
+							<h:outputText value="#{varMnc.ICrtYr}" escape="false" />
+						</p:column>
+
+						<p:column headerText="Obligatorio" styleClass="pms-10 alg-ctr"
+							filterMatchMode="exact"
+							filterBy="#{method.SYN(varMnc.indTblMain.BMainObl)}">
+							<f:facet name="filter">
+								<p:selectOneMenu onchange="PF('dtb-pms-tbl-ind').filter()"
+									styleClass="custom-filter pms-cmb">
+									<f:selectItem itemLabel="Todos" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItem itemLabel="Sí" itemValue="Sí" />
+									<f:selectItem itemLabel="No" itemValue="No" />
+								</p:selectOneMenu>
+							</f:facet>
+							<h:outputText value="#{method.SYN(varMnc.indTblMain.BMainObl)}"
+								style="color: #{webCtlClr.rtrClr(method.clr(varMnc.indTblMain.BMainObl)).SClrHex}" />
+						</p:column>
+
+						<p:column headerText="Componente" styleClass="pms-10 alg-ctr"
+							sortBy="#{indCtlLvl.entLvl(varMnc.indTblMain.indTblLvl.ILvlFth).SLvlNme}">
+							<p:graphicImage id="img"
+								value="#{indCtlLvl.entLvl(varMnc.indTblMain.indTblLvl.ILvlFth).SLvlPth}"
+								styleClass="pms-tbl-img"
+								title="#{indCtlLvl.entLvl(varMnc.indTblMain.indTblLvl.ILvlFth).SLvlNme}" />
+							<p:tooltip for="img"
+								value="#{indCtlLvl.entLvl(varMnc.indTblMain.indTblLvl.ILvlFth).SLvlNme}"
+								position="top" />
+						</p:column>
+
+						<p:column headerText="Eje" styleClass="pms-20"
+							filterBy="#{varMnc.indTblMain.indTblLvl.SLvlNme}"
+							sortBy="#{varMnc.indTblMain.indTblLvl.SLvlNme}">
+							<h:outputText value="#{varMnc.indTblMain.indTblLvl.SLvlNme}"
+								escape="false" />
+						</p:column>
+
+						<p:column headerText="Código" styleClass="pms-10 alg-ctr"
+							filterBy="#{varMnc.indTblMain.IMainCde}"
+							sortBy="#{varMnc.indTblMain.IMainCde}">
+							<h:outputText value="#{varMnc.indTblMain.IMainCde}"
+								escape="false" />
+						</p:column>
+
+						<p:column headerText="Indicador" styleClass="pms-20"
+							filterBy="#{varMnc.indTblMain.SMainNme}"
+							sortBy="#{varMnc.indTblMain.SMainNme}">
+							<h:outputText value="#{varMnc.indTblMain.SMainNme}"
+								escape="false" />
+						</p:column>
+
+						<p:column headerText="Valor" styleClass="pms-10 alg-ctr">
+							<h:outputText
+								value="#{pmsCtlSmf.smfVld(varMnc.indTblMain,varMnc)}"
+								escape="false" />
+						</p:column>
+
+						<p:column headerText="Opciones" styleClass="pms-10">
+
+							<h:panelGrid columns="2" columnClasses="alg-ctr,alg-ctr">
+								<p:commandLink disabled="true">
+									<p:graphicImage value="#{html.icn(html.edt,16,html.png)}" />
+									<f:setPropertyActionListener target="#{pmsCtlMnc.mnc}"
+										value="#{varMnc}" />
+								</p:commandLink>
+								<p:commandLink disabled="true">
+									<p:graphicImage value="#{html.icn(html.dlt,16,html.png)}" />
+									<f:setPropertyActionListener target="#{pmsCtlMnc.mnc}"
+										value="#{varMnc}" />
+								</p:commandLink>
+							</h:panelGrid>
+
+						</p:column>
+
+						<p:rowExpansion>
+
+							<h:panelGroup layout="block" styleClass="pms-100">
+
+								<h:panelGrid columns="2" styleClass="pms-100"
+									columnClasses="pms-50, pms-50">
+									<h:panelGroup layout="block" styleClass="pms-tbl-row-ttl">
+										<h:outputText value="Indicador" />
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="pms-tbl-row-ttl">
+										<h:outputText value="Verificación" />
+									</h:panelGroup>
+								</h:panelGrid>
+
+
+								<h:panelGrid columns="2" styleClass="pms-80"
+									columnClasses="pms-40, pms-40">
+									<h:panelGroup layout="block" styleClass="pms-100">
+
+
+
+										<h:panelGrid columns="2" styleClass="pms-100"
+											columnClasses="pms-20, pms-100">
+											<h:outputLabel value="Componente:" />
+											<h:outputText
+												value="#{indCtlLvl.entLvl(varMnc.indTblMain.indTblLvl.ILvlFth).SLvlNme}" />
+											<h:outputLabel value="Eje:" />
+											<h:outputText value="#{varMnc.indTblMain.indTblLvl.SLvlNme}" />
+											<h:outputLabel value="Indicador:" />
+											<h:outputText value="#{varMnc.indTblMain.SMainNme}" />
+											<h:outputLabel value="Valor:" />
+											<h:panelGrid columns="2"
+												columnClasses="pms-50 alg-ctr, pms-50" styleClass="pms-100">
+												<h:outputText
+													value="#{pmsCtlSmf.smfVld(varMnc.indTblMain,varMnc)}" />
+												<h:panelGroup layout="block" styleClass="pms-tbl-row-clr"
+													style="background: #{webCtlClr.rtrClrSmf(pmsCtlSmf.smfCls(varMnc.indTblMain,varMnc)).SClrHex};" />
+											</h:panelGrid>
+											<h:outputLabel value="Unidad:" />
+											<h:outputText value="#{varMnc.indTblMain.SMainUnt}" />
+										</h:panelGrid>
+
+									</h:panelGroup>
+
+									<h:panelGroup layout="block" styleClass="pms-100">
+
+										<p:dataTable value="#{vrfCtlInsMnc.lstInsMnc(varMnc)}"
+											var="varInsMnc" rows="10" paginator="true"
+											paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+											styleClass="pms-100" emptyMessage="#{html.msgTblEmp}"
+											paginatorPosition="bottom">
+											<p:column headerText="Institucion" styleClass="pms-40"
+												filterBy="#{varInsMnc.vrfTblIn.SInsNme}"
+												sortBy="#{varInsMnc.vrfTblIn.SInsNme}">
+												<h:outputText value="#{varInsMnc.vrfTblIn.SInsNme}" />
+											</p:column>
+											<p:column headerText="Base de datos" styleClass="pms-20"
+												filterBy="#{varInsMnc.SInsMncNme}"
+												sortBy="#{varInsMnc.SInsMncNme}">
+												<h:outputText value="#{varInsMnc.SInsMncNme}" />
+											</p:column>
+											<p:column headerText="Valor" styleClass="pms-10"
+												sortBy="#{varInsMnc.RInsMncVle}">
+												<h:outputText value="#{varInsMnc.RInsMncVle}" />
+											</p:column>
+											<p:column headerText="Fecha del documento"
+												styleClass="pms-30"
+												filterBy="#{varInsMnc.IInsMncYr}-#{dteCtlAdm.rtrMnt(varInsMnc.IInsMncMth).SMntCde}-#{dteCtlAdm.rtrDay(varInsMnc.IInsMncDay).SDayVle}"
+												sortBy="#{varInsMnc.IInsMncYr}-#{dteCtlAdm.rtrMnt(varInsMnc.IInsMncMth).SMntCde}-#{dteCtlAdm.rtrDay(varInsMnc.IInsMncDay).SDayVle}">
+												<h:outputText
+													value="#{varInsMnc.IInsMncYr}-#{dteCtlAdm.rtrMnt(varInsMnc.IInsMncMth).SMntCde}-#{dteCtlAdm.rtrDay(varInsMnc.IInsMncDay).SDayVle}" />
+											</p:column>
+										</p:dataTable>
+
+									</h:panelGroup>
+								</h:panelGrid>
+
+								<h:panelGrid columns="2" styleClass="pms-100"
+									columnClasses="pms-20, pms-80 pms-tbl-row-inf">
+									<h:outputLabel value="Observaciones:" />
+									<h:outputText value="#{varMnc.SCrtObs}" />
+								</h:panelGrid>
+							</h:panelGroup>
+
+
+						</p:rowExpansion>
+
+					</p:dataTable>
+				</h:panelGrid>
+
+
+
+				<h:panelGrid id="png-pms-dta" columns="1" styleClass="pms-100"
+					rendered="#{pmsCtlMnc.vsbDta}">
+
+
+					<h:panelGroup id="png-mnc-ind-lst" layout="block"
+						styleClass="pms-60">
+
+						<h:panelGrid id="png-pms-ind-lst"
+							styleClass="pms-100 pms-box pms-box-ind-lst" columns="1">
+
+							<p:selectBooleanCheckbox id="sbc-mnc-ind-lst"
+								itemLabel="Clasificación de Indicadores"
+								value="#{pmsCtlMnc.vlrIndCls}" disabled="#{pmsCtlMnc.dsbIndCls}"
+								rendered="#{pmsCtlMnc.vsbIndCls}"
+								required="#{pmsCtlMnc.rqrIndCls}" styleClass="pms-chk">
+								<p:ajax listener="#{pmsCtlMnc.chsIndCls()}"
+									update="png-mnc-ind-lst png-mnc-ind-lst-lvl png-mnc-ind-lst-esp" />
+							</p:selectBooleanCheckbox>
+							<p:blockUI block="png-mnc-ind-lst" trigger="sbc-mnc-ind-lst">
+								<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+							</p:blockUI>
+
+							<h:panelGroup layout="block" styleClass="pms-90">
+								<h:panelGrid id="png-mnc-ind-lst-lvl" columns="2"
+									styleClass="pms-100" columnClasses="pms-30 alg-rgh, pms-70"
+									cellpadding="2" cellspacing="2">
+
+									<h:outputLabel for="som-ind-cls-cmp" value="Componente:" />
+									<p:selectOneMenu id="som-ind-cls-cmp" style="width: 82%;"
+										value="#{pmsCtlMnc.ILv1Cde}" rendered="#{pmsCtlMnc.vsbLv1}"
+										disabled="#{pmsCtlMnc.dsbLv1}" required="#{pmsCtlMnc.rqrLv1}"
+										filter="true" filterMatchMode="startsWith" effect="fade"
+										panelStyle="width:180px" styleClass="pms-cmb">
+										<f:selectItem itemLabel="Seleccione" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems value="#{indCtlLvl.lstLv1()}" var="varLv1"
+											itemLabel="#{varLv1.SLvlNme}" itemValue="#{varLv1.ILvlCde}" />
+										<p:ajax listener="#{pmsCtlMnc.chsLv1()}"
+											update="som-ind-cls-eje" />
+									</p:selectOneMenu>
+
+									<h:outputLabel for="som-ind-cls-eje" value="Eje:" />
+									<p:selectOneMenu id="som-ind-cls-eje" style="width: 82%;"
+										value="#{pmsCtlMnc.ILv2Cde}" rendered="#{pmsCtlMnc.vsbLv2}"
+										disabled="#{pmsCtlMnc.dsbLv2}" required="#{pmsCtlMnc.rqrLv2}"
+										filter="true" filterMatchMode="startsWith" effect="fade"
+										panelStyle="width:180px" styleClass="pms-cmb">
+										<f:selectItem itemLabel="Seleccione" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems value="#{indCtlLvl.lstLvl(pmsCtlMnc.lv1)}"
+											var="varLv2" itemLabel="#{varLv2.SLvlNme}"
+											itemValue="#{varLv2.ILvlCde}" />
+										<p:ajax listener="#{pmsCtlMnc.chsLv2()}"
+											update="png-mnc-ind-lst som-ind-cls-eje" />
+									</p:selectOneMenu>
+
+									<p:blockUI block="png-mnc-ind-lst" trigger="som-ind-cls-cmp">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+									<p:blockUI block="png-mnc-ind-lst" trigger="som-ind-cls-eje">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+								</h:panelGrid>
+							</h:panelGroup>
+							<h:panelGrid id="png-mnc-ind-lst-esp" columns="2"
+								styleClass="pms-100" columnClasses="pms-40 alg-lft, pms-60"
+								cellpadding="2" cellspacing="2">
+
+								<p:selectBooleanCheckbox id="sbc-mnc-ind-lst-esp"
+									itemLabel="Lista específica de Indicadores:"
+									value="#{pmsCtlMnc.vlrIndEsp}"
+									disabled="#{pmsCtlMnc.dsbIndEsp}"
+									rendered="#{pmsCtlMnc.vsbIndEsp}"
+									required="#{pmsCtlMnc.rqrIndEsp}" styleClass="pms-chk">
+									<p:ajax listener="#{pmsCtlMnc.chsIndEsp()}"
+										update="png-mnc-ind-lst png-mnc-ind-lst png-mnc-ind-lst-esp fls-mnc-ind" />
+								</p:selectBooleanCheckbox>
+
+								<p:selectOneMenu id="som-ind-lst" value="#{pmsCtlMnc.IEspCde}"
+									rendered="#{pmsCtlMnc.vsbEsp}" disabled="#{pmsCtlMnc.dsbEsp}"
+									required="#{pmsCtlMnc.rqrEsp}" style="width: 74%;"
+									styleClass="pms-cmb">
+									<f:selectItem itemLabel="Seleccione" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems
+										value="#{pmsCtlOpt.rtrLstEnt(code.IPmsEspCde())}" var="varEsp"
+										itemLabel="#{varEsp.SOptNme}" itemValue="#{varEsp.IOptId}" />
+									<p:ajax listener="#{pmsCtlMnc.chsEsp()}" update="fls-mnc-ind" />
+								</p:selectOneMenu>
+
+								<p:blockUI block="png-mnc-ind-lst-esp"
+									trigger="sbc-mnc-ind-lst-esp">
+									<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+								</p:blockUI>
+
+								<p:blockUI block="fls-mnc-ind" trigger="som-ind-lst">
+									<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+								</p:blockUI>
+
+							</h:panelGrid>
+						</h:panelGrid>
+						<p:spacer height="10" />
+						<p:fieldset id="fls-mnc-ind" legend="Indicador a ingresar"
+							styleClass="pms-ind-ctg">
+							<p:spacer height="10" />
+							<h:panelGroup layout="block" styleClass="pms-box pms-box-ind-inp">
+
+								<h:panelGrid id="png-mnc-ind" columns="1" styleClass="pms-100"
+									cellpadding="2" cellspacing="2">
+
+									<h:outputText
+										value="#{method.SLblInd(pmsCtlMnc.lstMain.size())}"
+										escape="false" />
+									<h:panelGroup layout="block" styleClass="pms-90">
+										<p:selectOneMenu id="som-ind" value="#{pmsCtlMnc.IMainCde}"
+											style="width: 90%;" rendered="#{pmsCtlMnc.vsbMain}"
+											disabled="#{pmsCtlMnc.dsbMain}"
+											required="#{pmsCtlMnc.rqrMain}" filter="true"
+											filterMatchMode="startsWith" effect="fade"
+											styleClass="pms-cmb">
+											<f:selectItem itemLabel="Seleccione" itemValue=""
+												noSelectionOption="true" />
+											<f:selectItems value="#{pmsCtlMnc.lstMain}" var="varMain"
+												itemLabel="#{varMain.SMainNme} (#{varMain.IMainCde}) "
+												itemValue="#{varMain.IMainId}" />
+											<p:ajax listener="#{pmsCtlMnc.chsMain()}"
+												update="pgr-pms-ind-dsc png-pms-inf-ind-opt pgr-ind-inf png-mnc-ind-lst-lvl som-ind-cls-eje png-mnc-ind-dta png-mnc-ind-dte png-ind-dte" />
+										</p:selectOneMenu>
+										<p:blockUI block="png-mnc-ind-lst"
+											trigger="sbc-mnc-ind-lst-esp">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+									</h:panelGroup>
+								</h:panelGrid>
+
+								<h:panelGroup id="pgr-ind-inf" layout="block"
+									styleClass="pms-100">
+
+									<h:panelGrid styleClass="pms-100" columns="2"
+										columnClasses="pms-20, pms-80 alg-ctr mnc-brd">
+										<h:panelGrid styleClass="pms-100 ">
+										</h:panelGrid>
+										<h:outputText value="Guardián contra" styleClass="mnc-txt" />
+									</h:panelGrid>
+
+									<h:panelGrid styleClass="pms-100" columns="2"
+										columnClasses="pms-20, pms-80">
+										<h:panelGrid styleClass="pms-100 alg-ctr mnc-brd">
+											<h:outputLabel value="* Obligatorio"
+												style="#{pmsCtlMnc.txtClrOrg}" styleClass="mnc-txt-inf" />
+										</h:panelGrid>
+										<h:panelGrid id="png-pms-inf-ind-opt"
+											styleClass="pms-100 alg-ctr" columns="3"
+											columnClasses="pms-30 mnc-brd,pms-30 mnc-brd,pms-40 mnc-brd">
+											<h:outputLabel value="* Desnutrición Infantil"
+												style="#{pmsCtlMnc.txtClrBle}" styleClass="mnc-txt-inf" />
+											<h:outputLabel value="* Mortalidad materna"
+												style="#{pmsCtlMnc.txtClrPnk}" styleClass="mnc-txt-inf" />
+											<h:outputLabel value="* Violencia de género"
+												style="#{pmsCtlMnc.txtClrVlt}" styleClass="mnc-txt-inf" />
+										</h:panelGrid>
+									</h:panelGrid>
+								</h:panelGroup>
+								<h:panelGroup id="pgr-pms-ind-dsc" layout="block"
+									styleClass="pms-dsc"
+									style="background: #{webCtlClr.rtrClr(35).SClrHex};">
+									<h:outputText value="#{pmsCtlMnc.main.SMainDsc}" escape="false" />
+								</h:panelGroup>
+							</h:panelGroup>
+
+
+							<h:panelGroup id="png-mnc-ind-dta" layout="block"
+								styleClass="pms-box pms-box-ind-dta">
+
+								<h:panelGrid columns="2" columnClasses="pms-50, pms-50"
+									styleClass="pms-100" rendered="#{pmsCtlMnc.vsbMainLbl}">
+
+									<h:panelGroup layout="block" styleClass="pms-100">
+										<h:outputLabel value="#{pmsCtlMnc.lblMainVle}:"
+											styleClass="mnc-lbl" rendered="#{pmsCtlMnc.vsbMainLbl}" />
+
+										<h:panelGrid columns="2" styleClass="pms-100"
+											columnClasses="pms-35 alg-rgh, pms-65 alg-ctr"
+											cellpadding="2" cellspacing="2">
+
+											<h:panelGroup layout="block" styleClass="pms-100"
+												rendered="#{pmsCtlMnc.vsbMainVle}">
+												<p:inputText id="inp-ind-vle"
+													value="#{pmsCtlMnc.mnc.RCrtNmb}"
+													disabled="#{pmsCtlMnc.dsbMainVle}"
+													rendered="#{pmsCtlMnc.vsbMainVle}"
+													required="#{pmsCtlMnc.rqrMainVle}" styleClass="pms-inp">
+													<p:ajax update="vle-inp grw-mnc" event="keyup"
+														listener="#{pmsCtlMnc.vldVlrInd()}" />
+												</p:inputText>
+											</h:panelGroup>
+
+											<h:panelGroup layout="block" styleClass="pms-100"
+												rendered="#{pmsCtlMnc.vsbMainOpt}">
+												<p:selectOneMenu id="som-ind-vle" value="#{pmsCtlMnc.id}"
+													style="width: 82%;" filter="true"
+													filterMatchMode="startsWith" effect="fade"
+													panelStyle="width:180px" disabled="#{pmsCtlMnc.dsbMainOpt}"
+													rendered="#{pmsCtlMnc.vsbMainOpt}"
+													required="#{pmsCtlMnc.rqrMainOpt}" styleClass="pms-cmb">
+													<f:selectItem itemLabel="Seleccione" itemValue=""
+														noSelectionOption="true" />
+													<f:selectItems value="#{pmsCtlMnc.lstCtg}" var="varCtg"
+														itemLabel="#{varCtg.opt} | #{varCtg.id} "
+														itemValue="#{varCtg.id}" />
+													<p:ajax update="vle-inp grw-mnc @form"
+														listener="#{pmsCtlMnc.vldVlrOpt()}" />
+												</p:selectOneMenu>
+											</h:panelGroup>
+
+											<h:panelGroup layout="block" styleClass="pms-100">
+												<h:panelGroup id="vle-inp" layout="block"
+													styleClass="mnc-clr"
+													style="background: #{webCtlClr.rtrClrSmf(pmsCtlMnc.vlrMnc).SClrHex};" />
+											</h:panelGroup>
+
+										</h:panelGrid>
+									</h:panelGroup>
+
+									<h:panelGrid id="png-mnc-ind-dte" columns="1"
+										styleClass="pms-100" cellpadding="2" cellspacing="2">
+
+										<h:outputLabel for="som-ind" value="Fecha de publicación: "
+											styleClass="mnc-lbl" />
+
+										<h:panelGrid id="png-ind-dte" columns="3" styleClass="pms-100"
+											columnClasses="pms-30, pms-40, pms-30">
+
+											<p:selectOneMenu id="som-mnc-dte-yr"
+												disabled="#{pmsCtlMnc.dsbYr}" rendered="#{pmsCtlMnc.vsbYr}"
+												required="#{pmsCtlMnc.rqrYr}" value="#{pmsCtlMnc.IYrVle}"
+												filter="true" style="width: 60%;" styleClass="pms-cmb">
+												<f:selectItem itemLabel="Año *" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems value="#{pmsCtlMnc.lstYr}" var="varYr"
+													itemLabel="#{varYr.IYrVle}" itemValue="#{varYr.IYrVle}" />
+												<p:ajax listener="#{pmsCtlMnc.chsYr()}"
+													update="som-mnc-dte-mth" />
+											</p:selectOneMenu>
+
+											<p:selectOneMenu id="som-mnc-dte-mth"
+												disabled="#{pmsCtlMnc.dsbMth}"
+												rendered="#{pmsCtlMnc.vsbMth}"
+												required="#{pmsCtlMnc.rqrMth}" value="#{pmsCtlMnc.IMthVle}"
+												filter="true" style="width: 70%;" styleClass="pms-cmb">
+												<f:selectItem itemLabel="Mes" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems value="#{pmsCtlMnc.lstMth}" var="varMnt"
+													itemLabel="#{varMnt.SMntNme}" itemValue="#{varMnt.IMntCde}" />
+												<p:ajax listener="#{pmsCtlMnc.chsMth()}"
+													update="som-mnc-dte-day  " />
+											</p:selectOneMenu>
+
+											<p:selectOneMenu id="som-mnc-dte-day"
+												disabled="#{pmsCtlMnc.dsbDay}"
+												rendered="#{pmsCtlMnc.vsbDay}"
+												required="#{pmsCtlMnc.rqrDay}" value="#{pmsCtlMnc.IDayVle}"
+												filter="true" style="width: 60%;" styleClass="pms-cmb">
+												<f:selectItem itemLabel="Día" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems value="#{pmsCtlMnc.lstDay}" var="varDay"
+													itemLabel="#{varDay}" itemValue="#{varDay}" />
+											</p:selectOneMenu>
+
+										</h:panelGrid>
+									</h:panelGrid>
+
+								</h:panelGrid>
+
+
+
+
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="vrf">
+								<br />
+								<p:commandButton value="Validar"
+									action="#{pmsCtlMnc.validate()}" update="fls-mnc-vrf grw-mnc" />
+								<br />
+
+							</h:panelGroup>
+
+						</p:fieldset>
+
+						<p:spacer height="10" />
+
+						<p:fieldset id="fls-mnc-vrf" legend="Medio de verificación"
+							styleClass="pms-ind-ctg">
+							<h:panelGroup layout="block" styleClass="pms-90">
+								<h:panelGrid columns="2" styleClass="pms-100"
+									columnClasses="pms-35, pms-65">
+
+									<h:outputLabel value="Institucion:" />
+									<p:selectOneMenu id="som-mnc-vrf-ins"
+										disabled="#{pmsCtlMnc.dsbIns}" rendered="#{pmsCtlMnc.vsbIns}"
+										required="#{pmsCtlMnc.rqrIns}" value="#{pmsCtlMnc.IInsId}"
+										filter="true" style="width: 82%;" styleClass="pms-cmb">
+										<f:selectItem itemLabel="Seleccione" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems value="#{pmsCtlMnc.lstIns}" var="varIns"
+											itemLabel="#{varIns.SInsNme}" itemValue="#{varIns.IInsId}" />
+										<p:ajax listener="#{pmsCtlMnc.chsIns()}"
+											update="som-mnc-vrf-ins" />
+									</p:selectOneMenu>
+
+									<h:outputLabel value="Base de datos:" />
+									<p:inputText id="inp-mnc-vrf-ins-nme"
+										value="#{pmsCtlMnc.insMnc.SInsMncNme}"
+										disabled="#{pmsCtlMnc.dsbInsMnc}"
+										rendered="#{pmsCtlMnc.vsbInsMnc}"
+										required="#{pmsCtlMnc.rqrInsMnc}" />
+
+									<h:outputLabel value="Valor:" />
+									<p:inputText id="inp-mnc-vrf-ins-vle"
+										value="#{pmsCtlMnc.insMnc.RInsMncVle}"
+										disabled="#{pmsCtlMnc.dsbInsMnc}"
+										rendered="#{pmsCtlMnc.vsbInsMnc}"
+										required="#{pmsCtlMnc.rqrInsMnc}" />
+
+									<h:outputLabel value="Fecha del documento:" />
+									<h:panelGrid id="png-ind-vld-dte" columns="3"
+										styleClass="pms-100" columnClasses="pms-30, pms-40, pms-30">
+
+										<p:selectOneMenu id="som-mnc-vld-yr"
+											disabled="#{pmsCtlMnc.dsbVldYr}"
+											rendered="#{pmsCtlMnc.vsbVldYr}"
+											required="#{pmsCtlMnc.rqrVldYr}"
+											value="#{pmsCtlMnc.IYrVldVle}" filter="true"
+											style="width: 50%;" styleClass="pms-cmb">
+											<f:selectItem itemLabel="Año *" itemValue=""
+												noSelectionOption="true" />
+											<f:selectItems value="#{pmsCtlMnc.lstVldYr}" var="varYr"
+												itemLabel="#{varYr.IYrVle}" itemValue="#{varYr.IYrVle}" />
+											<p:ajax listener="#{pmsCtlMnc.chsVldYr()}"
+												update="som-mnc-vld-mth" />
+										</p:selectOneMenu>
+
+										<p:selectOneMenu id="som-mnc-vld-mth"
+											disabled="#{pmsCtlMnc.dsbVldMth}"
+											rendered="#{pmsCtlMnc.vsbVldMth}"
+											required="#{pmsCtlMnc.rqrVldMth}"
+											value="#{pmsCtlMnc.IMthVldVle}" filter="true"
+											style="width: 50%;" styleClass="pms-cmb">
+											<f:selectItem itemLabel="Mes" itemValue=""
+												noSelectionOption="true" />
+											<f:selectItems value="#{pmsCtlMnc.lstVldMth}" var="varMth"
+												itemLabel="#{varMth.SMntNme}" itemValue="#{varMth.IMntCde}" />
+											<p:ajax listener="#{pmsCtlMnc.chsVldMth()}"
+												update="som-mnc-vld-day" />
+										</p:selectOneMenu>
+
+										<p:selectOneMenu id="som-mnc-vld-day"
+											disabled="#{pmsCtlMnc.dsbVldDay}"
+											rendered="#{pmsCtlMnc.vsbVldDay}"
+											required="#{pmsCtlMnc.rqrVldDay}"
+											value="#{pmsCtlMnc.IDayVldVle}" filter="true"
+											style="width: 50%;" styleClass="pms-cmb">
+											<f:selectItem itemLabel="Dia" itemValue=""
+												noSelectionOption="true" />
+											<f:selectItems value="#{pmsCtlMnc.lstVldDay}" var="varDay"
+												itemLabel="#{varDay}" itemValue="#{varDay}" />
+										</p:selectOneMenu>
+
+										<p:blockUI block="png-ind-vld-dte" trigger="som-mnc-vld-yr">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+
+										<p:blockUI block="png-ind-vld-dte" trigger="som-mnc-vld-mth">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+
+										<p:blockUI block="png-ind-vld-dte" trigger="som-mnc-vld-day">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+
+
+									</h:panelGrid>
+
+								</h:panelGrid>
+
+								<h:panelGrid columns="2" styleClass="pms-60"
+									columnClasses="pms-30 alg-ctr, pms-30 alg-ctr">
+
+									<p:commandButton id="btn-vrf-add" value="Añadir"
+										action="#{pmsCtlMnc.addInsMnc()}" update="fls-mnc-vrf grw-mnc"
+										disabled="#{pmsCtlMnc.dsbBtnAdd}"
+										rendered="#{pmsCtlMnc.vsbBtnAdd}">
+									</p:commandButton>
+
+									<p:commandButton id="btn-vrf-new" value="Nuevo"
+										action="#{pmsCtlMnc.newInsMnc()}" update="fls-mnc-vrf grw-mnc"
+										disabled="#{pmsCtlMnc.dsbBtnNew}"
+										rendered="#{pmsCtlMnc.vsbBtnNew}" />
+
+									<p:blockUI block="fls-mnc-vrf" trigger="btn-vrf-add">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+									<p:blockUI block="fls-mnc-vrf" trigger="btn-vrf-new">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+								</h:panelGrid>
+
+								<h:panelGroup layout="block" styleClass="tbl">
+									<p:dataTable id="dtb-ins-mnc" value="#{pmsCtlMnc.lstInsMnc}"
+										var="varInsMnc" styleClass="pms-100">
+										<p:column headerText="Institucion" styleClass="pms-40">
+											<h:outputText value="#{varInsMnc.vrfTblIn.SInsNme}" />
+										</p:column>
+										<p:column headerText="Base de datos" styleClass="pms-20">
+											<h:outputText value="#{varInsMnc.SInsMncNme}" />
+										</p:column>
+										<p:column headerText="Valor" styleClass="pms-20">
+											<h:outputText value="#{varInsMnc.RInsMncVle}" />
+										</p:column>
+										<p:column headerText="Fecha del documento" styleClass="pms-20">
+											<h:outputText
+												value="#{varInsMnc.IInsMncYr}-#{dteCtlAdm.rtrMnt(varInsMnc.IInsMncMth).SMntCde}-#{dteCtlAdm.rtrDay(varInsMnc.IInsMncDay).SDayVle}" />
+										</p:column>
+									</p:dataTable>
+								</h:panelGroup>
+
+							</h:panelGroup>
+						</p:fieldset>
+
+						<p:spacer height="10" />
+						<p:fieldset id="fls-mnc-vrf-inf" legend="Observaciones"
+							styleClass="pms-ind-ctg">
+							<h:panelGroup layout="block" styleClass="obs">
+								<p:inputTextarea value="#{pmsCtlMnc.mnc.SCrtObs}"
+									styleClass="pms-100" placeholder="Observaciones (opcional)" />
+							</h:panelGroup>
+						</p:fieldset>
+
+					</h:panelGroup>
+
+				</h:panelGrid>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</h:html>

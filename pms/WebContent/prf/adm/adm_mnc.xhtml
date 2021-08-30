@@ -1,0 +1,423 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<ui:composition template="/tpl/tpl_pms.xhtml">
+	<ui:define name="ttl">#{html.TBLPmsMncRgs}</ui:define>
+	<ui:define name="ctt">
+		<h:form id="frm-pms-mnc" styleClass="pms-100">
+			<h:panelGrid id="png-pmd-mnc-bdy" columns="1" styleClass="pms-100">
+				<h:panelGroup id="pgr-pms-mnc-bdy-mnu" layout="block"
+					styleClass="brr-mnu">
+
+					<p:menubar>
+						<p:menuitem id="#{html.newBtnId}" value="#{html.newBtnNme}"
+							icon="#{html.newBtnIcn}" action="#{dpaCtlCnt.add()}"
+							update="@form" disabled="#{dpaCtlCnt.dsbBtnAdd}"
+							rendered="#{dpaCtlCnt.vsbBtnAdd}" title="#{html.newBtnDsc}" />
+						<p:menuitem id="#{html.sveBtnId}" value="#{html.sveBtnNme}"
+							icon="#{html.sveBtnIcn}" action="#{dpaCtlCnt.sve()}"
+							update="@form" disabled="#{dpaCtlCnt.dsbBtnSve}"
+							rendered="#{dpaCtlCnt.vsbBtnSve}" title="#{html.sveBtnDsc}" />
+						<p:menuitem id="#{html.updBtnId}" value="#{html.updBtnNme}"
+							icon="#{html.updBtnIcn}" action="#{dpaCtlCnt.upd()}"
+							update="@form" disabled="#{dpaCtlCnt.dsbBtnUpd}"
+							rendered="#{dpaCtlCnt.vsbBtnUpd}" title="#{html.updBtnDsc}" />
+						<p:menuitem id="#{html.rfrBtnId}" value="#{html.rfrBtnNme}"
+							icon="#{html.rfrBtnIcn}" disabled="#{dpaCtlCnt.dsbBtnRfr}"
+							rendered="#{dpaCtlCnt.vsbBtnRfr}"
+							onclick="window.location.reload()" title="#{html.rfrBtnDsc}" />
+						<f:facet name="options">
+							<h:commandLink id="#{html.pdfBtnId}" title="#{html.pdfBtnDsc}"
+								rendered="#{dpaCtlCnt.vsbBtnPdf}"
+								disabled="#{dpaCtlCnt.dsbBtnPdf}">
+								<p:graphicImage value="#{html.icn(html.pdf,24,html.png)}" />
+								<p:dataExporter type="pdf" target="dtb-dta-prs"
+									fileName="MSP_PMS_Pfs_#{default.sCurrentDateFile()}"
+									encoding="UTF-8" />
+							</h:commandLink>
+
+							<h:commandLink id="#{html.csvBtnId}" title="#{html.csvBtnDsc}"
+								rendered="#{dpaCtlCnt.vsbBtnCsv}"
+								disabled="#{dpaCtlCnt.dsbBtnCsv}">
+								<p:graphicImage value="#{html.icn(html.csv,24,html.png)}" />
+								<p:dataExporter type="csv" target="dtb-dta-prs"
+									fileName="MSP_PMS_Pfs_#{default.sCurrentDateFile()}"
+									encoding="UTF-8" />
+							</h:commandLink>
+						</f:facet>
+					</p:menubar>
+					<p:tooltip for="#{html.newBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:tooltip for="#{html.sveBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:tooltip for="#{html.updBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:tooltip for="#{html.rfrBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:tooltip for="#{html.pdfBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:tooltip for="#{html.csvBtnId}" position="top" showEffect="clip"
+						hideEffect="explode" />
+					<p:blockUI block="frm-pms-mnc" trigger="#{html.newBtnId}">
+						<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+					</p:blockUI>
+					<p:blockUI block="frm-pms-mnc" trigger="#{html.sveBtnId}">
+						<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+					</p:blockUI>
+					<p:blockUI block="frm-pms-mnc" trigger="#{html.updBtnId}">
+						<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+					</p:blockUI>
+					<p:blockUI block="frm-pms-mnc" trigger="#{html.pdfBtnId}">
+						<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+					</p:blockUI>
+					<p:blockUI block="frm-pms-mnc" trigger="#{html.csvBtnId}">
+						<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+					</p:blockUI>
+
+				</h:panelGroup>
+
+
+				<h:panelGroup id="pgr-pms-mnc-bdy" layout="block"
+					styleClass="pms-100 bdy-ctt">
+
+					<p:messages id="messages" showDetail="true" redisplay="true"
+						closable="true" escape="true" showIcon="true" />
+					<h:panelGroup id="pgr-pms-mnc-bdy-tbl" layout="block"
+						styleClass="pms-100" rendered="#{dpaCtlCnt.vsbSpcTbl}">
+						<p:dataTable id="dtb-pms-mnc" var="varCnt"
+							value="#{dpaCtlCnt.lstCnt}" paginator="true"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+							rowsPerPageTemplate="30,60,90" rows="30" reflow="true"
+							emptyMessage="#{html.dtaEmpty()}">
+							<f:facet name="header">
+								<h:panelGroup styleClass="pms-sze-ttl" layout="block">
+									<h:outputText value="#{html.TBLPmsMncRgs}" escape="false" />
+								</h:panelGroup>
+								<br />
+								<h:panelGroup styleClass="pms-sze-lbl" layout="block">
+									<h:outputText
+										value="#{dpaCtlCnt.lstCnt.size()} municipios adheridos"
+										escape="false" />
+								</h:panelGroup>
+							</f:facet>
+							<p:columnGroup type="header">
+								<p:row>
+									<p:column colspan="2" headerText="#{html.SCntPrg}" />
+									<p:column colspan="5" headerText="#{html.SCntMnc}" />
+									<p:column colspan="1" headerText="#{html.SPmsAct}" />
+								</p:row>
+								<p:row>
+									<p:column headerText="#{html.SCntStt}" />
+									<p:column headerText="#{html.DCntDte}"
+										filterBy="#{varCnt.ICntDteStrPrcYr}-#{method.SCdeMth(varCnt.ICntDteStrPrcMth)}-#{method.SCdeDay(varCnt.ICntDteStrPrcDay)}"
+										sortBy="#{varCnt.ICntDteStrPrcYr}-#{method.SCdeMth(varCnt.ICntDteStrPrcMth)}-#{method.SCdeDay(varCnt.ICntDteStrPrcDay)}" />
+									<p:column headerText="#{html.ICntCde}"
+										filterBy="#{method.SCdeCnt(varCnt.ICntCde)}"
+										sortBy="#{method.SCdeCnt(varCnt.ICntCde)}" />
+									<p:column headerText="#{html.SCntNme}"
+										filterBy="#{varCnt.SCntNme}" sortBy="#{varCnt.SCntNme}" />
+									<p:column headerText="#{html.ICntCde}"
+										filterBy="#{method.SCdeDay(varCnt.IPrvCde)}"
+										sortBy="#{method.SCdeDay(varCnt.IPrvCde)}" />
+									<p:column headerText="#{html.SCntPrv}"
+										filterBy="#{dpaCtlOpt.rtrEntPrv(varCnt.IPrvCde).SOptNme}"
+										sortBy="#{dpaCtlOpt.rtrEntPrv(varCnt.IPrvCde).SOptNme}" />
+									<p:column headerText="#{html.SCntCmpTbl}" />
+									<p:column headerText="#{html.edtBtnNme}" />
+								</p:row>
+							</p:columnGroup>
+							<p:column>
+								<h:panelGroup layout="block" styleClass="tbl-stt-shp"
+									style="background: #{webCtlClr.rtrClr(varCnt.ISttCde).SClrHex}" />
+								<p:spacer width="5" />
+								<h:outputText
+									value="#{pmsCtlOpt.rtrEnt(varCnt.ISttCde).SOptNme}" />
+							</p:column>
+							<p:column styleClass="alg-ctr">
+								<h:outputText
+									value="#{varCnt.ICntDteStrPrcYr}-#{method.SCdeMth(varCnt.ICntDteStrPrcMth)}-#{method.SCdeDay(varCnt.ICntDteStrPrcDay)}" />
+							</p:column>
+							<p:column styleClass="alg-ctr">
+								<h:outputText value="#{method.SCdeCnt(varCnt.ICntCde)}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{varCnt.SCntNme}" />
+							</p:column>
+							<p:column styleClass="alg-ctr">
+								<h:outputText value="#{method.SCdeDay(varCnt.IPrvCde)}" />
+							</p:column>
+							<p:column>
+								<h:outputText
+									value="#{dpaCtlOpt.rtrEntPrv(varCnt.IPrvCde).SOptNme}" />
+							</p:column>
+							<p:column styleClass="alg-ctr">
+								<p:commandLink id="#{html.dwnBtnId}" ajax="false"
+									actionListener="#{dpaCtlCnt.download(varCnt.SCntDcm)}"
+									onclick="PrimeFaces.monitorDownload(start, stop);">
+									<p:graphicImage value="#{html.icn(html.dwn,24,html.png)}" />
+									<p:fileDownload value="#{dpaCtlCnt.fle}" />
+								</p:commandLink>
+								<p:tooltip for="#{html.dwnBtnId}" position="top"
+									showEffect="clip" hideEffect="explode" />
+								<p:blockUI block="dtb-pms-mnc" trigger="#{html.dwnBtnId}">
+									<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+								</p:blockUI>
+							</p:column>
+							<p:column exportable="false" styleClass="alg-ctr">
+								<p:commandLink id="#{html.edtBtnId}" action="#{dpaCtlCnt.edt()}"
+									title="#{html.edtBtnDsc}" update="@form"
+									disabled="#{dpaCtlCnt.dsbBtnEdt}"
+									rendered="#{dpaCtlCnt.vsbBtnEdt}">
+									<p:graphicImage value="#{html.icn(html.edt,16,html.png)}" />
+									<f:setPropertyActionListener target="#{dpaCtlCnt.cnt}"
+										value="#{varCnt}" />
+								</p:commandLink>
+							</p:column>
+
+						</p:dataTable>
+
+						<p:blockUI block="dtb-pms-mnc" trigger="dtb-pms-mnc">
+							<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+						</p:blockUI>
+ 
+						<p:dialog modal="false" widgetVar="statusDialog"
+							header="Descargar archivo..." draggable="false" closable="false"
+							resizable="false">
+							<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+						</p:dialog> 
+
+					</h:panelGroup>
+					<h:panelGroup id="pgr-pmd-mnc-bdy-dta" layout="block"
+						styleClass="pms-60" rendered="#{dpaCtlCnt.vsbSpcDta}">
+
+						<h:panelGroup id="pgr-pmd-mnc-bdy-dta-blc01" layout="block"
+							styleClass="blc-inf">
+
+							<h:panelGroup layout="block" styleClass="blc-inf-lbl"
+								style="background: #{webCtlClr.rtrClr(code.IMdlIns()).SClrHex}">
+								<h:outputText
+									value="#{scrCtlOpt.rtrEnt(code.IMdlIns()).SOptAcr}"
+									escape="false" />
+							</h:panelGroup>
+
+							<h:panelGrid columns="2" columnClasses="pms-40, pms-60"
+								styleClass="pms-100" cellpadding="2" cellspacing="2">
+
+								<h:panelGroup layout="block" styleClass="pms-100">
+									<p:selectBooleanCheckbox id="sbc-pms-prv"
+										value="#{dpaCtlCnt.BPrvSlc}" itemLabel="#{html.SCntPrv}:"
+										styleClass="label" disabled="#{dpaCtlCnt.dsbCntBPrv}"
+										rendered="#{dpaCtlCnt.vsbCntBPrv}"
+										required="#{dpaCtlCnt.rqrCntBPrv}"
+										requiredMessage="#{message.msgErr(message.SMsgRqr)}">
+										<p:ajax update="som-pms-prv" listener="#{dpaCtlCnt.slcPrv()}" />
+									</p:selectBooleanCheckbox>
+									<p:blockUI block="pgr-pmd-mnc-bdy-dta-blc01"
+										trigger="sbc-pms-prv">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="pms-100">
+									<p:selectOneMenu id="som-pms-prv"
+										disabled="#{dpaCtlCnt.dsbCntPrv}"
+										rendered="#{dpaCtlCnt.vsbCntPrv}"
+										required="#{dpaCtlCnt.rqrCntPrv}"
+										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+										value="#{dpaCtlCnt.IPrvCde}" styleClass="cmb-slc "
+										filter="true" style="width: 92%;">
+										<f:selectItem itemLabel="#{html.SObl}"
+											itemValue="#{default.IVleInt()}" />
+										<f:selectItems value="#{dpaCtlOpt.rtrLstEnt(code.IDpaPrv())}"
+											var="varPrv" itemLabel="#{varPrv.SOptNme} "
+											itemValue="#{varPrv.IOptCde}" />
+										<p:ajax listener="#{dpaCtlCnt.chsPrv()}" update="som-pms-cnt" />
+									</p:selectOneMenu>
+									<p:blockUI block="pgr-pmd-mnc-bdy-dta-blc01"
+										trigger="som-pms-prv">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+								</h:panelGroup>
+
+								<h:outputLabel value="#{html.SCntNme}:" />
+								<h:panelGroup layout="block" styleClass="pms-100">
+									<p:selectOneMenu id="som-pms-cnt"
+										disabled="#{dpaCtlCnt.dsbCnt}" rendered="#{dpaCtlCnt.vsbCnt}"
+										required="#{dpaCtlCnt.rqrCnt}"
+										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+										value="#{dpaCtlCnt.ICntCde}" styleClass="cmb-slc "
+										filter="true" style="width: 92%;">
+										<f:selectItem itemLabel="#{html.SObl}"
+											itemValue="#{default.IVleInt()}" />
+										<f:selectItems value="#{dpaCtlCnt.lstCntSlc}" var="varCnt"
+											itemLabel="#{varCnt.SCntNme} (#{method.SCdeCnt(varCnt.ICntCde)}) | #{dpaCtlOpt.rtrEntPrv(varCnt.IPrvCde).SOptNme}"
+											itemValue="#{varCnt.ICntCde}" />
+										<p:ajax listener="#{dpaCtlCnt.chsCnt()}"
+											update="som-pms-prv png-cnt-dte" />
+									</p:selectOneMenu>
+									<p:blockUI block="pgr-pmd-mnc-bdy-dta-blc01"
+										trigger="som-pms-cnt">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+								</h:panelGroup>
+
+								<h:outputLabel value="#{html.DCntDte}:" />
+								<h:panelGrid id="png-cnt-dte" columns="3" cellpadding="3"
+									cellspacing="3" styleClass="pms-90"
+									columnClasses="pms-30, pms-30, pms-30">
+									<p:selectOneMenu id="som-pms-dte-yr"
+										disabled="#{dpaCtlCnt.dsbCntDteYr}"
+										rendered="#{dpaCtlCnt.vsbCntDteYr}"
+										required="#{dpaCtlCnt.rqrCntDteYr}"
+										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+										value="#{dpaCtlCnt.ICntDteYr}" styleClass="cmb-slc "
+										filter="true" style="width: 80%;">
+										<f:selectItem itemLabel="#{html.DGnrYr}"
+											itemValue="#{default.IVleInt()}" />
+										<f:selectItems value="#{dteCtlAdm.loadYr(code.IMdlIns())}"
+											var="varYr" itemLabel="#{varYr.IYrVle} "
+											itemValue="#{varYr.IYrVle}" />
+										<p:ajax listener="#{dpaCtlCnt.chsYr()}"
+											update="som-pms-dte-mth som-pms-dte-day" />
+									</p:selectOneMenu>
+
+									<p:selectOneMenu id="som-pms-dte-mth"
+										disabled="#{dpaCtlCnt.dsbCntDteMth}"
+										rendered="#{dpaCtlCnt.vsbCntDteMth}"
+										required="#{dpaCtlCnt.rqrCntDteMth}"
+										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+										value="#{dpaCtlCnt.ICntDteMth}" styleClass="cmb-slc "
+										filter="true" style="width: 80%;">
+										<f:selectItem itemLabel="#{html.DGnrMth}"
+											itemValue="#{default.IVleInt()}" />
+										<f:selectItems value="#{dteCtlAdm.loadMnt()}" var="varMth"
+											itemLabel="#{varMth.SMntNme} " itemValue="#{varMth.IMntCde}" />
+										<p:ajax listener="#{dpaCtlCnt.chsMth()}"
+											update="som-pms-dte-day" />
+									</p:selectOneMenu>
+
+									<p:selectOneMenu id="som-pms-dte-day"
+										disabled="#{dpaCtlCnt.dsbCntDteDay}"
+										rendered="#{dpaCtlCnt.vsbCntDteDay}"
+										required="#{dpaCtlCnt.rqrCntDteDay}"
+										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+										value="#{dpaCtlCnt.ICntDteDay}" styleClass="cmb-slc "
+										filter="true" style="width: 80%;">
+										<f:selectItem itemLabel="#{html.DGnrDay}"
+											itemValue="#{default.IVleInt()}" />
+										<f:selectItems
+											value="#{method.lstDay(dpaCtlCnt.ICntDteYr,dpaCtlCnt.ICntDteMth)}"
+											var="varDay" itemLabel="#{varDay} " itemValue="#{varDay}" />
+										<p:ajax listener="#{dpaCtlCnt.chsDay()}"
+											update="som-pms-dte-day png-cnt-stt" />
+									</p:selectOneMenu>
+
+									<p:blockUI block="pgr-pmd-mnc-bdy-dta" trigger="som-pms-dte-yr">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+									<p:blockUI block="pgr-pmd-mnc-bdy-dta"
+										trigger="som-pms-dte-mth">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+									<p:blockUI block="pgr-pmd-mnc-bdy-dta"
+										trigger="som-pms-dte-day">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+								</h:panelGrid>
+
+								<h:outputLabel value="#{html.SPrsRolStt}:" />
+								<h:panelGrid id="png-cnt-stt" styleClass="pms-100" columns="1"
+									cellpadding="2" cellspacing="2">
+									<p:selectOneMenu id="som-pms-stt"
+										disabled="#{dpaCtlCnt.dsbCntStt}"
+										rendered="#{dpaCtlCnt.vsbCntStt}"
+										required="#{dpaCtlCnt.rqrCntStt}"
+										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+										value="#{dpaCtlCnt.ISttCde}" styleClass="cmb-slc "
+										filter="true" style="width: 92%;">
+										<f:selectItem itemLabel="#{html.SObl}"
+											itemValue="#{default.IVleInt()}" />
+										<f:selectItems
+											value="#{pmsCtlOpt.rtrLstEnt(code.IPmsCntStt())}"
+											var="varStt" itemLabel="#{varStt.SOptNme} "
+											itemValue="#{varStt.IOptId}" />
+										<p:ajax listener="#{dpaCtlCnt.chsStt()}"
+											update="pgr-pms-stt-inf fup-pms-cnt-dcm pgr-cnt-obs" />
+									</p:selectOneMenu>
+									<p:blockUI block="pgr-pmd-mnc-bdy-dta" trigger="som-pms-stt">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+									<h:panelGroup layout="block" style="width: 96%;">
+										<h:panelGroup id="pgr-pms-stt-inf" layout="block"
+											styleClass="box-inf">
+											<h:outputText value="#{dpaCtlCnt.stt.SOptDsc}" />
+										</h:panelGroup>
+									</h:panelGroup>
+								</h:panelGrid>
+
+								<h:outputLabel value="#{html.SCntCmp}:" />
+								<h:panelGroup layout="block" style="width: 95%;">
+									<h:panelGroup layout="block" styleClass="pms-100">
+										<p:selectBooleanCheckbox id="sbc-pms-fup-chk"
+											value="#{dpaCtlCnt.BCntChgCmpTbl}"
+											itemLabel="#{html.SCntChgCmpTbl}"
+											disabled="#{dpaCtlCnt.dsbCntBChgCmpTbl}"
+											rendered="#{dpaCtlCnt.vsbCntBChgCmpTbl}"
+											required="#{dpaCtlCnt.rqrCntBChgCmpTbl}"
+											requiredMessage="#{message.msgErr(message.SMsgRqr)}">
+											<p:ajax update="fup-pms-cnt-dcm"
+												listener="#{dpaCtlCnt.slcChgCmpTbl()}" />
+										</p:selectBooleanCheckbox>
+										<p:blockUI block="pgr-pmd-mnc-bdy-dta-blc01"
+											trigger="sbc-pms-fup-chk">
+											<p:graphicImage value="#{html.imgLdn()}"
+												styleClass="img-load" />
+										</p:blockUI>
+									</h:panelGroup>
+									<p:fileUpload id="fup-pms-cnt-dcm"
+										fileUploadListener="#{dpaCtlCnt.handleFileUpload}"
+										mode="advanced" dragDropSupport="true" multiple="true"
+										update="messages" sizeLimit="2200000" fileLimit="1"
+										allowTypes="/(\.|\/)(pdf)$/" disabled="#{dpaCtlCnt.dsbCntFle}"
+										rendered="#{dpaCtlCnt.vsbCntFle}"
+										required="#{dpaCtlCnt.rqrCntFle}"
+										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+										styleClass="pms-100" cancelLabel="#{html.SBtnCnc}"
+										uploadLabel="#{html.SBtnUpl}" label="#{html.SBtnSlc}"
+										fileLimitMessage="#{message.SMsgErrFleSize}"
+										invalidFileMessage="#{message.SMsgErrFleFmt}"
+										invalidSizeMessage="#{message.SMsgErrFleSizeInv}"
+										messageTemplate="PMS: {name}" />
+									<p:blockUI block="pgr-pmd-mnc-bdy-dta"
+										trigger="fup-pms-cnt-dcm">
+										<p:graphicImage value="#{html.imgLdn()}" styleClass="img-load" />
+									</p:blockUI>
+								</h:panelGroup>
+
+								<h:outputLabel value="#{html.SGnrObs}:" />
+								<h:panelGroup id="pgr-cnt-obs" layout="block"
+									styleClass="pms-100">
+									<p:inputTextarea id="inp-pms-obs"
+										value="#{dpaCtlCnt.cnt.SCntObs}" rows="5" cols="30"
+										counter="opt-pms-obs-dtl" maxlength="255"
+										counterTemplate="{0} caracteres restantes." autoResize="false"
+										disabled="#{dpaCtlCnt.dsbCntObs}"
+										rendered="#{dpaCtlCnt.vsbCntObs}"
+										required="#{dpaCtlCnt.rqrCntObs}"
+										requiredMessage="#{message.msgErr(message.SMsgRqr)}"
+										styleClass="inp-txt-big" placeholder="#{html.SOpt}" />
+									<h:outputText id="opt-pms-obs-dtl" />
+								</h:panelGroup>
+							</h:panelGrid>
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</h:html>
