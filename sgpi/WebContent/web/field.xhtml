@@ -55,631 +55,773 @@
 				</p:blockUI>
 			</h:panelGroup>
 			<p:spacer height="40" />
+
+
+
+
+
 			<h:panelGroup id="pgr-sit-dta" layout="block" styleClass="main-100"
 				rendered="#{sitCtlGnr.vsbPgrDta}">
 
-
 				<h:panelGrid columns="1" styleClass="main-100 box-mdm box-prj">
 
-					<h:panelGrid id="png-sit-prj" columns="3" styleClass="main-100"
-						columnClasses="main-40, main-30, main-30" cellpadding="3"
-						cellspacing="3">
-						<h:panelGrid columns="1" styleClass="main-100">
+					<h:panelGrid id="png-sit-prj" columns="5" styleClass="main-100"
+						columnClasses="main-10, main-30, main-20, main-20, main-20"
+						cellpadding="3" cellspacing="3">
+
+						<h:panelGrid id="png-sit-epi-wk" columns="1"
+							styleClass="main-100 alg-ctr" cellpadding="3" cellspacing="3">
+							<h:outputLabel value="Epi week" />
+							<h:panelGroup styleClass="epi-wek" layout="block">
+								<h:outputText id="out-sit-epi-wk"
+									value="#{method.week(sitCtlGnr.gnr.dGnrDteClc)}" />
+							</h:panelGroup>
+						</h:panelGrid>
+
+						<h:panelGrid columns="1" styleClass="main-100" cellpadding="3"
+							cellspacing="3">
 							<h:outputLabel value="Project:" />
 							<h:outputText
 								value="#{sitCtlOpt.ent(sitCtlGnr.prl.IPrjId).SOptNme} (#{sitCtlOpt.ent(sitCtlGnr.prl.IPrjId).SOptAcr})" />
 						</h:panelGrid>
+
 						<h:panelGrid columns="1" styleClass="main-100">
-							<h:outputLabel value="Type:" />
+							<h:outputLabel value="#{html.D_LBL_FRM01_PRC_DTE()}" />
+							<p:calendar id="cln-sit-dte-prc"
+								value="#{sitCtlGnr.gnr.dGnrRgsDte}"
+								disabled="#{sitCtlGnr.dsbTpe}" rendered="#{sitCtlGnr.vsbTpe}"
+								required="#{sitCtlGnr.rqrTpe}" navigator="true"
+								styleClass="alg-ctr"
+								requiredMessage="#{message.D_MSG_FRM01_PRC_DTE()}"
+								pattern="#{html.D_PTT()}" placeholder="#{html.D_PTT()}"
+								style="text-align: center;" maxdate="#{default.dCurrentDate()}"
+								mindate="#{default.D_DAY_SUBTRACT(default.dCurrentDate(), default.I_DAYS_SBS())}">
+							</p:calendar>
+							<p:message for="cln-sit-dte-prc" display="text" escape="true" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="1" styleClass="main-100">
+							<h:outputLabel value="#{html.S_LBL_FRM01_PRC()}" />
 							<p:selectOneMenu id="som-sit-Tpe" value="#{sitCtlGnr.ITpeId}"
 								styleClass="sit-cmb" style="width: 80%;"
 								disabled="#{sitCtlGnr.dsbTpe}" rendered="#{sitCtlGnr.vsbTpe}"
 								required="#{sitCtlGnr.rqrTpe}" filter="true"
-								filterMatchMode="startsWith" requiredMessage="html.ttlAtrObl">
-								<f:selectItem itemLabel="#{html.slcOne}" itemValue=""
+								filterMatchMode="contains"
+								requiredMessage="#{message.S_MSG_FRM01_PRC()}">
+								<f:selectItem itemLabel="#{html.S_ITM_SLC()}" itemValue=""
 									noSelectionOption="true" />
-								<f:selectItems value="#{sitCtlOpt.lstEpiNme(code.sitTpe())}"
+								<f:selectItems value="#{sitCtlOpt.lstOpt(code.sitTpe())}"
 									var="varSte" itemLabel="#{varSte.SOptNme}"
 									itemValue="#{varSte.IOptId}" />
 							</p:selectOneMenu>
+							<p:message for="som-sit-Tpe" display="text" escape="true" />
 						</h:panelGrid>
+
 						<h:panelGrid columns="1" styleClass="main-100">
-							<h:outputLabel value="Location:" />
+							<h:outputLabel value="#{html.S_LBL_FRM01_STE()}" />
 							<p:selectOneMenu id="som-sit-ste" value="#{sitCtlGnr.ISteId}"
 								styleClass="sit-cmb" style="width: 80%;"
 								disabled="#{sitCtlGnr.dsbSte}" rendered="#{sitCtlGnr.vsbSte}"
 								required="#{sitCtlGnr.rqrSte}" filter="true"
-								filterMatchMode="startsWith" requiredMessage="html.ttlAtrObl">
-								<f:selectItem itemLabel="#{html.slcOne}" itemValue=""
+								filterMatchMode="contains"
+								requiredMessage="#{message.S_MSG_FRM01_STE()}">
+								<f:selectItem itemLabel="#{html.S_ITM_SLC()}" itemValue=""
 									noSelectionOption="true" />
 								<f:selectItems value="#{sitCtlSte.lstSte(sitCtlGnr.prl.IPrjId)}"
 									var="varSte" itemLabel="#{varSte.SSteNme}"
 									itemValue="#{varSte.ISteId}" />
-								<p:ajax listener="#{sitCtlGnr.chsSte()}" update="png-sit-bdy" />
+								<p:ajax listener="#{sitCtlGnr.chsSte()}" update="png-sit-bdy " />
 							</p:selectOneMenu>
+							<p:message for="som-sit-ste" display="text" escape="true" />
 						</h:panelGrid>
 					</h:panelGrid>
-
-
 				</h:panelGrid>
 
-				<p:spacer height="10" />
+				<p:messages id="msg-sit" showDetail="true" closable="true"
+					escape="false" showIcon="true" redisplay="true">
+					<p:autoUpdate />
+				</p:messages>
 
-				<h:panelGrid id="png-sit-bdy" columns="5"
-					columnClasses="main-20, main-20, main-20, main-20, main-20"
-					styleClass="main-100" cellpadding="5" cellspacing="5">
 
-					<h:panelGrid id="pgr-sit-trp" columns="1" styleClass="box box-trp">
-						<h:outputLabel value="Trap" styleClass="box-ttl" />
+				<h:panelGroup layout="block" styleClass="main-70">
+					<h:panelGrid id="png-sit-bdy" columns="2"
+						columnClasses="main-50, main-50" styleClass="main-100"
+						cellpadding="5" cellspacing="5" style="margin-top: 10px;">
 
-						<h:panelGrid columns="1" styleClass="main-100">
-							<h:outputLabel value="Trap:" />
-							<p:selectOneMenu id="som-sit-trp" value="#{sitCtlGnr.ITrpId}"
-								styleClass="sit-cmb" style="width: 80%;"
-								disabled="#{sitCtlGnr.dsbTrp}" rendered="#{sitCtlGnr.vsbTrp}"
-								required="#{sitCtlGnr.rqrTrp}" filter="true"
-								filterMatchMode="startsWith" requiredMessage="html.ttlAtrObl">
-								<f:selectItem itemLabel="#{html.slcOne}" itemValue=""
-									noSelectionOption="true" />
-								<f:selectItems value="#{sitCtlOpt.lstEpiNme(code.sitTrp())}"
-									var="varTrp" itemLabel="#{varTrp.SOptNme}"
-									itemValue="#{varTrp.IOptId}" />
-								<p:ajax listener="#{sitCtlGnr.chsTrp()}" update="som-sit-nmb" />
-							</p:selectOneMenu>
-							<p:blockUI block="pgr-sit-trp" trigger="som-sit-nmb">
-								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-							</p:blockUI>
+						<h:panelGroup id="pgr-sit-trp" styleClass="box box-trp"
+							layout="block">
 
-							<h:outputLabel value="Number:" />
-							<p:selectOneMenu id="som-sit-nmb" value="#{sitCtlGnr.INmbId}"
-								styleClass="sit-cmb" style="width: 80%;"
-								disabled="#{sitCtlGnr.dsbNmb}" rendered="#{sitCtlGnr.vsbNmb}"
-								required="#{sitCtlGnr.rqrNmb}" filter="true"
-								filterMatchMode="startsWith" requiredMessage="html.ttlAtrObl">
-								<f:selectItem itemLabel="#{html.slcOne}" itemValue=""
-									noSelectionOption="true" />
-								<f:selectItems value="#{sitCtlNmb.lstNmb(sitCtlGnr.ste)}"
-									var="varNmb" itemLabel="#{varNmb.SNmbTrap}"
-									itemValue="#{varNmb.INmbId}" />
-								<p:ajax listener="#{sitCtlGnr.chsNmb()}"
-									update="png-sit-dte-set png-sit-dte-clc" />
-							</p:selectOneMenu>
-							<p:blockUI block="pgr-sit-trp" trigger="som-sit-nmb">
-								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-							</p:blockUI>
+							<h:panelGroup layout="block" styleClass="box-ttl-bdy">
+								<h:outputLabel value="#{html.S_TTL_FRM01_TRP()}"
+									styleClass="box-ttl" />
+							</h:panelGroup>
 
-							<h:outputLabel value="Date ovitrap set:" />
-							<h:panelGrid id="png-sit-dte-set" columns="3" cellpadding="3"
-								cellspacing="3" styleClass="main-100"
-								columnClasses="main-30,main-40,main-30">
-								<p:selectOneMenu id="som-sit-dte-set-yr"
-									value="#{sitCtlGnr.IDteSetYr}" styleClass="sit-cmb"
-									style="width: 60%;" disabled="#{sitCtlGnr.dsbDteSet}"
-									rendered="#{sitCtlGnr.vsbDteSet}"
-									required="#{sitCtlGnr.rqrDteSet}" filter="true"
-									filterMatchMode="startsWith" requiredMessage="html.ttlAtrObl">
-									<f:selectItem itemLabel="#{html.dteYr}" itemValue=""
-										noSelectionOption="true" />
-									<f:selectItems value="#{dteCtlGnr.lstYr}" var="varYr"
-										itemLabel="#{varYr}" itemValue="#{varYr}" />
-									<p:ajax listener="#{sitCtlGnr.chsSetYr()}"
-										update="som-sit-dte-set-mth som-sit-dte-set-day" />
-								</p:selectOneMenu>
-								<p:selectOneMenu id="som-sit-dte-set-mth"
-									value="#{sitCtlGnr.IDteSetMth}" styleClass="sit-cmb"
-									style="width: 70%;" disabled="#{sitCtlGnr.dsbDteSet}"
-									rendered="#{sitCtlGnr.vsbDteSet}"
-									required="#{sitCtlGnr.rqrDteSet}" filter="true"
-									filterMatchMode="startsWith" requiredMessage="html.ttlAtrObl">
-									<f:selectItem itemLabel="#{html.dteMth}" itemValue=""
-										noSelectionOption="true" />
-									<f:selectItems value="#{dteCtlGnr.lstMth}" var="varMth"
-										itemLabel="#{varMth.SMthNme}" itemValue="#{varMth.IMthCde}" />
-									<p:ajax listener="#{sitCtlGnr.chsSetMth()}"
-										update="som-sit-dte-set-day" />
-								</p:selectOneMenu>
-								<p:selectOneMenu id="som-sit-dte-set-day"
-									value="#{sitCtlGnr.IDteSetDay}" styleClass="sit-cmb"
-									style="width: 60%;" disabled="#{sitCtlGnr.dsbDteSet}"
-									rendered="#{sitCtlGnr.vsbDteSet}"
-									required="#{sitCtlGnr.rqrDteSet}" filter="true"
-									filterMatchMode="startsWith" requiredMessage="html.ttlAtrObl">
-									<f:selectItem itemLabel="#{html.dteDay}" itemValue=""
-										noSelectionOption="true" />
-									<f:selectItems
-										value="#{dteCtlGnr.lstDay(sitCtlGnr.IDteSetYr,sitCtlGnr.IDteSetMth)}"
-										var="varDay" itemLabel="#{varDay}" itemValue="#{varDay}" />
-									<p:ajax listener="#{sitCtlGnr.chsSetDay()}" />
-								</p:selectOneMenu>
-								<p:blockUI block="png-sit-dte-set" trigger="som-sit-dte-set-yr">
-									<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-								</p:blockUI>
-								<p:blockUI block="png-sit-dte-set" trigger="som-sit-dte-set-mth">
-									<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-								</p:blockUI>
-								<p:blockUI block="png-sit-dte-set" trigger="som-sit-dte-set-day">
-									<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-								</p:blockUI>
-							</h:panelGrid>
+							<p:spacer height="5" />
 
-							<h:outputLabel value="Date ovitrap colected:" />
-							<h:panelGrid id="png-sit-dte-clc" columns="3" cellpadding="3"
-								cellspacing="3" styleClass="main-100"
-								columnClasses="main-30,main-40,main-30">
-								<p:selectOneMenu id="som-sit-dte-clc-yr"
-									value="#{sitCtlGnr.IDteClcYr}" styleClass="sit-cmb"
-									style="width: 60%;" disabled="#{sitCtlGnr.dsbDteClc}"
-									rendered="#{sitCtlGnr.vsbDteClc}"
-									required="#{sitCtlGnr.rqrDteClc}" filter="true"
-									filterMatchMode="startsWith" requiredMessage="html.ttlAtrObl">
-									<f:selectItem itemLabel="#{html.dteYr}" itemValue=""
-										noSelectionOption="true" />
-									<f:selectItems value="#{dteCtlGnr.lstYr}" var="varYr"
-										itemLabel="#{varYr}" itemValue="#{varYr}" />
-									<p:ajax listener="#{sitCtlGnr.chsClcYr()}"
-										update="som-sit-dte-clc-mth som-sit-dte-clc-day" />
-								</p:selectOneMenu>
-								<p:selectOneMenu id="som-sit-dte-clc-mth"
-									value="#{sitCtlGnr.IDteClcMth}" styleClass="sit-cmb"
-									style="width: 70%;" disabled="#{sitCtlGnr.dsbDteClc}"
-									rendered="#{sitCtlGnr.vsbDteClc}"
-									required="#{sitCtlGnr.rqrDteClc}" filter="true"
-									filterMatchMode="startsWith" requiredMessage="html.ttlAtrObl">
-									<f:selectItem itemLabel="#{html.dteMth}" itemValue=""
-										noSelectionOption="true" />
-									<f:selectItems value="#{dteCtlGnr.lstMth}" var="varMth"
-										itemLabel="#{varMth.SMthNme}" itemValue="#{varMth.IMthCde}" />
-									<p:ajax listener="#{sitCtlGnr.chsClcMth()}"
-										update="som-sit-dte-clc-day" />
-								</p:selectOneMenu>
-								<p:selectOneMenu id="som-sit-dte-clc-day"
-									value="#{sitCtlGnr.IDteClcDay}" styleClass="sit-cmb"
-									style="width: 60%;" disabled="#{sitCtlGnr.dsbDteClc}"
-									rendered="#{sitCtlGnr.vsbDteClc}"
-									required="#{sitCtlGnr.rqrDteClc}" filter="true"
-									filterMatchMode="startsWith">
-									<f:selectItem itemLabel="#{html.dteDay}" itemValue=""
-										noSelectionOption="true" />
-									<f:selectItems
-										value="#{dteCtlGnr.lstDay(sitCtlGnr.IDteClcYr,sitCtlGnr.IDteClcMth)}"
-										var="varDay" itemLabel="#{varDay}" itemValue="#{varDay}" />
-									<p:ajax listener="#{sitCtlGnr.chsClcDay()}"
-										update="som-sit-dte-clc-day grw-sit sbc-sit-rcv sbc-sit-sup png-sit-egs-bdy png-sit-lrv-bdy png-sit-adl-bdy png-sit-prf-slc" />
-								</p:selectOneMenu>
-								<p:blockUI block="png-sit-dte-clc" trigger="som-sit-dte-clc-yr">
-									<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-								</p:blockUI>
-								<p:blockUI block="png-sit-dte-clc" trigger="som-sit-dte-clc-mth">
-									<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-								</p:blockUI>
-								<p:blockUI block="png-sit-dte-clc" trigger="som-sit-dte-clc-day">
-									<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-								</p:blockUI>
-							</h:panelGrid>
-							<h:panelGrid id="png-sit-rcv" columns="2" styleClass="main-100"
-								columnClasses="main-50 alg-ctr, main-50 alg-ctr">
+							<h:panelGrid columns="2" styleClass="main-100"
+								columnClasses="main-20, main-20" cellpadding="3" cellspacing="3">
 
-								<p:selectBooleanCheckbox id="sbc-sit-rcv"
-									value="#{sitCtlGnr.BGnrTrpRcv}" itemLabel="Trap recovered"
-									disabled="#{sitCtlGnr.dsbTrpRcv}"
-									rendered="#{sitCtlGnr.vsbTrpRcv}"
-									required="#{sitCtlGnr.rqrTrpRcv}">
-									<p:ajax listener="#{sitCtlGnr.chsTrpRcv()}"
-										update="sbc-sit-egs" />
-								</p:selectBooleanCheckbox>
-								<p:selectBooleanCheckbox id="sbc-sit-sup"
-									value="#{sitCtlGnr.BGnrTrpSup}" itemLabel="Trap set up"
-									disabled="#{sitCtlGnr.dsbTrpSup}"
-									rendered="#{sitCtlGnr.vsbTrpSup}"
-									required="#{sitCtlGnr.rqrTrpSup}">
-									<p:ajax listener="#{sitCtlGnr.chsTrpSup()}" />
-								</p:selectBooleanCheckbox>
+								<h:panelGrid columns="1" styleClass="main-100">
+									<h:outputLabel value="#{html.S_LBL_FRM01_TRP()}" />
+									<p:selectOneMenu id="som-sit-trp" value="#{sitCtlGnr.ITrpId}"
+										styleClass="sit-cmb" style="width: 60%;"
+										disabled="#{sitCtlGnr.dsbTrp}" rendered="#{sitCtlGnr.vsbTrp}"
+										required="#{sitCtlGnr.rqrTrp}" filter="true"
+										filterMatchMode="contains"
+										requiredMessage="#{message.S_MSG_FRM01_TRP()}">
+										<f:selectItem itemLabel="#{html.S_ITM_SLC()}" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems value="#{sitCtlOpt.lstOpt(code.sitTrp())}"
+											var="varTrp" itemLabel="#{varTrp.SOptNme}"
+											itemValue="#{varTrp.IOptId}" />
+										<p:ajax listener="#{sitCtlGnr.chsTrp()}" update="som-sit-nmb" />
+									</p:selectOneMenu>
+									<p:message for="som-sit-trp" display="text" escape="true" />
+									<p:blockUI block="pgr-sit-trp" trigger="som-sit-nmb">
+										<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+									</p:blockUI>
+								</h:panelGrid>
 
-								<p:blockUI block="png-sit-rcv" trigger="sbc-sit-rcv">
-									<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-								</p:blockUI>
-								<p:blockUI block="png-sit-rcv" trigger="sbc-sit-sup">
-									<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-								</p:blockUI>
+								<h:panelGrid columns="1" styleClass="main-100">
+									<h:outputLabel value="#{html.S_LBL_FRM01_NMB()}" />
+									<p:selectOneMenu id="som-sit-nmb" value="#{sitCtlGnr.INmbId}"
+										styleClass="sit-cmb" style="width: 60%;"
+										disabled="#{sitCtlGnr.dsbNmb}" rendered="#{sitCtlGnr.vsbNmb}"
+										required="#{sitCtlGnr.rqrNmb}" filter="true"
+										filterMatchMode="contains"
+										requiredMessage="#{message.S_MSG_FRM01_NMB()}">
+										<f:selectItem itemLabel="#{html.S_ITM_SLC()}" itemValue=""
+											noSelectionOption="true" />
+										<f:selectItems value="#{sitCtlNmb.lstNmb(sitCtlGnr.ste)}"
+											var="varNmb" itemLabel="[#{varNmb.SNmbTrap}]"
+											itemValue="#{varNmb.INmbId}" />
+										<p:ajax listener="#{sitCtlGnr.chsNmb()}"
+											update="png-sit-dte-set png-sit-dte-clc" />
+									</p:selectOneMenu>
+									<p:message for="som-sit-nmb" display="text" escape="true" />
+									<p:blockUI block="pgr-sit-trp" trigger="som-sit-nmb">
+										<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+									</p:blockUI>
+								</h:panelGrid>
 
 							</h:panelGrid>
-						</h:panelGrid>
-					</h:panelGrid>
 
-					<h:panelGrid columns="1" styleClass="box box-egs">
+							<h:panelGrid columns="1" styleClass="main-100">
 
-						<h:outputLabel value="Eggs" styleClass="box-ttl" />
-						<h:panelGrid id="png-sit-egs-bdy" columns="1"
-							styleClass="main-100">
+								<h:panelGrid id="png-sit-tch-fld" columns="1"
+									styleClass="main-100">
 
-							<p:selectBooleanCheckbox id="sbc-sit-egs"
-								value="#{sitCtlGnr.BGnrEgs}" itemLabel="Yes / No"
-								disabled="#{sitCtlGnr.dsbBEgs}" rendered="#{sitCtlGnr.vsbBEgs}"
-								required="#{sitCtlGnr.rqrBEgs}">
-								<p:ajax listener="#{sitCtlGnr.chsEgs()}" update="png-sit-egs" />
-							</p:selectBooleanCheckbox>
+									<h:outputLabel for="scm-sit-tch-agn"
+										value="#{html.S_LBL_FRM01_TCH_FLD()}" />
+									<h:panelGrid styleClass="main-100" columns="2"
+										columnClasses="main-80, main-20">
+										<h:panelGrid styleClass="main-100" columns="1">
+											<p:selectCheckboxMenu id="scm-sit-tch-agn"
+												label="#{html.S_ITM_SLC()}" filter="true"
+												filterMatchMode="contains" style="width: 98%;"
+												styleClass="sit-cmb" value="#{sitCtlGnr.IPrsPrfAgnSlcId}"
+												disabled="#{sitCtlGnr.dsbGnrPrfAgn}"
+												rendered="#{sitCtlGnr.vsbGnrPrfAgn}"
+												required="#{sitCtlGnr.rqrGnrPrfAgn}"
+												requiredMessage="#{message.S_MSG_FRM01_TCH_FLD()}">
+												<f:selectItems
+													value="#{scrCtlPrsRol.lstPrsPrfFld(sitCtlGnr.prl.IPrjId)}"
+													var="varPrsPrf"
+													itemLabel="#{varPrsPrf.dtaTblPr.SPrsLstNme} #{varPrsPrf.dtaTblPr.SPrsNme}"
+													itemValue="#{varPrsPrf.IPrsRolId}" />
+												<p:ajax listener="#{sitCtlGnr.chsPrsPrfAgn()}"
+													update="dtl-sit-tch-agn" />
+											</p:selectCheckboxMenu>
+											<p:blockUI block="dtl-sit-tch-agn" trigger="scm-sit-tch-agn">
+												<p:graphicImage value="#{html.imgLoad}"
+													styleClass="img-load" />
+											</p:blockUI>
+											<p:message for="scm-sit-tch-agn" display="text" escape="true" />
+										</h:panelGrid>
 
-							<p:blockUI block="png-sit-egs-bdy" trigger="sbc-sit-egs">
-								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-							</p:blockUI>
+										<h:panelGrid styleClass="main-100" columns="1">
+											<p:commandLink id="cml-sit-tch-fld-rst"
+												value="#{html.FRM_BTN_RST_NME()}"
+												actionListener="#{sitCtlGnr.rstTchAgn()}"
+												update="png-sit-tch-fld"
+												disabled="#{sitCtlGnr.dsbBtnRstPrfTch}"
+												rendered="#{sitCtlGnr.vsbBtnRstPrfTch}"
+												styleClass="#{html.FRM_BTN_RST_STL()}" />
+											<p:blockUI block="png-sit-tch-fld"
+												trigger="cml-sit-tch-fld-rst">
+												<p:graphicImage value="#{html.imgLoad}"
+													styleClass="img-load" />
+											</p:blockUI>
+										</h:panelGrid>
+									</h:panelGrid>
 
-							<h:panelGrid id="png-sit-egs" columns="1" styleClass="main-80">
-								<h:outputLabel value="No. Eggs collected:" />
-								<p:inputText value="#{sitCtlGnr.gnr.IGnrNmbEgsCpl}"
-									disabled="#{sitCtlGnr.dsbGnrNmbCpl}"
-									rendered="#{sitCtlGnr.vsbGnrNmbCpl}"
-									required="#{sitCtlGnr.rqrGnrNmbCpl}" styleClass="sit-inp-ctr "
-									requiredMessage="html.ttlAtrObl">
-								</p:inputText>
+									<p:dataList id="dtl-sit-tch-agn" paginator="true" rows="5"
+										paginatorPosition="bottom"
+										value="#{sitCtlGnr.lstPrsPrfAgnAdd}" var="varPrsPrf"
+										styleClass="sit-tbl" type="ordered" itemType="circle">
+										<h:outputText
+											value="[#{method.acr(varPrsPrf.dtaTblPr.SPrsNme,varPrsPrf.dtaTblPr.SPrsLstNme)}] #{varPrsPrf.dtaTblPr.SPrsNme} #{varPrsPrf.dtaTblPr.SPrsLstNme}" />
+									</p:dataList>
 
-								<h:outputLabel value="No. Eggs broken:" />
-								<p:inputText value="#{sitCtlGnr.gnr.IGnrNmbEgsBrk}"
-									disabled="#{sitCtlGnr.dsbGnrNmbBrk}"
-									rendered="#{sitCtlGnr.vsbGnrNmbBrk}"
-									required="#{sitCtlGnr.rqrGnrNmbBrk}" styleClass="sit-inp-ctr ">
-								</p:inputText>
+								</h:panelGrid>
 
-								<h:outputLabel value="No. Eggs used for sample for fertility" />
-								<p:inputText value="#{sitCtlGnr.gnr.IGnrNmbEgsUsd}"
-									disabled="#{sitCtlGnr.dsbGnrNmbUsd}"
-									rendered="#{sitCtlGnr.vsbGnrNmbUsd}"
-									required="#{sitCtlGnr.rqrGnrNmbUsd}" styleClass="sit-inp-ctr " />
-
-								<h:outputLabel value="No. Viable Eggs if sample for fertility" />
-								<p:inputText value="#{sitCtlGnr.gnr.IGnrNmbEgsVlb}"
-									disabled="#{sitCtlGnr.dsbGnrNmbVbl}"
-									rendered="#{sitCtlGnr.vsbGnrNmbVbl}"
-									required="#{sitCtlGnr.rqrGnrNmbVbl}" styleClass="sit-inp-ctr " />
-
-								<p:inputTextarea id="inp-sit-obs-egs"
-									value="#{sitCtlGnr.gnr.SGnrObsEgs}"
-									disabled="#{sitCtlGnr.dsbGnrObsEgs}"
-									rendered="#{sitCtlGnr.vsbGnrObsEgs}"
-									required="#{sitCtlGnr.rqrGnrObsEgs}" placeholder="Comment"
-									styleClass="sit-inp-big-cmm" />
-
-							</h:panelGrid>
-						</h:panelGrid>
-					</h:panelGrid>
-
-
-
-					<h:panelGrid columns="1" styleClass="box box-lrv">
-
-						<h:outputLabel value="Larvae" styleClass="box-ttl" />
-
-						<h:panelGrid id="png-sit-lrv-bdy" columns="1"
-							styleClass="main-100">
-
-							<p:selectBooleanCheckbox id="sbc-sit-lrs"
-								value="#{sitCtlGnr.BGnrLrs}" itemLabel="Yes / No"
-								disabled="#{sitCtlGnr.dsbBLrs}" rendered="#{sitCtlGnr.vsbBLrs}"
-								required="#{sitCtlGnr.rqrBLrs}">
-								<p:ajax listener="#{sitCtlGnr.chsLrs()}" update="png-sit-lrs" />
-							</p:selectBooleanCheckbox>
-
-							<p:blockUI block="png-sit-lrv-bdy" trigger="sbc-sit-lrs">
-								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-							</p:blockUI>
-
-							<h:panelGrid id="png-sit-lrs" columns="1" styleClass="main-100">
-								<h:panelGrid columns="2" styleClass="main-100"
+								<h:panelGrid id="png-sit-dte" columns="2" cellpadding="3"
+									cellspacing="2" styleClass="main-100"
 									columnClasses="main-50, main-50">
 
-									<h:panelGroup layout="block" styleClass="main-100">
-										<h:outputLabel value="No. Larvae/pupae in trap:" />
-										<p:inputText id="inp-sit-lrs-nmb"
-											value="#{sitCtlGnr.gnrDtlLrv.IGnrDtlNmb}"
-											disabled="#{sitCtlGnr.dsbGnrNmbLrsPps}"
-											rendered="#{sitCtlGnr.vsbGnrNmbLrsPps}"
-											required="#{sitCtlGnr.rqrGnrNmbLrsPps}"
-											styleClass="sit-inp-ctr" requiredMessage="html.ttlAtrObl" />
-									</h:panelGroup>
-
-									<h:panelGroup layout="block" styleClass="main-100">
-										<h:outputLabel value="Larvae stage:" />
-										<p:selectOneMenu id="som-sit-lrs-stg"
-											value="#{sitCtlGnr.ILrsStgId}" styleClass="sit-cmb"
-											style="width: 80%;" disabled="#{sitCtlGnr.dsbLrsStg}"
-											rendered="#{sitCtlGnr.vsbLrsStg}"
-											required="#{sitCtlGnr.rqrLrsStg}"
-											requiredMessage="html.ttlAtrObl">
-											<f:selectItem itemLabel="#{html.slcOne}" itemValue=""
-												noSelectionOption="true" />
-											<f:selectItems value="#{sitCtlOpt.lstEpiNme(code.sitStg())}"
-												var="varLrsStg" itemLabel="#{varLrsStg.SOptNme}"
-												itemValue="#{varLrsStg.IOptId}" />
-
-										</p:selectOneMenu>
-									</h:panelGroup>
-								</h:panelGrid>
-
-								<h:panelGrid columns="3" styleClass="main-100 alg-ctr"
-									columnClasses="main-30, main-30, main-30">
-
-									<p:commandButton id="btn-sit-lrs-stg-new" value="New"
-										action="#{sitCtlGnr.newLrsStg()}" update="png-sit-lrs"
-										disabled="#{sitCtlGnr.dsbBtnLrvNew}"
-										rendered="#{sitCtlGnr.vsbBtnLrvNew}" />
-
-									<p:commandButton id="btn-sit-lrs-stg-add" value="Add"
-										action="#{sitCtlGnr.addLrsStg()}" update="png-sit-lrs"
-										disabled="#{sitCtlGnr.dsbBtnLrvAdd}"
-										rendered="#{sitCtlGnr.vsbBtnLrvAdd}" />
-
-									<p:commandButton id="btn-sit-lrs-stg-rst" value="Reset"
-										action="#{sitCtlGnr.rstLrsStg()}" update="png-sit-lrs"
-										disabled="#{sitCtlGnr.dsbBtnLrvRst}"
-										rendered="#{sitCtlGnr.vsbBtnLrvRst}" />
-
-									<p:blockUI block="png-sit-lrs" trigger="btn-sit-lrs-stg-new">
-										<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-									</p:blockUI>
-
-									<p:blockUI block="png-sit-lrs" trigger="btn-sit-lrs-stg-add">
-										<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-									</p:blockUI>
-
-									<p:blockUI block="png-sit-lrs" trigger="btn-sit-lrs-stg-rst">
-										<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-									</p:blockUI>
-
-								</h:panelGrid>
-
-								<h:panelGroup layout="block" styleClass="main-100">
-
-									<p:dataTable id="dtb-sit-lrs-stg"
-										value="#{sitCtlGnr.lstLrsStgSlc}" var="varLrsStg" rows="2"
-										paginator="true" paginatorPosition="bottom"
-										paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-										styleClass="sit-tbl">
-
-										<f:facet name="header">
-											<h:outputText value="Detail" />
-										</f:facet>
-
-										<p:column headerText="Nº">
-											<h:outputText value="#{varLrsStg.IGnrDtlNmb}" />
-										</p:column>
-										<p:column headerText="Stay">
-											<h:outputText
-												value="#{sitCtlOpt.ent(varLrsStg.IStgId).SOptNme}" />
-										</p:column>
-									</p:dataTable>
-
-								</h:panelGroup>
-
-								<h:panelGrid columns="2" styleClass="main-100"
-									columnClasses="main-40, main-40">
-									<h:panelGrid columns="1" styleClass="main-100">
-										<h:outputLabel value="N° Live larves" />
-										<p:inputText value="#{sitCtlGnr.ITtlLrsId}"
-											disabled="#{sitCtlGnr.dsbGnrDtlLrvNmbLive}"
-											rendered="#{sitCtlGnr.vsbGnrDtlLrvNmbLive}"
-											required="#{sitCtlGnr.rqrGnrDtlLrvNmbLive}"
-											styleClass="sit-inp-ctr" />
+									<h:panelGrid id="png-sit-dte-set" columns="1" cellpadding="3"
+										cellspacing="1" styleClass="main-100">
+										<h:outputLabel value="#{html.D_LBL_FRM01_DTE_SET()}" />
+										<p:calendar id="cln-sit-dte-set"
+											value="#{sitCtlGnr.gnr.dGnrDteSet}"
+											disabled="#{sitCtlGnr.dsbDteSet}"
+											rendered="#{sitCtlGnr.vsbDteSet}"
+											required="#{sitCtlGnr.rqrDteSet}" navigator="true"
+											styleClass="alg-ctr"
+											requiredMessage="#{message.D_MSG_FRM01_DTE_SET()}"
+											pattern="#{html.D_PTT()}" placeholder="#{html.D_PTT()}"
+											style="text-align: center;"
+											maxdate="#{default.dCurrentDate()}">
+										</p:calendar>
+										<p:message for="cln-sit-dte-set" display="text" escape="true" />
 									</h:panelGrid>
 
-									<h:panelGrid columns="1" styleClass="main-100">
-										<h:outputLabel value="N° Live died" />
-										<p:inputText disabled="#{sitCtlGnr.dsbGnrDtlLrvNmbDied}"
-											rendered="#{sitCtlGnr.vsbGnrDtlLrvNmbDied}"
-											required="#{sitCtlGnr.rqrGnrDtlLrvNmbDied}"
-											styleClass="sit-inp-ctr" />
+									<h:panelGrid id="png-sit-dte-clc" columns="1" cellpadding="3"
+										cellspacing="1" styleClass="main-100">
+										<h:outputLabel value="#{html.D_LBL_FRM01_DTE_CLC()}" />
+										<p:calendar id="cln-sit-dte-clc"
+											value="#{sitCtlGnr.gnr.dGnrDteClc}"
+											disabled="#{sitCtlGnr.dsbDteClc}"
+											rendered="#{sitCtlGnr.vsbDteClc}"
+											required="#{sitCtlGnr.rqrDteClc}" navigator="true"
+											styleClass="alg-ctr"
+											requiredMessage="#{message.D_MSG_FRM01_DTE_CLC()}"
+											pattern="#{html.D_PTT()}" placeholder="#{html.D_PTT()}"
+											style="text-align: center;"
+											maxdate="#{default.dCurrentDate()}">
+											<p:ajax event="dateSelect" listener="#{sitCtlGnr.chsClc()}"
+												update="png-sit-dte out-sit-epi-wk" />
+										</p:calendar>
+										<p:message for="cln-sit-dte-clc" display="text" escape="true" />
 									</h:panelGrid>
 
 								</h:panelGrid>
 
-								<h:panelGrid columns="1" styleClass="main-90"
-									columnClasses="main-40, main-40">
-									<p:inputTextarea value="#{sitCtlGnr.gnr.SGnrObsLrv}"
-										placeholder="Comment" disabled="#{sitCtlGnr.dsbGnrObsLrv}"
-										rendered="#{sitCtlGnr.vsbGnrObsLrv}"
-										required="#{sitCtlGnr.rqrGnrObsLrv}"
-										styleClass="sit-inp-big-cmm" />
+
+								<h:panelGrid id="png-sit-rcv" columns="2" styleClass="main-100"
+									columnClasses="main-50 alg-ctr, main-50 alg-ctr">
+
+									<p:selectBooleanCheckbox id="sbc-sit-rcv"
+										value="#{sitCtlGnr.BGnrTrpRcv}"
+										itemLabel="#{html.B_LBL_FRM01_RCV()}"
+										disabled="#{sitCtlGnr.dsbTrpRcv}"
+										rendered="#{sitCtlGnr.vsbTrpRcv}"
+										required="#{sitCtlGnr.rqrTrpRcv}">
+										<p:ajax listener="#{sitCtlGnr.chsTrpRcv()}"
+											update="sbc-sit-egs sbc-sit-lrs sbc-sit-adl" />
+									</p:selectBooleanCheckbox>
+
+									<p:selectBooleanCheckbox id="sbc-sit-sup"
+										value="#{sitCtlGnr.BGnrTrpSup}"
+										itemLabel="#{html.B_LBL_FRM01_SUP()}"
+										disabled="#{sitCtlGnr.dsbTrpSup}"
+										rendered="#{sitCtlGnr.vsbTrpSup}"
+										required="#{sitCtlGnr.rqrTrpSup}">
+										<p:ajax listener="#{sitCtlGnr.chsTrpSup()}" />
+									</p:selectBooleanCheckbox>
+
+									<p:blockUI block="png-sit-rcv" trigger="sbc-sit-rcv">
+										<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+									</p:blockUI>
+
 								</h:panelGrid>
 
 							</h:panelGrid>
-						</h:panelGrid>
-					</h:panelGrid>
+						</h:panelGroup>
 
-					<h:panelGrid columns="1" styleClass="box box-adl">
-						<h:outputLabel value="#{html.sitTtlAdl}" styleClass="box-ttl" />
+						<h:panelGroup layout="block" styleClass="box box-egs">
 
-						<h:panelGrid id="png-sit-adl-bdy" columns="1"
-							styleClass="main-100">
+							<h:panelGroup layout="block" styleClass="box-ttl-bdy">
+								<h:outputLabel value="#{html.S_TTL_FRM01_EGS()}"
+									styleClass="box-ttl" />
+							</h:panelGroup>
 
-							<p:selectBooleanCheckbox id="sbc-sit-adl"
-								value="#{sitCtlGnr.BGnrAdl}" itemLabel="Yes / No"
-								disabled="#{sitCtlGnr.dsbBAdl}" rendered="#{sitCtlGnr.vsbBAdl}"
-								required="#{sitCtlGnr.rqrBAdl}">
-								<p:ajax listener="#{sitCtlGnr.chsAdl()}" update="png-sit-adl" />
-							</p:selectBooleanCheckbox>
+							<p:spacer height="5" />
 
-							<p:blockUI block="png-sit-lrv-bdy" trigger="sbc-sit-lrs">
-								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-							</p:blockUI>
+							<h:panelGrid id="png-sit-egs-bdy" columns="1"
+								styleClass="main-100" cellpadding="3" cellspacing="3">
 
-							<h:panelGrid id="png-sit-adl" columns="1" styleClass="90">
+								<p:selectBooleanCheckbox id="sbc-sit-egs"
+									value="#{sitCtlGnr.BGnrEgs}"
+									itemLabel="#{html.S_LBL_FRM01_Y_N()}"
+									disabled="#{sitCtlGnr.dsbBEgs}" rendered="#{sitCtlGnr.vsbBEgs}"
+									required="#{sitCtlGnr.rqrBEgs}">
+									<p:ajax listener="#{sitCtlGnr.chsEgs()}" update="png-sit-egs" />
+								</p:selectBooleanCheckbox>
 
-								<h:panelGrid columns="3" styleClass="main-100"
-									columnClasses="main-30,main-30,main-40">
-									<h:panelGrid columns="1" styleClass="main-100">
-										<h:outputLabel value="#{html.sitLblAdlNmb}" />
-										<p:inputText value="#{sitCtlGnr.gnrDtlAdl.IGnrDtlNmb}"
-											disabled="#{sitCtlGnr.dsbAdlNmb}"
-											rendered="#{sitCtlGnr.vsbAdlNmb}"
-											required="#{sitCtlGnr.rqrAdlNmb}" styleClass="sit-inp-ctr"
-											requiredMessage="html.ttlAtrObl" />
-									</h:panelGrid>
-									<h:panelGrid columns="1" styleClass="main-100">
-										<h:outputLabel value="#{html.sitLblAdlSex}" />
-										<p:selectOneMenu id="som-sit-adl-sex" styleClass="sit-cmb"
-											style="width: 60%;" value="#{sitCtlGnr.ISexId}"
-											disabled="#{sitCtlGnr.dsbAdlSex}"
-											rendered="#{sitCtlGnr.vsbAdlSex}"
-											required="#{sitCtlGnr.rqrAdlSex}"
-											requiredMessage="html.ttlAtrObl">
-											<f:selectItem itemLabel="#{html.slcOne}" itemValue=""
-												noSelectionOption="true" />
-											<f:selectItems value="#{sitCtlOpt.lstEpiNme(code.sitSex())}"
-												var="varSpc" itemLabel="#{varSpc.SOptAcr}"
-												itemValue="#{varSpc.IOptId}" />
-										</p:selectOneMenu>
-									</h:panelGrid>
-									<h:panelGrid columns="1" styleClass="main-100">
-										<h:outputLabel value="#{html.sitLblAdlSpc}" />
-										<p:selectOneMenu id="som-sit-adl-gns" styleClass="sit-cmb"
-											style="width: 60%;" value="#{sitCtlGnr.ISpcId}"
-											disabled="#{sitCtlGnr.dsbAdlSpc}"
-											rendered="#{sitCtlGnr.vsbAdlSpc}"
-											required="#{sitCtlGnr.rqrAdlSpc}"
-											requiredMessage="html.ttlAtrObl">
-											<f:selectItem itemLabel="#{html.slcOne}" itemValue=""
-												noSelectionOption="true" />
-											<f:selectItems value="#{sitCtlOpt.lstEpiNme(code.sitSpc())}"
-												var="varSex" itemLabel="#{varSex.SOptNme}"
-												itemValue="#{varSex.IOptId}" />
-										</p:selectOneMenu>
-									</h:panelGrid>
-								</h:panelGrid>
+								<p:blockUI block="png-sit-egs-bdy" trigger="sbc-sit-egs">
+									<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+								</p:blockUI>
 
-								<h:panelGrid columns="3" styleClass="main-100 alg-ctr"
-									columnClasses="main-30, main-30, main-30">
+								<h:panelGrid id="png-sit-egs" columns="1" styleClass="main-80">
+									<h:outputLabel value="#{html.I_LBL_FRM01_EGS_WHL()}" />
+									<p:inputText id="inp-sit-egs-cmp"
+										value="#{sitCtlGnr.gnr.IGnrNmbEgsCpl}"
+										disabled="#{sitCtlGnr.dsbGnrNmbCpl}"
+										rendered="#{sitCtlGnr.vsbGnrNmbCpl}"
+										required="#{sitCtlGnr.rqrGnrNmbCpl}" styleClass="sit-inp-ctr "
+										requiredMessage="#{message.I_MSG_FRM01_EGS_WHL()}"
+										onkeypress="return validarEnteros(event);" />
+									<p:message for="inp-sit-egs-cmp" display="text" escape="true" />
 
-									<p:commandButton id="btn-sit-adl-new" value="New"
-										action="#{sitCtlGnr.newAdl()}" update="png-sit-adl"
-										disabled="#{sitCtlGnr.dsbBtnAdlNew}"
-										rendered="#{sitCtlGnr.vsbBtnAdlNew}" />
+									<h:outputLabel value="#{html.I_LBL_FRM01_EGS_BRK()}" />
+									<p:inputText id="inp-sit-egs-brk"
+										value="#{sitCtlGnr.gnr.IGnrNmbEgsBrk}"
+										disabled="#{sitCtlGnr.dsbGnrNmbBrk}"
+										rendered="#{sitCtlGnr.vsbGnrNmbBrk}"
+										required="#{sitCtlGnr.rqrGnrNmbBrk}" styleClass="sit-inp-ctr "
+										requiredMessage="#{message.I_MSG_FRM01_EGS_BRK()}"
+										onkeypress="return validarEnteros(event);">
+									</p:inputText>
+									<p:message for="inp-sit-egs-brk" display="text" escape="true" />
 
-									<p:commandButton id="btn-sit-adl-add" value="Add"
-										action="#{sitCtlGnr.addAdl()}"
-										update="png-sit-adl dtb-sit-adl"
-										disabled="#{sitCtlGnr.dsbBtnAdlAdd}"
-										rendered="#{sitCtlGnr.vsbBtnAdlAdd}" />
+									<h:outputLabel value="#{html.I_LBL_FRM01_EGS_VLB()}" />
+									<p:inputText id="inp-sit-egs-vlb"
+										value="#{sitCtlGnr.gnr.IGnrNmbEgsVlb}"
+										disabled="#{sitCtlGnr.dsbGnrNmbVbl}"
+										rendered="#{sitCtlGnr.vsbGnrNmbVbl}"
+										required="#{sitCtlGnr.rqrGnrNmbVbl}" styleClass="sit-inp-ctr "
+										requiredMessage="#{message.I_MSG_FRM01_EGS_VLB()}"
+										onkeypress="return validarEnteros(event);" />
+									<p:message for="inp-sit-egs-vlb" display="text" escape="true" />
 
-									<p:commandButton id="btn-sit-adl-rst" value="Reset"
-										action="#{sitCtlGnr.rstAdl()}" update="png-sit-adl"
-										disabled="#{sitCtlGnr.dsbBtnAdlRst}"
-										rendered="#{sitCtlGnr.vsbBtnAdlRst}" />
+									<h:outputLabel value="#{html.I_LBL_FRM01_EGS_VLB_NO()}" />
+									<p:inputText id="inp-sit-egs-vlb-no"
+										value="#{sitCtlGnr.gnr.iGnrNmbEgsVlbNo}"
+										disabled="#{sitCtlGnr.dsbGnrNmbVbl}"
+										rendered="#{sitCtlGnr.vsbGnrNmbVbl}"
+										required="#{sitCtlGnr.rqrGnrNmbVbl}" styleClass="sit-inp-ctr "
+										requiredMessage="#{message.I_MSG_FRM01_EGS_VLB_NO()}"
+										onkeypress="return validarEnteros(event);" />
+									<p:message for="inp-sit-egs-vlb-no" display="text"
+										escape="true" />
 
-									<p:blockUI block="png-sit-adl" trigger="btn-sit-adl-new">
-										<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-									</p:blockUI>
-
-									<p:blockUI block="png-sit-adl" trigger="btn-sit-adl-add">
-										<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-									</p:blockUI>
-
-									<p:blockUI block="png-sit-adl" trigger="btn-sit-adl-rst">
-										<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-									</p:blockUI>
-
-								</h:panelGrid>
-
-								<h:panelGroup layout="block" styleClass="main-100">
-
-									<p:dataTable id="dtb-sit-adl" value="#{sitCtlGnr.lstAdlSlc}"
-										var="varAdl" rows="3" paginator="true"
-										paginatorPosition="bottom"
-										paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-										styleClass="sit-tbl">
-										<f:facet name="header">
-											<h:outputText value="Detail" />
-										</f:facet>
-										<p:column headerText="Nº">
-											<h:outputText value="#{varAdl.IGnrDtlNmb}" />
-										</p:column>
-										<p:column headerText="Sex">
-											<h:outputText value="#{sitCtlOpt.ent(varAdl.ISexId).SOptAcr}" />
-										</p:column>
-										<p:column headerText="Genus/Specie">
-											<h:outputText value="#{sitCtlOpt.ent(varAdl.IGnsId).SOptNme}" />
-										</p:column>
-									</p:dataTable>
-
-								</h:panelGroup>
-
-								<h:panelGrid columns="1" styleClass="main-90"
-									columnClasses="main-40, main-40">
-									<p:inputTextarea value="#{sitCtlGnr.gnr.SGnrObsAdl}"
-										placeholder="Comment" disabled="#{sitCtlGnr.dsbGnrObsAdl}"
-										rendered="#{sitCtlGnr.vsbGnrObsAdl}"
-										required="#{sitCtlGnr.rqrGnrObsAdl}"
+									<p:inputTextarea id="inp-sit-obs-egs"
+										value="#{sitCtlGnr.gnr.SGnrObsEgs}"
+										disabled="#{sitCtlGnr.dsbGnrObsEgs}"
+										rendered="#{sitCtlGnr.vsbGnrObsEgs}"
+										required="#{sitCtlGnr.rqrGnrObsEgs}" placeholder="Comment"
 										styleClass="sit-inp-big-cmm" />
+
 								</h:panelGrid>
-
 							</h:panelGrid>
-						</h:panelGrid>
+						</h:panelGroup>
+
+						<h:panelGroup layout="block" styleClass="box box-lrv">
+
+							<h:panelGroup layout="block" styleClass="box-ttl-bdy">
+								<h:outputLabel value="#{html.S_TTL_FRM01_LRV()}"
+									styleClass="box-ttl" />
+							</h:panelGroup>
+
+							<p:spacer height="5" />
+
+							<h:panelGrid id="png-sit-lrv-bdy" columns="1"
+								styleClass="main-100">
+
+								<p:selectBooleanCheckbox id="sbc-sit-lrs"
+									value="#{sitCtlGnr.BGnrLrs}"
+									itemLabel="#{html.S_LBL_FRM01_Y_N()}"
+									disabled="#{sitCtlGnr.dsbBLrs}" rendered="#{sitCtlGnr.vsbBLrs}"
+									required="#{sitCtlGnr.rqrBLrs}">
+									<p:ajax listener="#{sitCtlGnr.chsLrs()}" update="png-sit-lrs" />
+								</p:selectBooleanCheckbox>
+
+								<p:blockUI block="png-sit-lrv-bdy" trigger="sbc-sit-lrs">
+									<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+								</p:blockUI>
+
+								<h:panelGrid id="png-sit-lrs" columns="1" styleClass="main-100"
+									cellpadding="3" cellspacing="3">
+
+									<h:panelGrid columns="2" styleClass="main-100"
+										columnClasses="main-50, main-50" cellpadding="3"
+										cellspacing="3">
+
+										<h:panelGroup layout="block" styleClass="main-100"
+											cellpadding="3" cellspacing="3">
+											<h:outputLabel value="#{html.I_LBL_FRM01_LRP_CTN()}" />
+											<p:selectOneMenu id="som-sit-lrs-ctn"
+												value="#{sitCtlGnr.gnrDtlLrv.ICtnId}" styleClass="sit-cmb"
+												style="width: 80%;" disabled="#{sitCtlGnr.dsbLrsCtn}"
+												rendered="#{sitCtlGnr.vsbLrsCtn}"
+												required="#{sitCtlGnr.rqrLrsCtn}"
+												requiredMessage="#{message.I_MSG_FRM01_LRP_CTN()}"
+												filter="true" filterMatchMode="contains">
+												<f:selectItem itemLabel="#{html.S_ITM_SLC()}" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems
+													value="#{sitCtlOpt.lstOptNme(code.I_SIT_CTN())}"
+													var="varLrsCtn" itemLabel="#{varLrsCtn.SOptNme}"
+													itemValue="#{varLrsCtn.IOptId}" />
+											</p:selectOneMenu>
+										</h:panelGroup>
+
+
+										<h:panelGroup layout="block" styleClass="main-100"
+											cellpadding="3" cellspacing="3">
+											<h:outputLabel value="#{html.I_LBL_FRM01_LRP_STG()}" />
+											<p:selectOneMenu id="som-sit-lrs-stg"
+												value="#{sitCtlGnr.ILrsStgId}" styleClass="sit-cmb"
+												style="width: 80%;" disabled="#{sitCtlGnr.dsbLrsStg}"
+												rendered="#{sitCtlGnr.vsbLrsStg}"
+												required="#{sitCtlGnr.rqrLrsStg}"
+												requiredMessage="#{message.I_MSG_FRM01_LRP_STG()}"
+												filter="true" filterMatchMode="contains">
+												<f:selectItem itemLabel="#{html.S_ITM_SLC()}" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems
+													value="#{sitCtlOpt.lstOptCtg(code.I_SIT_STG())}"
+													var="varLrsStg" itemLabel="#{varLrsStg.SOptNme}"
+													itemValue="#{varLrsStg.IOptId}" />
+											</p:selectOneMenu>
+										</h:panelGroup>
+
+
+										<h:panelGroup layout="block" styleClass="main-100"
+											cellpadding="3" cellspacing="3">
+											<h:outputLabel value="#{html.I_LBL_FRM01_LRP_NMB()}" />
+											<p:inputText id="inp-sit-lrs-nmb"
+												value="#{sitCtlGnr.gnrDtlLrv.IGnrDtlNmb}"
+												disabled="#{sitCtlGnr.dsbGnrNmbLrsPps}"
+												rendered="#{sitCtlGnr.vsbGnrNmbLrsPps}"
+												required="#{sitCtlGnr.rqrGnrNmbLrsPps}"
+												styleClass="sit-inp-ctr"
+												requiredMessage="#{message.I_MSG_FRM01_LRP_NMB()}"
+												onkeypress="return validarEnteros(event);" />
+										</h:panelGroup>
+
+										<h:panelGroup layout="block" styleClass="main-100"
+											cellpadding="3" cellspacing="3">
+											<h:outputLabel value="#{html.I_LBL_FRM01_LRP_NMB_DD()}" />
+											<p:inputText id="inp-sit-lrs-nmb-dd"
+												value="#{sitCtlGnr.gnrDtlLrv.iGnrDtlNmbDd}"
+												disabled="#{sitCtlGnr.dsbGnrDtlLrvNmbDied}"
+												rendered="#{sitCtlGnr.vsbGnrDtlLrvNmbDied}"
+												required="#{sitCtlGnr.rqrGnrDtlLrvNmbDied}"
+												styleClass="sit-inp-ctr"
+												requiredMessage="#{message.I_MSG_FRM01_LRP_NMB_DD()}"
+												onkeypress="return validarEnteros(event);" />
+										</h:panelGroup>
+
+
+
+									</h:panelGrid>
+
+									<h:panelGrid columns="3" styleClass="main-100 alg-ctr"
+										columnClasses="main-30, main-30, main-30">
+
+										<p:commandLink id="btn-sit-lrs-stg-new"
+											value="#{html.FRM_BTN_NEW_NME()}"
+											action="#{sitCtlGnr.newLrsStg()}"
+											update="png-sit-lrs msg-sit"
+											disabled="#{sitCtlGnr.dsbBtnLrvNew}"
+											rendered="#{sitCtlGnr.vsbBtnLrvNew}"
+											styleClass="#{html.FRM_BTN_NEW_STL()}" />
+
+										<p:commandLink id="btn-sit-lrs-stg-add"
+											value="#{html.FRM_BTN_ADD_NME()}"
+											action="#{sitCtlGnr.addLrsStg()}"
+											update="png-sit-lrs msg-sit"
+											disabled="#{sitCtlGnr.dsbBtnLrvAdd}"
+											rendered="#{sitCtlGnr.vsbBtnLrvAdd}"
+											styleClass="#{html.FRM_BTN_ADD_STL()}" />
+
+										<p:commandLink id="btn-sit-lrs-stg-rst"
+											value="#{html.FRM_BTN_RST_NME()}"
+											action="#{sitCtlGnr.rstLrsStg()}"
+											update="png-sit-lrs msg-sit"
+											disabled="#{sitCtlGnr.dsbBtnLrvRst}"
+											rendered="#{sitCtlGnr.vsbBtnLrvRst}"
+											styleClass="#{html.FRM_BTN_RST_STL()}" />
+
+										<p:blockUI block="png-sit-lrs" trigger="btn-sit-lrs-stg-new">
+											<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+										</p:blockUI>
+
+										<p:blockUI block="png-sit-lrs" trigger="btn-sit-lrs-stg-add">
+											<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+										</p:blockUI>
+
+										<p:blockUI block="png-sit-lrs" trigger="btn-sit-lrs-stg-rst">
+											<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+										</p:blockUI>
+
+									</h:panelGrid>
+
+									<h:panelGroup id="pgr-sit-lrs-stg" layout="block"
+										styleClass="main-100">
+
+										<p:dataTable id="dtb-sit-lrs-stg"
+											value="#{sitCtlGnr.lstLrsStgSlc}" var="varLrsStg" rows="4"
+											paginator="true" paginatorPosition="bottom"
+											paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+											styleClass="sit-tbl main-100">
+
+											<p:column headerText="Live" styleClass="main-20 alg-ctr">
+												<h:outputText value="#{varLrsStg.IGnrDtlNmb}" />
+											</p:column>
+											<p:column headerText="Dead" styleClass="main-20 alg-ctr">
+												<h:outputText value="#{varLrsStg.iGnrDtlNmbDd}" />
+											</p:column>
+											<p:column headerText="Stage" styleClass="main-40">
+												<h:outputText
+													value="#{sitCtlOpt.ent(varLrsStg.IStgId).SOptNme}" />
+											</p:column>
+											<p:column headerText="Options" styleClass="main-20 alg-ctr">
+												<p:commandLink value="#{html.FRM_BTN_DLT_NME()}"
+													process="@this" oncomplete="PF('dlg-sit-dlt-lrv').show()"
+													styleClass="#{html.FRM_BTN_DLT_STL()}">
+													<f:setPropertyActionListener value="#{varLrsStg}"
+														target="#{sitCtlGnr.gnrDtlLrv}" />
+													<p:confirm header="#{html.FRM_DLG_CNF_HDR()}"
+														message="#{html.FRM_DLG_CNF_MSG()}"
+														icon="#{html.FRM_DLG_CNF_ICN()}" />
+												</p:commandLink>
+											</p:column>
+										</p:dataTable>
+
+										<p:confirmDialog widgetVar="dlg-sit-dlt-lrv"
+											width="#{html.FRM_DLG_CNF_SZE()}" global="true"
+											showEffect="fade" hideEffect="fade">
+											<h:panelGrid columns="2" styleClass="main-60"
+												columnClasses="main-30 alg-ctr, main-30 alg-ctr"
+												cellpadding="3" cellspacing="3">
+												<p:commandLink value="#{html.FRM_DLG_BTN_YES_NME()}"
+													actionListener="#{sitCtlGnr.dltLrsStg()}"
+													process="png-sit-lrs"
+													oncomplete="PF('dlg-sit-dlt-lrv').hide()"
+													update="png-sit-lrs"
+													styleClass="#{html.FRM_DLG_BTN_YES_STL()}">
+													<p:collector value="#{sitCtlGnr.gnrDtlLrv}"
+														removeFrom="#{sitCtlGnr.lstLrsStgSlc}" unique="true" />
+												</p:commandLink>
+												<p:commandLink value="#{html.FRM_DLG_BTN_NOT_NME()}"
+													styleClass="#{html.FRM_DLG_BTN_NOT_STL()}"
+													onclick="PF('dlg-sit-dlt-lrv').hide()" />
+											</h:panelGrid>
+										</p:confirmDialog>
+
+									</h:panelGroup>
+
+									<h:panelGrid columns="1" styleClass="main-90" cellpadding="3"
+										cellspacing="3">
+										<p:inputTextarea value="#{sitCtlGnr.gnr.SGnrObsLrv}"
+											placeholder="Comment" disabled="#{sitCtlGnr.dsbGnrObsLrv}"
+											rendered="#{sitCtlGnr.vsbGnrObsLrv}"
+											required="#{sitCtlGnr.rqrGnrObsLrv}"
+											styleClass="sit-inp-big-cmm" />
+									</h:panelGrid>
+
+								</h:panelGrid>
+							</h:panelGrid>
+						</h:panelGroup>
+
+						<h:panelGroup layout="block" styleClass="box box-adl">
+
+							<h:panelGroup layout="block" styleClass="box-ttl-bdy">
+								<h:outputLabel value="#{html.S_TTL_FRM01_ADL()}"
+									styleClass="box-ttl" />
+							</h:panelGroup>
+
+							<p:spacer height="5" />
+
+							<h:panelGrid id="png-sit-adl-bdy" columns="1"
+								styleClass="main-100">
+
+								<p:selectBooleanCheckbox id="sbc-sit-adl"
+									value="#{sitCtlGnr.BGnrAdl}"
+									itemLabel="#{html.S_LBL_FRM01_Y_N()}"
+									disabled="#{sitCtlGnr.dsbBAdl}" rendered="#{sitCtlGnr.vsbBAdl}"
+									required="#{sitCtlGnr.rqrBAdl}">
+									<p:ajax listener="#{sitCtlGnr.chsAdl()}" update="png-sit-adl" />
+								</p:selectBooleanCheckbox>
+
+								<p:blockUI block="png-sit-adl-bdy" trigger="sbc-sit-lrs">
+									<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+								</p:blockUI>
+
+								<h:panelGrid id="png-sit-adl" columns="1" styleClass="90">
+
+									<h:panelGrid columns="2" styleClass="main-100"
+										columnClasses="main-50,main-50">
+
+										<h:panelGrid columns="1" styleClass="main-100">
+											<h:outputLabel value="#{html.I_LBL_FRM01_ADL_NMB()}" />
+											<p:inputText value="#{sitCtlGnr.gnrDtlAdl.IGnrDtlNmb}"
+												disabled="#{sitCtlGnr.dsbAdlNmb}"
+												rendered="#{sitCtlGnr.vsbAdlNmb}"
+												required="#{sitCtlGnr.rqrAdlNmb}" styleClass="sit-inp-ctr"
+												requiredMessage="#{message.I_MSG_FRM01_ADL_NMB()}"
+												onkeypress="return validarEnteros(event);" />
+										</h:panelGrid>
+										<h:panelGrid columns="1" styleClass="main-100">
+											<h:outputLabel value="#{html.I_LBL_FRM01_ADL_NMB_DD()}" />
+											<p:inputText value="#{sitCtlGnr.gnrDtlAdl.iGnrDtlNmbDd}"
+												disabled="#{sitCtlGnr.dsbAdlNmbDd}"
+												rendered="#{sitCtlGnr.vsbAdlNmbDd}"
+												required="#{sitCtlGnr.rqrAdlNmbDd}" styleClass="sit-inp-ctr"
+												requiredMessage="#{message.I_MSG_FRM01_ADL_NMB_DD()}"
+												onkeypress="return validarEnteros(event);" />
+										</h:panelGrid>
+
+										<h:panelGrid columns="1" styleClass="main-100">
+											<h:outputLabel value="#{html.I_LBL_FRM01_ADL_SEX()}" />
+											<p:selectOneMenu id="som-sit-adl-sex" styleClass="sit-cmb"
+												style="width: 60%;" value="#{sitCtlGnr.ISexId}"
+												disabled="#{sitCtlGnr.dsbAdlSex}"
+												rendered="#{sitCtlGnr.vsbAdlSex}"
+												required="#{sitCtlGnr.rqrAdlSex}"
+												requiredMessage="#{message.I_MSG_FRM01_ADL_SEX()}"
+												filter="true" filterMatchMode="contains">
+												<f:selectItem itemLabel="#{html.slcOne}" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems
+													value="#{sitCtlOpt.lstOptNme(code.I_SIT_SEX())}"
+													var="varSpc" itemLabel="#{varSpc.SOptNme}"
+													itemValue="#{varSpc.IOptId}" />
+											</p:selectOneMenu>
+										</h:panelGrid>
+										<h:panelGrid columns="1" styleClass="main-100">
+											<h:outputLabel value="#{html.I_LBL_FRM01_ADL_GNR()}" />
+											<p:selectOneMenu id="som-sit-adl-gns" styleClass="sit-cmb"
+												style="width: 60%;" value="#{sitCtlGnr.ISpcId}"
+												disabled="#{sitCtlGnr.dsbAdlSpc}"
+												rendered="#{sitCtlGnr.vsbAdlSpc}"
+												required="#{sitCtlGnr.rqrAdlSpc}"
+												requiredMessage="#{message.I_MSG_FRM01_ADL_GNR()}"
+												filter="true" filterMatchMode="contains">
+												<f:selectItem itemLabel="#{html.slcOne}" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems
+													value="#{sitCtlOpt.lstOptNme(code.I_SIT_GNR())}"
+													var="varSpc" itemLabel="#{varSpc.SOptNme}"
+													itemValue="#{varSpc.IOptId}" />
+											</p:selectOneMenu>
+										</h:panelGrid>
+									</h:panelGrid>
+
+									<h:panelGrid columns="3" styleClass="main-100 alg-ctr"
+										columnClasses="main-30, main-30, main-30">
+
+										<p:commandLink id="btn-sit-adl-new"
+											value="#{html.FRM_BTN_NEW_NME()}"
+											action="#{sitCtlGnr.newAdl()}" update="png-sit-adl msg-sit"
+											disabled="#{sitCtlGnr.dsbBtnAdlNew}"
+											rendered="#{sitCtlGnr.vsbBtnAdlNew}"
+											styleClass="#{html.FRM_BTN_NEW_STL()}" />
+
+										<p:commandLink id="btn-sit-adl-add"
+											value="#{html.FRM_BTN_ADD_NME()}"
+											action="#{sitCtlGnr.addAdl()}"
+											update="png-sit-adl dtb-sit-adl msg-sit"
+											disabled="#{sitCtlGnr.dsbBtnAdlAdd}"
+											rendered="#{sitCtlGnr.vsbBtnAdlAdd}"
+											styleClass="#{html.FRM_BTN_ADD_STL()}" />
+
+										<p:commandLink id="btn-sit-adl-rst"
+											value="#{html.FRM_BTN_RST_NME()}"
+											action="#{sitCtlGnr.rstAdl()}" update="png-sit-adl msg-sit"
+											disabled="#{sitCtlGnr.dsbBtnAdlRst}"
+											rendered="#{sitCtlGnr.vsbBtnAdlRst}"
+											styleClass="#{html.FRM_BTN_RST_STL()}" />
+
+										<p:blockUI block="png-sit-adl" trigger="btn-sit-adl-new">
+											<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+										</p:blockUI>
+
+										<p:blockUI block="png-sit-adl" trigger="btn-sit-adl-add">
+											<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+										</p:blockUI>
+
+										<p:blockUI block="png-sit-adl" trigger="btn-sit-adl-rst">
+											<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
+										</p:blockUI>
+
+									</h:panelGrid>
+
+									<h:panelGroup layout="block" styleClass="main-100">
+
+										<p:dataTable id="dtb-sit-adl" value="#{sitCtlGnr.lstAdlSlc}"
+											var="varAdl" rows="4" paginator="true"
+											paginatorPosition="bottom"
+											paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+											styleClass="sit-tbl main-100">
+											<p:column headerText="Live" styleClass="main-15 alg-ctr">
+												<h:outputText value="#{varAdl.IGnrDtlNmb}" />
+											</p:column>
+											<p:column headerText="Dead" styleClass="main-15 alg-ctr">
+												<h:outputText value="#{varAdl.iGnrDtlNmbDd}" />
+											</p:column>
+											<p:column headerText="Sex" styleClass="main-20">
+												<h:outputText
+													value="#{sitCtlOpt.ent(varAdl.ISexId).SOptNme}" />
+											</p:column>
+											<p:column headerText="G/S" styleClass="main-30 txt-gnr ">
+												<h:outputText
+													value="#{sitCtlOpt.ent(varAdl.IGnsId).SOptNme}" />
+											</p:column>
+											<p:column headerText="Options" styleClass="main-20 alg-ctr">
+												<p:commandLink value="#{html.FRM_BTN_DLT_NME()}"
+													process="@this" oncomplete="PF('dlg-sit-dlt-adl').show()"
+													styleClass="#{html.FRM_BTN_DLT_STL()}">
+													<f:setPropertyActionListener value="#{varAdl}"
+														target="#{sitCtlGnr.gnrDtlAdl}" />
+													<p:confirm header="#{html.FRM_DLG_CNF_HDR()}"
+														message="#{html.FRM_DLG_CNF_MSG()}"
+														icon="#{html.FRM_DLG_CNF_ICN()}" />
+												</p:commandLink>
+											</p:column>
+										</p:dataTable>
+
+										<p:confirmDialog widgetVar="dlg-sit-dlt-adl"
+											width="#{html.FRM_DLG_CNF_SZE()}" global="true"
+											showEffect="fade" hideEffect="fade">
+											<h:panelGrid columns="2" styleClass="main-60"
+												columnClasses="main-30 alg-ctr, main-30 alg-ctr"
+												cellpadding="3" cellspacing="3">
+												<p:commandLink value="#{html.FRM_DLG_BTN_YES_NME()}"
+													actionListener="#{sitCtlGnr.dltLrsStg()}"
+													process="png-sit-adl"
+													oncomplete="PF('dlg-sit-dlt-adl').hide()"
+													update="png-sit-adl"
+													styleClass="#{html.FRM_DLG_BTN_YES_STL()}">
+													<p:collector value="#{sitCtlGnr.gnrDtlAdl}"
+														removeFrom="#{sitCtlGnr.lstAdlSlc}" unique="true" />
+												</p:commandLink>
+												<p:commandLink value="#{html.FRM_DLG_BTN_NOT_NME()}"
+													styleClass="#{html.FRM_DLG_BTN_NOT_STL()}"
+													onclick="PF('dlg-sit-dlt-adl').hide()" />
+											</h:panelGrid>
+										</p:confirmDialog>
+
+									</h:panelGroup>
+
+									<h:panelGrid columns="1" styleClass="main-90" cellpadding="3"
+										cellspacing="3">
+										<p:inputTextarea value="#{sitCtlGnr.gnr.SGnrObsAdl}"
+											placeholder="Comment" disabled="#{sitCtlGnr.dsbGnrObsAdl}"
+											rendered="#{sitCtlGnr.vsbGnrObsAdl}"
+											required="#{sitCtlGnr.rqrGnrObsAdl}"
+											styleClass="sit-inp-big-cmm" />
+									</h:panelGrid>
+
+								</h:panelGrid>
+							</h:panelGrid>
+						</h:panelGroup>
+
 					</h:panelGrid>
-
-
-
-					<h:panelGrid id="png-sit-prf-slc" columns="1"
-						styleClass="box box-prf">
-
-						<h:outputLabel value="#{html.sitTtlPfs}" styleClass="box-ttl" />
-						<p:spacer height="10" />
-						<h:panelGrid id="png-sit-prf" columns="1" styleClass="main-90"
-							cellpadding="3" cellspacing="3">
-
-							<h:outputLabel for="scm-sit-agn" value="#{html.sitLblPfsAgn}" />
-							<p:selectCheckboxMenu id="scm-sit-agn" label="#{html.slcOne}"
-								filter="true" filterMatchMode="startsWith" style="width: 98%;"
-								styleClass="sit-cmb" value="#{sitCtlGnr.IPrsPrfAgnSlcId}"
-								disabled="#{sitCtlGnr.dsbGnrPrfAgn}"
-								rendered="#{sitCtlGnr.vsbGnrPrfAgn}"
-								required="#{sitCtlGnr.rqrGnrPrfAgn}">
-								<f:selectItems
-									value="#{scrCtlPrsRol.lstPrsPrfFld(sitCtlGnr.prl.IPrjId)}"
-									var="varPrsPrf"
-									itemLabel="#{varPrsPrf.dtaTblPr.SPrsLstNme} #{varPrsPrf.dtaTblPr.SPrsNme}"
-									itemValue="#{varPrsPrf.IPrsRolId}" />
-								<p:ajax listener="#{sitCtlGnr.chsPrsPrfAgn()}"
-									update="dtl-sit-agn" />
-							</p:selectCheckboxMenu>
-							<p:blockUI block="dtl-sit-agn" trigger="scm-sit-agn">
-								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-							</p:blockUI>
-							<p:dataList id="dtl-sit-agn" paginator="true" rows="2"
-								paginatorPosition="bottom" value="#{sitCtlGnr.lstPrsPrfAgnAdd}"
-								var="varPrsPrf" styleClass="sit-tbl" type="ordered"
-								itemType="circle">
-								<h:outputText
-									value="#{method.acr(varPrsPrf.dtaTblPr.SPrsNme,varPrsPrf.dtaTblPr.SPrsLstNme)}" />
-							</p:dataList>
-
-							<h:outputLabel for="scm-sit-tch" value="#{html.sitLblPfsTch}" />
-							<p:selectCheckboxMenu id="scm-sit-tch" label="#{html.slcOne}"
-								filter="true" filterMatchMode="startsWith" style="width: 98%;"
-								styleClass="sit-cmb" value="#{sitCtlGnr.IPrsPrfTchSlcId}"
-								disabled="#{sitCtlGnr.dsbGnrPrfTch}"
-								rendered="#{sitCtlGnr.vsbGnrPrfTch}"
-								required="#{sitCtlGnr.rqrGnrPrfTch}">
-								<f:selectItems
-									value="#{scrCtlPrsRol.lstPrsPrfTch(sitCtlGnr.prl.IPrjId)}"
-									var="varPrsPrf"
-									itemLabel="#{varPrsPrf.dtaTblPr.SPrsLstNme} #{varPrsPrf.dtaTblPr.SPrsNme}"
-									itemValue="#{varPrsPrf.IPrsRolId}" />
-								<p:ajax listener="#{sitCtlGnr.chsPrsPrfTch()}"
-									update="dtl-sit-tch" />
-							</p:selectCheckboxMenu>
-							<p:blockUI block="dtl-sit-tch" trigger="scm-sit-tch">
-								<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
-							</p:blockUI>
-							<p:dataList id="dtl-sit-tch" paginator="true" rows="2"
-								paginatorPosition="bottom" value="#{sitCtlGnr.lstPrsPrfTchAdd}"
-								var="varPrsPrf" styleClass="sit-tbl" type="ordered"
-								itemType="circle">
-								<h:outputText
-									value="#{method.acr(varPrsPrf.dtaTblPr.SPrsNme,varPrsPrf.dtaTblPr.SPrsLstNme)}" />
-							</p:dataList>
-
-						</h:panelGrid>
-
-					</h:panelGrid>
-				</h:panelGrid>
-
+				</h:panelGroup>
 			</h:panelGroup>
 			<h:panelGroup id="pgr-sit-tbl" layout="block" styleClass="main-100"
 				rendered="#{sitCtlGnr.vsbPgrTbl}">
@@ -706,10 +848,9 @@
 						<h:outputText value="#{sitCtlOpt.ent(varGnr.ITpeId).SOptNme}" />
 					</p:column>
 					<p:column headerText="Week" styleClass="main-10 alt-ctr"
-						filterBy="#{method.week(method.dte(varGnr.IGnrDteClcYr,varGnr.IGnrDteClcMth,varGnr.IGnrDteClcDay))}"
-						sortBy="#{method.week(method.dte(varGnr.IGnrDteClcYr,varGnr.IGnrDteClcMth,varGnr.IGnrDteClcDay))}">
-						<h:outputText
-							value="#{method.week(method.dte(varGnr.IGnrDteClcYr,varGnr.IGnrDteClcMth,varGnr.IGnrDteClcDay))}" />
+						filterBy="#{method.week(varGnr.dGnrDteClc)}"
+						sortBy="#{method.week(varGnr.dGnrDteClc)}">
+						<h:outputText value="#{method.week(varGnr.dGnrDteClc)}" />
 					</p:column>
 					<p:column headerText="Location" styleClass="main-10"
 						filterBy="#{varGnr.sitTblNmb.sitTblSte.SSteNme}"
@@ -727,16 +868,12 @@
 						<h:outputText value="#{varGnr.sitTblNmb.SNmbTrap}" />
 					</p:column>
 					<p:column headerText="Date set" styleClass="main-10 alg-ctr"
-						filterBy="#{varGnr.IGnrDteSetYr}-#{dteCtlGnr.SMthCde(varGnr.IGnrDteSetMth)}-#{dteCtlGnr.SDayCde(varGnr.IGnrDteSetDay)}"
-						sortBy="#{varGnr.IGnrDteSetYr}-#{dteCtlGnr.SMthCde(varGnr.IGnrDteSetMth)}-#{dteCtlGnr.SDayCde(varGnr.IGnrDteSetDay)}">
-						<h:outputText
-							value="#{varGnr.IGnrDteSetYr}-#{dteCtlGnr.SMthCde(varGnr.IGnrDteSetMth)}-#{dteCtlGnr.SDayCde(varGnr.IGnrDteSetDay)}" />
+						filterBy="#{varGnr.dGnrDteSet}" sortBy="#{varGnr.dGnrDteSet}">
+						<h:outputText value="#{varGnr.dGnrDteSet}" />
 					</p:column>
 					<p:column headerText="Date colected" styleClass="main-10 alg-ctr"
-						filterBy="#{varGnr.IGnrDteClcYr}-#{dteCtlGnr.SMthCde(varGnr.IGnrDteClcMth)}-#{dteCtlGnr.SDayCde(varGnr.IGnrDteClcDay)}"
-						sortBy="#{varGnr.IGnrDteClcYr}-#{dteCtlGnr.SMthCde(varGnr.IGnrDteClcMth)}-#{dteCtlGnr.SDayCde(varGnr.IGnrDteClcDay)}">
-						<h:outputText
-							value="#{varGnr.IGnrDteClcYr}-#{dteCtlGnr.SMthCde(varGnr.IGnrDteClcMth)}-#{dteCtlGnr.SDayCde(varGnr.IGnrDteClcDay)}" />
+						filterBy="#{varGnr.dGnrDteClc}" sortBy="#{varGnr.dGnrDteClc}">
+						<h:outputText value="#{varGnr.dGnrDteClc}" />
 					</p:column>
 
 					<p:column headerText="Option" styleClass="bdy-10 alg-ctr"
@@ -745,30 +882,32 @@
 						<h:panelGrid styleClass="main-100" columns="2"
 							columnClasses="main-50,main-50">
 
-							<p:commandLink id="#{html.edtBtnId}" action="#{sitCtlGnr.edt()}"
-								title="#{html.edtBtnNme}" styleClass="btn-tbl alg-ctr"
-								update="@form" disabled="#{sitCtlGnr.dsbTblBtnEdt}"
+							<p:commandLink id="#{html.FRM_TBL_BTN_EDT_ID()}"
+								action="#{sitCtlGnr.edt()}"
+								value="#{html.FRM_TBL_BTN_EDT_NME()}"
+								styleClass="#{html.FRM_TBL_BTN_EDT_STL()}" update="@form"
+								disabled="#{sitCtlGnr.dsbTblBtnEdt}"
 								rendered="#{sitCtlGnr.vsbTblBtnEdt}">
-								<p:graphicImage value="#{html.icn(html.edt,16,html.png)}" />
 								<f:setPropertyActionListener target="#{sitCtlGnr.gnr}"
 									value="#{varGnr}" />
 							</p:commandLink>
-							<p:commandLink id="#{html.dltBtnId}" action="#{sitCtlGnr.dlt()}"
-								title="#{html.dltBtnNme}" styleClass="btn-tbl alg-ctr"
+							<p:commandLink id="#{html.FRM_TBL_BTN_DLT_ID()}"
+								action="#{sitCtlGnr.dlt()}"
+								value="#{html.FRM_TBL_BTN_DLT_NME()}"
+								styleClass="#{html.FRM_TBL_BTN_DLT_STL()}"
 								disabled="#{sitCtlGnr.dsbTblBtnDlt}"
 								rendered="#{sitCtlGnr.vsbTblBtnDlt}" update="@form">
-								<p:graphicImage value="#{html.icn(html.dlt,16,html.png)}" />
 								<f:setPropertyActionListener target="#{sitCtlGnr.gnr}"
 									value="#{varGnr}" />
 							</p:commandLink>
 						</h:panelGrid>
 
 						<p:blockUI id="#{html.edtBlcId}" block="dtb-sit-fld"
-							trigger="#{html.edtBtnId}">
+							trigger="#{html.FRM_TBL_BTN_EDT_ID()}">
 							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
 						</p:blockUI>
 						<p:blockUI id="#{html.dltBlcId}" block="dtb-sit-fld"
-							trigger="#{html.dltBtnId}">
+							trigger="#{html.FRM_TBL_BTN_DLT_ID()}">
 							<p:graphicImage value="#{html.imgLoad}" styleClass="img-load" />
 						</p:blockUI>
 					</p:column>
@@ -798,8 +937,7 @@
 										<h:outputText
 											value="#{sitCtlOpt.ent(varGnr.scrTblPrsRol.IPrjId).SOptAcr}" />
 										<h:outputLabel value="Week:" />
-										<h:outputText
-											value="#{method.week(method.dte(varGnr.IGnrDteClcYr,varGnr.IGnrDteClcMth,varGnr.IGnrDteClcDay))}" />
+										<h:outputText value="#{method.week(varGnr.dGnrDteClc)}" />
 										<h:outputLabel value="Location:" />
 										<h:outputText value="#{varGnr.sitTblNmb.sitTblSte.SSteNme}" />
 										<h:outputLabel value="Trap:" />
@@ -811,11 +949,9 @@
 										<h:outputLabel value="Number:" />
 										<h:outputText value="#{varGnr.sitTblNmb.SNmbTrap}" />
 										<h:outputLabel value="Date ovitrap set:" />
-										<h:outputText
-											value="#{varGnr.IGnrDteSetYr}-#{dteCtlGnr.SMthCde(varGnr.IGnrDteSetMth)}-#{dteCtlGnr.SDayCde(varGnr.IGnrDteSetDay)}" />
+										<h:outputText value="#{varGnr.dGnrDteSet}" />
 										<h:outputLabel value="Date ovitrap colected:" />
-										<h:outputText
-											value="#{varGnr.IGnrDteClcYr}-#{dteCtlGnr.SMthCde(varGnr.IGnrDteClcMth)}-#{dteCtlGnr.SDayCde(varGnr.IGnrDteClcDay)}" />
+										<h:outputText value="#{varGnr.dGnrDteClc}" />
 										<h:outputLabel value="Trap recovered:" />
 										<h:outputText value="#{method.chgBoolean(varGnr.BGnrTrpRcv)}" />
 										<h:outputLabel value="Trap set up:" />

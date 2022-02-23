@@ -2,6 +2,8 @@ package ec.gob.inspi.gidi.sit.ent;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,6 +31,20 @@ public class SitTblSte implements Serializable {
 	//bi-directional many-to-one association to SitTblNmb
 	@OneToMany(mappedBy="sitTblSte")
 	private List<SitTblNmb> sitTblNmbs;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "d_ste_rgs_dte")
+	private Date dSteRgsDte;
+	
+	@Column(name="s_ste_rgs_tme")
+	private String sSteRgsTme;
+	
+	@Column(name="b_ste_stt")
+	private Boolean bSteStt;
+	
+	@ManyToOne
+	@JoinColumn(name = "i_ste_rgs_prs_rol_id")
+	private ScrTblPrsRol scrTblPrsRol;
 
 	public SitTblSte() {
 	}
@@ -77,6 +93,38 @@ public class SitTblSte implements Serializable {
 		sitTblNmb.setSitTblSte(null);
 
 		return sitTblNmb;
+	}
+
+	public Date getdSteRgsDte() {
+		return dSteRgsDte;
+	}
+
+	public void setdSteRgsDte(Date dSteRgsDte) {
+		this.dSteRgsDte = dSteRgsDte;
+	}
+
+	public String getsSteRgsTme() {
+		return sSteRgsTme;
+	}
+
+	public void setsSteRgsTme(String sSteRgsTme) {
+		this.sSteRgsTme = sSteRgsTme;
+	}
+
+	public Boolean getbSteStt() {
+		return bSteStt;
+	}
+
+	public void setbSteStt(Boolean bSteStt) {
+		this.bSteStt = bSteStt;
+	}
+
+	public ScrTblPrsRol getScrTblPrsRol() {
+		return scrTblPrsRol;
+	}
+
+	public void setScrTblPrsRol(ScrTblPrsRol scrTblPrsRol) {
+		this.scrTblPrsRol = scrTblPrsRol;
 	}
 
 }

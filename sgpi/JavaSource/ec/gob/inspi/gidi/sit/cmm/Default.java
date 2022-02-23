@@ -9,16 +9,17 @@ import java.util.GregorianCalendar;
 
 import javax.faces.bean.ManagedBean;
 
-
 @ManagedBean
 public class Default {
 
 	public Default() {
 		// TODO Auto-generated constructor stub
 	}
+
 	public int IDflVle() {
 		return -99;
 	}
+
 	public String acr() {
 		return "sgpi";
 	}
@@ -47,8 +48,20 @@ public class Default {
 	}
 
 	/** RETORNA LA FECHA ACTUAL **/
-	public Date dCurrentDate() {
+	public static Date dCurrentDate() {
 		return new Date();
+	}
+
+	/** FUNCION: UN MES ANTES QUE LA FECHA ACTUAL **/
+	public static Date D_DAY_SUBTRACT(Date DDte, int mnts) {
+		Calendar cln = Calendar.getInstance();
+		cln.setTime(DDte);
+		cln.add(Calendar.DATE, mnts);
+		return cln.getTime();
+	}
+
+	public static int I_DAYS_SBS() {
+		return -8;
 	}
 
 	public int yrDfl() {
@@ -79,11 +92,10 @@ public class Default {
 	public String cmpStr() {
 		return "";
 	}
-	
+
 	public String cmpTime() {
 		return "00";
 	}
-	
 
 	public String noneLstNme() {
 		return "";

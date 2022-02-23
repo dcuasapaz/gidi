@@ -42,26 +42,17 @@ public class SitTblGnr implements Serializable {
 	@Column(name = "d_gnr_dte_rgs")
 	private Date dGnrDteRgs;
 
-	@Column(name = "i_epi_id")
-	private Integer iEpiId;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "d_gnr_dte_set")
+	private Date dGnrDteSet;
 
-	@Column(name = "i_gnr_dte_clc_day")
-	private Integer iGnrDteClcDay;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "d_gnr_dte_clc")
+	private Date dGnrDteClc;
 
-	@Column(name = "i_gnr_dte_clc_mth")
-	private Integer iGnrDteClcMth;
-
-	@Column(name = "i_gnr_dte_clc_yr")
-	private Integer iGnrDteClcYr;
-
-	@Column(name = "i_gnr_dte_set_day")
-	private Integer iGnrDteSetDay;
-
-	@Column(name = "i_gnr_dte_set_mth")
-	private Integer iGnrDteSetMth;
-
-	@Column(name = "i_gnr_dte_set_yr")
-	private Integer iGnrDteSetYr;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "d_gnr_rgs_dte")
+	private Date dGnrRgsDte;
 
 	@Column(name = "i_gnr_nmb_egs_brk")
 	private Integer iGnrNmbEgsBrk;
@@ -74,6 +65,9 @@ public class SitTblGnr implements Serializable {
 
 	@Column(name = "i_gnr_nmb_egs_vlb")
 	private Integer iGnrNmbEgsVlb;
+
+	@Column(name = "i_gnr_nmb_egs_vlb_no")
+	private Integer iGnrNmbEgsVlbNo;
 
 	@Column(name = "i_trp_id")
 	private Integer iTrpId;
@@ -171,62 +165,6 @@ public class SitTblGnr implements Serializable {
 
 	public void setDGnrDteRgs(Date dGnrDteRgs) {
 		this.dGnrDteRgs = dGnrDteRgs;
-	}
-
-	public Integer getIEpiId() {
-		return this.iEpiId;
-	}
-
-	public void setIEpiId(Integer iEpiId) {
-		this.iEpiId = iEpiId;
-	}
-
-	public Integer getIGnrDteClcDay() {
-		return this.iGnrDteClcDay;
-	}
-
-	public void setIGnrDteClcDay(Integer iGnrDteClcDay) {
-		this.iGnrDteClcDay = iGnrDteClcDay;
-	}
-
-	public Integer getIGnrDteClcMth() {
-		return this.iGnrDteClcMth;
-	}
-
-	public void setIGnrDteClcMth(Integer iGnrDteClcMth) {
-		this.iGnrDteClcMth = iGnrDteClcMth;
-	}
-
-	public Integer getIGnrDteClcYr() {
-		return this.iGnrDteClcYr;
-	}
-
-	public void setIGnrDteClcYr(Integer iGnrDteClcYr) {
-		this.iGnrDteClcYr = iGnrDteClcYr;
-	}
-
-	public Integer getIGnrDteSetDay() {
-		return this.iGnrDteSetDay;
-	}
-
-	public void setIGnrDteSetDay(Integer iGnrDteSetDay) {
-		this.iGnrDteSetDay = iGnrDteSetDay;
-	}
-
-	public Integer getIGnrDteSetMth() {
-		return this.iGnrDteSetMth;
-	}
-
-	public void setIGnrDteSetMth(Integer iGnrDteSetMth) {
-		this.iGnrDteSetMth = iGnrDteSetMth;
-	}
-
-	public Integer getIGnrDteSetYr() {
-		return this.iGnrDteSetYr;
-	}
-
-	public void setIGnrDteSetYr(Integer iGnrDteSetYr) {
-		this.iGnrDteSetYr = iGnrDteSetYr;
 	}
 
 	public Integer getIGnrNmbEgsBrk() {
@@ -383,6 +321,38 @@ public class SitTblGnr implements Serializable {
 
 	public void setBGnrStt(Boolean bGnrStt) {
 		BGnrStt = bGnrStt;
+	}
+
+	public Date getdGnrDteSet() {
+		return dGnrDteSet;
+	}
+
+	public void setdGnrDteSet(Date dGnrDteSet) {
+		this.dGnrDteSet = dGnrDteSet;
+	}
+
+	public Date getdGnrDteClc() {
+		return dGnrDteClc;
+	}
+
+	public void setdGnrDteClc(Date dGnrDteClc) {
+		this.dGnrDteClc = dGnrDteClc;
+	}
+
+	public Integer getiGnrNmbEgsVlbNo() {
+		return iGnrNmbEgsVlbNo;
+	}
+
+	public void setiGnrNmbEgsVlbNo(Integer iGnrNmbEgsVlbNo) {
+		this.iGnrNmbEgsVlbNo = iGnrNmbEgsVlbNo;
+	}
+
+	public Date getdGnrRgsDte() {
+		return dGnrRgsDte;
+	}
+
+	public void setdGnrRgsDte(Date dGnrRgsDte) {
+		this.dGnrRgsDte = dGnrRgsDte;
 	}
 
 }
