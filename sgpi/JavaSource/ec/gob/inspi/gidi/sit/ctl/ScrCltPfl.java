@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -23,23 +25,16 @@ import ec.gob.inspi.gidi.sit.cmm.Page;
 import ec.gob.inspi.gidi.sit.ent.DpaTblCnr;
 import ec.gob.inspi.gidi.sit.ent.DtaTblOpt;
 import ec.gob.inspi.gidi.sit.ent.DtaTblPr;
-import ec.gob.inspi.gidi.sit.ent.DtaTblPrsEdc;
-import ec.gob.inspi.gidi.sit.ent.DtaTblPrsEml;
-import ec.gob.inspi.gidi.sit.ent.DtaTblPrsPhn;
 import ec.gob.inspi.gidi.sit.ent.InfTblStm;
 import ec.gob.inspi.gidi.sit.ent.ScrTblPrsRol;
 import ec.gob.inspi.gidi.sit.srv.DpaSrvCnr;
 import ec.gob.inspi.gidi.sit.srv.DtaSrvOpt;
 import ec.gob.inspi.gidi.sit.srv.DtaSrvPrs;
-import ec.gob.inspi.gidi.sit.srv.DtaSrvPrsEdc;
-import ec.gob.inspi.gidi.sit.srv.DtaSrvPrsEml;
-import ec.gob.inspi.gidi.sit.srv.DtaSrvPrsPhn;
 import ec.gob.inspi.gidi.sit.srv.InfSrvStm;
 import ec.gob.inspi.gidi.sit.srv.ScrSrvPrsRol;
 
 import javax.servlet.http.HttpSession;
 
-import org.primefaces.event.RowEditEvent;
 
 
 @ManagedBean
@@ -57,6 +52,8 @@ public class ScrCltPfl {
 
 	protected ScrCtlSss sss;
 	private HttpSession session;
+	private static Logger LOG;
+	
 
 	public ScrCltPfl() {
 
@@ -76,13 +73,9 @@ public class ScrCltPfl {
 		lstIdn = new ArrayList<DtaTblOpt>();
 		lstPhnTpe = new ArrayList<DtaTblOpt>();
 		lstEmlTpe = new ArrayList<DtaTblOpt>();
-		prsPhn = new DtaTblPrsPhn();
-
-		lstPrsPhn = new ArrayList<DtaTblPrsPhn>();
-
-		prsEdc = new DtaTblPrsEdc();
-
+		
 		session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		LOG = Logger.getLogger(this.getClass().getName());
 
 	}
 
@@ -90,9 +83,7 @@ public class ScrCltPfl {
 	public void init() {
 
 		this.cptInit();
-		this.newPhnTpe();
-		this.newPrsEml();
-
+		
 		prl = this.loadPrl();
 		
 		emlAnt = prl.getDtaTblPr().getSPrsEml();
@@ -111,24 +102,14 @@ public class ScrCltPfl {
 
 		lstPhnTpe = this.loadDtaOpt(cde.dtaPhnTpe());
 
-		this.loadPrsPhn(prl.getDtaTblPr().getIPrsId());
-
+	
 		this.loadCnr();
 		ICnrId = prl.getDtaTblPr().getDpaTblCnr().getICnrId();
 
 		/******************************************************/
-		/** DTA-EDC **/
-		this.loadPrsEdc(prl.getDtaTblPr().getIPrsId());
-		this.actDtaPrsEdc(true, true, false);
-		this.actBtnDtaPrsEdcNew(false, true);
-		this.actBtnDtaPrsEdcSve(true, true);
-		this.actBtnDtaPrsEdcRst(true, true);
-		this.actBtnDtaPrsEdcDlt(false, true);
-		this.actDtaPrsEdcLvl(false, true, false);
 		lstLvlSrc = this.loadDtaOpt(cde.dtaLvl());
 		/******************************************************/
 		/** DTA-EML **/
-		this.loadPrsEml(prl.getDtaTblPr().getIPrsId());
 		this.actDtaPrsEml(true, true, false);
 		this.actBtnDtaPrsEmlNew(false, true);
 		this.actBtnDtaPrsEmlSve(true, true);
@@ -237,127 +218,7 @@ public class ScrCltPfl {
 		vsbBtnRstPrsPhn = vsb;
 	}
 
-	private List<DtaTblPrsPhn> lstPrsPhn;
-	private DtaTblPrsPhn prsPhn;
-	@EJB
-	protected DtaSrvPrsPhn sPrsPhn;
-
-	private void newPhnTpe() {
-		prsPhn = new DtaTblPrsPhn();
-		lstPhnTpe = new ArrayList<DtaTblOpt>();
-		IPhnTpeId = 0;
-	}
-
-	private void loadPrsPhn(int IPrsId) {
-		try {
-			lstPrsPhn = sPrsPhn.lstPrsPhn(IPrsId);
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnLoad(), nme.actAdd(),
-					DtaTblPrsPhn.class.getSimpleName(), e.getMessage());
-		}
-	}
-
-	public void addPrsPhn() {
-		this.actPrsPhn(false, true, false);
-		this.actBtnSvePrsPhn(false, true);
-		this.actBtnRstPrsPhn(false, true);
-		this.newPrsPhn();
-		lstPhnTpe = this.loadDtaOpt(cde.dtaPhnTpe());
-	}
-
-	private void newPrsPhn() {
-		prsPhn = new DtaTblPrsPhn();
-		lstPhnTpe = new ArrayList<DtaTblOpt>();
-		IPhnTpeId = 0;
-	}
-
-	public void savePrsPhn() {
-		try {
-			prsPhn.setIPrsId(prl.getDtaTblPr().getIPrsId());
-			prsPhn.setDPhnDteRgs(dfl.dCurrentDate());
-			prsPhn.setSPhnTmeRgs(dfl.currentTime());
-			prsPhn.setITpeId(IPhnTpeId);
-			sPrsPhn.insert(prsPhn);
-			this.msg.msgInf(msg.msgSaveInf());
-			this.actPrsPhn(true, true, false);
-			this.actBtnSvePrsPhn(true, true);
-			this.actBtnRstPrsPhn(true, true);
-			this.actPnlPrsPhn(true, true);
-			this.loadPrsPhn(prl.getDtaTblPr().getIPrsId());
-			this.newPrsPhn();
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(),
-					DtaTblPrsPhn.class.getSimpleName(), e.getLocalizedMessage());
-			e.printStackTrace();
-			this.msg.msgWrn(msg.msgErrSave());
-		}
-	}
-
-	public void updPrsPhn1(RowEditEvent event) {
-		try {
-			this.actPrs(false, true, true);
-			DtaTblPrsPhn aux = new DtaTblPrsPhn();
-			aux = (DtaTblPrsPhn) event.getObject();
-			sPrsPhn.update(aux);
-			this.msg.msgInf(msg.msgUpdInf());
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(),
-					DtaTblPrsPhn.class.getSimpleName(), e.getLocalizedMessage());
-			e.printStackTrace();
-			this.msg.msgWrn(msg.msgErrUpd());
-		}
-
-	}
-
-	public void updPrsPhn(DtaTblPrsPhn aux) {
-		try {
-			this.actPrs(false, true, true);
-			sPrsPhn.update(aux);
-			this.msg.msgInf(msg.msgUpdInf());
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(),
-					DtaTblPrsPhn.class.getSimpleName(), e.getLocalizedMessage());
-			e.printStackTrace();
-			this.msg.msgWrn(msg.msgErrUpd());
-		}
-
-	}
-
-	public void updPrsPhnTpe(DtaTblPrsPhn aux, int IPhnTpeId) {
-		try {
-			this.actPrs(false, true, true);
-			aux.setITpeId(IPhnTpeId);
-			sPrsPhn.update(aux);
-			this.msg.msgInf(msg.msgUpdInf());
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(),
-					DtaTblPrsPhn.class.getSimpleName(), e.getLocalizedMessage());
-			e.printStackTrace();
-			this.msg.msgWrn(msg.msgErrUpd());
-		}
-
-	}
-
-	public void dltPrsPhn() {
-		try {
-			sPrsPhn.delete(prsPhn);
-			this.msg.msgInf(msg.msgDltInf());
-			this.loadPrsPhn(prl.getDtaTblPr().getIPrsId());
-			this.newPrsPhn();
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actDlt(),
-					DtaTblPrsPhn.class.getSimpleName(), e.getLocalizedMessage());
-			e.printStackTrace();
-		}
-	}
-
-	public void rstPrsPhn() {
-		this.actPrsPhn(true, false, false);
-		this.actBtnSvePrsPhn(true, false);
-		this.actBtnRstPrsPhn(true, false);
-		this.actPnlPrsPhn(true, false);
-	}
-
+	
 	private List<DpaTblCnr> lstCnr;
 	private int ICnrId;
 	@EJB
@@ -373,8 +234,7 @@ public class ScrCltPfl {
 			this.newCnr();
 			lstCnr = scnr.srcAll();
 		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnLoad(), nme.actAdd(),
-					DtaTblOpt.class.getSimpleName(), e.getMessage());
+			LOG.log(Level.WARNING, e.getMessage());
 		}
 	}
 
@@ -394,9 +254,7 @@ public class ScrCltPfl {
 			});
 			stm = sstm.searchId(lstStmAux.get(0).getIStmId());
 		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnLoad(), nme.actAdd(),
-					InfTblStm.class.getSimpleName(), e.getMessage());
-			e.printStackTrace();
+			LOG.log(Level.WARNING, e.getMessage());
 		}
 
 	}
@@ -408,10 +266,7 @@ public class ScrCltPfl {
 			session.setAttribute("prl", prl);
 			this.msg.msgInf(msg.msgUpdInf());
 		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(), DtaTblPr.class.getSimpleName(),
-					e.getLocalizedMessage());
-			e.printStackTrace();
-			prl = this.loadPrl();
+			LOG.log(Level.WARNING, e.getMessage());
 			this.msg.msgWrn(msg.msgErrUpd());
 		}
 	}
@@ -424,9 +279,7 @@ public class ScrCltPfl {
 			this.msg.msgInf(msg.msgUpdInf());
 			this.actPrsUsr(true, true, false);
 		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(), DtaTblPr.class.getSimpleName(),
-					e.getLocalizedMessage());
-			e.printStackTrace();
+			LOG.log(Level.WARNING, e.getMessage());
 			prl = this.loadPrl();
 			this.msg.msgWrn(msg.msgErrUpd());
 		}
@@ -441,9 +294,7 @@ public class ScrCltPfl {
 			this.msg.msgInf(msg.msgUpdInf());
 			this.actPrsPsw(true, true, false);
 		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(), DtaTblPr.class.getSimpleName(),
-					e.getLocalizedMessage());
-			e.printStackTrace();
+			LOG.log(Level.WARNING, e.getMessage());
 			prl = this.loadPrl();
 			this.msg.msgWrn(msg.msgErrUpd());
 		}
@@ -461,9 +312,7 @@ public class ScrCltPfl {
 			this.msg.msgInf(msg.msgUpdInf());
 			this.actPrs(true, true, false);
 		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(), DtaTblPr.class.getSimpleName(),
-					e.getLocalizedMessage());
-			e.printStackTrace();
+			LOG.log(Level.WARNING, e.getMessage());
 			prl = this.loadPrl();
 			this.msg.msgWrn(msg.msgErrUpd());
 		}
@@ -487,9 +336,7 @@ public class ScrCltPfl {
 				this.msg.msgInf(msg.msgUpdInf());
 			}
 		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(), DtaTblPr.class.getSimpleName(),
-					e.getLocalizedMessage());
-			e.printStackTrace();
+			LOG.log(Level.WARNING, e.getMessage());
 			prl = this.loadPrl();
 			this.msg.msgWrn(msg.msgErrUpd());
 		}
@@ -515,9 +362,7 @@ public class ScrCltPfl {
 				FacesContext contex = FacesContext.getCurrentInstance();
 				contex.getExternalContext().redirect(pge.urlErrorSss());
 			} catch (IOException eX) {
-				this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnInit(), nme.actSrc(),
-						ScrTblPrsRol.class.getSimpleName(), eX.getMessage());
-				e.printStackTrace();
+				LOG.log(Level.WARNING, eX.getMessage());
 			}
 
 			return null;
@@ -535,9 +380,7 @@ public class ScrCltPfl {
 				}
 			});
 		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnInit(), nme.actSrc(),
-					ScrTblPrsRol.class.getSimpleName(), e.getMessage());
-			e.printStackTrace();
+			LOG.log(Level.WARNING, e.getMessage());
 		}
 	}
 
@@ -546,179 +389,9 @@ public class ScrCltPfl {
 	 * ------------------------- MODULE: Dta -------------------------
 	 * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	 */
-	/****************************************************************/
-	/** 01: DtaTblPrsEdc **/
-	/****************************************************************/
+	
 
-	private boolean dsbBtnDtaPrsEdcNew;
-	private boolean vsbBtnDtaPrsEdcNew;
-
-	private void actBtnDtaPrsEdcNew(boolean dsb, boolean vsb) {
-		dsbBtnDtaPrsEdcNew = dsb;
-		vsbBtnDtaPrsEdcNew = vsb;
-	}
-
-	private boolean dsbBtnDtaPrsEdcSve;
-	private boolean vsbBtnDtaPrsEdcSve;
-
-	private void actBtnDtaPrsEdcSve(boolean dsb, boolean vsb) {
-		dsbBtnDtaPrsEdcSve = dsb;
-		vsbBtnDtaPrsEdcSve = vsb;
-	}
-
-	private boolean dsbBtnDtaPrsEdcDlt;
-	private boolean vsbBtnDtaPrsEdcDlt;
-
-	private void actBtnDtaPrsEdcDlt(boolean dsb, boolean vsb) {
-		dsbBtnDtaPrsEdcDlt = dsb;
-		vsbBtnDtaPrsEdcDlt = vsb;
-	}
-
-	private boolean dsbBtnDtaPrsEdcRst;
-	private boolean vsbBtnDtaPrsEdcRst;
-
-	private void actBtnDtaPrsEdcRst(boolean dsb, boolean vsb) {
-		dsbBtnDtaPrsEdcRst = dsb;
-		vsbBtnDtaPrsEdcRst = vsb;
-	}
-
-	private boolean dsbDtaPrsEdc;
-	private boolean vsbDtaPrsEdc;
-	private boolean rqrDtaPrsEdc;
-
-	private void actDtaPrsEdc(boolean dsb, boolean vsb, boolean rqr) {
-		dsbDtaPrsEdc = dsb;
-		vsbDtaPrsEdc = vsb;
-		rqrDtaPrsEdc = rqr;
-	}
-
-	private boolean dsbDtaPrsEdcLvl;
-	private boolean vsbDtaPrsEdcLvl;
-	private boolean rqrDtaPrsEdcLvl;
-
-	private void actDtaPrsEdcLvl(boolean dsb, boolean vsb, boolean rqr) {
-		dsbDtaPrsEdcLvl = dsb;
-		vsbDtaPrsEdcLvl = vsb;
-		rqrDtaPrsEdcLvl = rqr;
-	}
-
-	private List<DtaTblPrsEdc> lstPrsEdc;
-	private int IPrsEdcId;
-	private DtaTblPrsEdc prsEdc;
-	@EJB
-	protected DtaSrvPrsEdc sPrsEdc;
-
-	private void newLstPrsEdc() {
-		lstPrsEdc = new ArrayList<DtaTblPrsEdc>();
-		IPrsEdcId = 0;
-	}
-
-	private void loadPrsEdc(int IPrsId) {
-		try {
-			this.newLstPrsEdc();
-			lstPrsEdc = sPrsEdc.lstPrsEdc(IPrsId);
-			Collections.sort(lstPrsEdc, new Comparator<DtaTblPrsEdc>() {
-				@Override
-				public int compare(DtaTblPrsEdc o1, DtaTblPrsEdc o2) {
-					return o1.getIEdcId().compareTo(o2.getIEdcId());
-				}
-			});
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnInit(), nme.actSrc(),
-					ScrTblPrsRol.class.getSimpleName(), e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
-	public void addPrsEdc() {
-		this.actDtaPrsEdc(false, true, false);
-		this.actBtnDtaPrsEdcNew(true, true);
-		this.actBtnDtaPrsEdcSve(false, true);
-		this.actBtnDtaPrsEdcRst(false, true);
-		this.newPrsEdc();
-		lstLvl = this.loadDtaOpt(cde.dtaLvl());
-	}
-
-	private void newPrsEdc() {
-		lstLvl = new ArrayList<DtaTblOpt>();
-		ILvlId = 0;
-		prsEdc = new DtaTblPrsEdc();
-	}
-
-	public void svePrsEdc() {
-		try {
-			prsEdc.setSEdcTmeRgs(dfl.currentTime());
-			prsEdc.setDEdcDteRgs(dfl.dCurrentDate());
-			prsEdc.setSEdcDsp(mth.mtdStrNmb(prsEdc.getSEdcDsp()));
-			prsEdc.setSEdcDspSub(mth.mtdStrNmb(prsEdc.getSEdcDspSub()));
-			prsEdc.setILvlId(ILvlId);
-			prsEdc.setIPrsId(prl.getDtaTblPr().getIPrsId());
-			sPrsEdc.insert(prsEdc);
-			this.msg.msgInf(msg.msgSaveInf());
-			this.loadPrsEdc(prl.getDtaTblPr().getIPrsId());
-			this.actDtaPrsEdc(true, true, false);
-			this.actBtnDtaPrsEdcNew(false, true);
-			this.actBtnDtaPrsEdcSve(true, true);
-			this.actBtnDtaPrsEdcRst(true, true);
-			this.newPrsEdc();
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnInit(), nme.actSave(),
-					DtaTblPrsEdc.class.getSimpleName(), e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
-	public void UpdPrsEdcLvl(DtaTblPrsEdc prsEdc, int ILvlId) {
-		try {
-			this.actDtaPrsEdcLvl(false, true, true);
-			prsEdc.setSEdcDsp(mth.mtdStrNmb(prsEdc.getSEdcDsp()));
-			prsEdc.setSEdcDspSub(mth.mtdStrNmb(prsEdc.getSEdcDspSub()));
-			prsEdc.setILvlId(ILvlId);
-			sPrsEdc.update(prsEdc);
-			this.msg.msgInf(msg.msgUpdInf());
-			this.loadPrsEdc(prl.getDtaTblPr().getIPrsId());
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnInit(), nme.actUpd(),
-					DtaTblPrsEdc.class.getSimpleName(), e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
-	public void updPrsEdc(DtaTblPrsEdc prsEdc) {
-		try {
-			this.actDtaPrsEdcLvl(false, true, true);
-			prsEdc.setSEdcDsp(mth.mtdStrNmb(prsEdc.getSEdcDsp()));
-			prsEdc.setSEdcDspSub(mth.mtdStrNmb(prsEdc.getSEdcDspSub()));
-			sPrsEdc.update(prsEdc);
-			this.msg.msgInf(msg.msgUpdInf());
-			this.loadPrsEdc(prl.getDtaTblPr().getIPrsId());
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnInit(), nme.actUpd(),
-					DtaTblPrsEdc.class.getSimpleName(), e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
-	public void dltPrsEdc() {
-		try {
-			sPrsEdc.delete(prsEdc);
-			this.msg.msgInf(msg.msgDltInf());
-			this.loadPrsEdc(prl.getDtaTblPr().getIPrsId());
-			this.newPrsEdc();
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnInit(), nme.actDlt(),
-					DtaTblPrsEdc.class.getSimpleName(), e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
-	public void rstPrsEdc() {
-		this.actDtaPrsEdc(true, true, false);
-		this.actBtnDtaPrsEdcNew(false, true);
-		this.actBtnDtaPrsEdcSve(true, true);
-		this.actBtnDtaPrsEdcRst(true, true);
-		this.newPrsEdc();
-	}
+	
 
 	/****************************************************************/
 	/** 02: DtaTblPrsOpt **/
@@ -744,8 +417,7 @@ public class ScrCltPfl {
 		try {
 			return sDtaOpt.lstOpt(IOptTpe);
 		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnLoad(), nme.actAdd(),
-					DtaTblOpt.class.getSimpleName(), e.getMessage());
+			LOG.log(Level.WARNING, e.getMessage());
 			return null;
 		}
 	}
@@ -806,101 +478,7 @@ public class ScrCltPfl {
 		rqrDtaPrsEmlTpe = rqr;
 	}
 
-	private List<DtaTblPrsEml> lstPrsEml;
-	private DtaTblPrsEml prsEml;
-	@EJB
-	protected DtaSrvPrsEml sPrsEml;
-
-	private void loadPrsEml(int IPrsId) {
-		try {
-			lstPrsEml = sPrsEml.lstPrsEml(IPrsId);
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnLoad(), nme.actAdd(),
-					DtaTblPrsEml.class.getSimpleName(), e.getMessage());
-		}
-	}
-
-	public void addPrsEml() {
-		this.actDtaPrsEml(false, true, false);
-		this.actBtnDtaPrsEmlNew(true, true);
-		this.actBtnDtaPrsEmlSve(false, true);
-		this.actBtnDtaPrsEmlRst(false, true);
-		this.newPrsEml();
-		lstEmlTpe = this.loadDtaOpt(cde.dtaEmlTpe());
-	}
-
-	private void newPrsEml() {
-		prsEml = new DtaTblPrsEml();
-		lstEmlTpe = new ArrayList<DtaTblOpt>();
-		IEmlTpeId = 0;
-	}
-
-	public void savePrsEml() {
-		try {
-			prsEml.setIPrsId(prl.getDtaTblPr().getIPrsId());
-			prsEml.setDEmlDteRgs(dfl.dCurrentDate());
-			prsEml.setSEmlTmeRgs(dfl.currentTime());
-			prsEml.setITpeId(IEmlTpeId);
-			sPrsEml.insert(prsEml);
-			this.msg.msgInf(msg.msgSaveInf());
-			this.actDtaPrsEml(true, true, false);
-			this.actBtnDtaPrsEmlNew(false, true);
-			this.actBtnDtaPrsEmlSve(true, true);
-			this.actBtnDtaPrsEmlRst(true, true);
-			this.loadPrsEml(prl.getDtaTblPr().getIPrsId());
-			this.newPrsEml();
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(),
-					DtaTblPrsEml.class.getSimpleName(), e.getLocalizedMessage());
-			e.printStackTrace();
-			this.msg.msgWrn(msg.msgErrSave());
-		}
-	}
-
-	public void updPrsEml(DtaTblPrsEml aux) {
-		try {
-			sPrsEml.update(aux);
-			this.msg.msgInf(msg.msgUpdInf());
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(),
-					DtaTblPrsEml.class.getSimpleName(), e.getLocalizedMessage());
-			e.printStackTrace();
-			this.msg.msgWrn(msg.msgErrUpd());
-		}
-
-	}
-
-	public void updPrsEmlTpe(DtaTblPrsEml aux, int IEmlTpeId) {
-		try {
-			this.actDtaPrsEmlTpe(false, true, true);
-			aux.setITpeId(IEmlTpeId);
-			sPrsEml.update(aux);
-			this.msg.msgInf(msg.msgUpdInf());
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actUpd(),
-					DtaTblPrsEml.class.getSimpleName(), e.getLocalizedMessage());
-			e.printStackTrace();
-			this.msg.msgWrn(msg.msgErrUpd());
-		}
-
-	}
-
-	public void dltPrsEml() {
-		try {
-			sPrsEml.delete(prsEml);
-			this.msg.msgInf(msg.msgDltInf());
-			this.loadPrsEml(prl.getDtaTblPr().getIPrsId());
-			this.newPrsEml();
-		} catch (Exception e) {
-			this.log.impCtl(ScrCltPfl.class.getSimpleName(), nme.evnSlc(), nme.actDlt(),
-					DtaTblPrsEml.class.getSimpleName(), e.getLocalizedMessage());
-			e.printStackTrace();
-		}
-	}
-
-	public void rstPrsEml() {
-
-	}
+	
 
 	public List<DtaTblOpt> getLstEmlTpe() {
 		return lstEmlTpe;
@@ -1030,21 +608,6 @@ public class ScrCltPfl {
 		this.rqrDtaPrsEmlTpe = rqrDtaPrsEmlTpe;
 	}
 
-	public List<DtaTblPrsEml> getLstPrsEml() {
-		return lstPrsEml;
-	}
-
-	public void setLstPrsEml(List<DtaTblPrsEml> lstPrsEml) {
-		this.lstPrsEml = lstPrsEml;
-	}
-
-	public DtaTblPrsEml getPrsEml() {
-		return prsEml;
-	}
-
-	public void setPrsEml(DtaTblPrsEml prsEml) {
-		this.prsEml = prsEml;
-	}
 
 	public List<DtaTblOpt> getLstLvlSrc() {
 		return lstLvlSrc;
@@ -1062,78 +625,7 @@ public class ScrCltPfl {
 		ILvlSrcId = iLvlSrcId;
 	}
 
-	public boolean isDsbBtnDtaPrsEdcNew() {
-		return dsbBtnDtaPrsEdcNew;
-	}
-
-	public void setDsbBtnDtaPrsEdcNew(boolean dsbBtnDtaPrsEdcNew) {
-		this.dsbBtnDtaPrsEdcNew = dsbBtnDtaPrsEdcNew;
-	}
-
-	public boolean isVsbBtnDtaPrsEdcNew() {
-		return vsbBtnDtaPrsEdcNew;
-	}
-
-	public void setVsbBtnDtaPrsEdcNew(boolean vsbBtnDtaPrsEdcNew) {
-		this.vsbBtnDtaPrsEdcNew = vsbBtnDtaPrsEdcNew;
-	}
-
-	public boolean isDsbBtnDtaPrsEdcSve() {
-		return dsbBtnDtaPrsEdcSve;
-	}
-
-	public void setDsbBtnDtaPrsEdcSve(boolean dsbBtnDtaPrsEdcSve) {
-		this.dsbBtnDtaPrsEdcSve = dsbBtnDtaPrsEdcSve;
-	}
-
-	public boolean isVsbBtnDtaPrsEdcSve() {
-		return vsbBtnDtaPrsEdcSve;
-	}
-
-	public void setVsbBtnDtaPrsEdcSve(boolean vsbBtnDtaPrsEdcSve) {
-		this.vsbBtnDtaPrsEdcSve = vsbBtnDtaPrsEdcSve;
-	}
-
-	public boolean isDsbBtnDtaPrsEdcDlt() {
-		return dsbBtnDtaPrsEdcDlt;
-	}
-
-	public void setDsbBtnDtaPrsEdcDlt(boolean dsbBtnDtaPrsEdcDlt) {
-		this.dsbBtnDtaPrsEdcDlt = dsbBtnDtaPrsEdcDlt;
-	}
-
-	public boolean isVsbBtnDtaPrsEdcDlt() {
-		return vsbBtnDtaPrsEdcDlt;
-	}
-
-	public void setVsbBtnDtaPrsEdcDlt(boolean vsbBtnDtaPrsEdcDlt) {
-		this.vsbBtnDtaPrsEdcDlt = vsbBtnDtaPrsEdcDlt;
-	}
-
-	public boolean isDsbBtnDtaPrsEdcRst() {
-		return dsbBtnDtaPrsEdcRst;
-	}
-
-	public void setDsbBtnDtaPrsEdcRst(boolean dsbBtnDtaPrsEdcRst) {
-		this.dsbBtnDtaPrsEdcRst = dsbBtnDtaPrsEdcRst;
-	}
-
-	public boolean isVsbBtnDtaPrsEdcRst() {
-		return vsbBtnDtaPrsEdcRst;
-	}
-
-	public void setVsbBtnDtaPrsEdcRst(boolean vsbBtnDtaPrsEdcRst) {
-		this.vsbBtnDtaPrsEdcRst = vsbBtnDtaPrsEdcRst;
-	}
-
-	public DtaTblPrsEdc getPrsEdc() {
-		return prsEdc;
-	}
-
-	public void setPrsEdc(DtaTblPrsEdc prsEdc) {
-		this.prsEdc = prsEdc;
-	}
-
+	
 	public List<DtaTblOpt> getLstLvl() {
 		return lstLvl;
 	}
@@ -1150,45 +642,7 @@ public class ScrCltPfl {
 		ILvlId = iLvlId;
 	}
 
-	public int getIPrsEdcId() {
-		return IPrsEdcId;
-	}
-
-	public void setIPrsEdcId(int iPrsEdcId) {
-		IPrsEdcId = iPrsEdcId;
-	}
-
-	public boolean isDsbDtaPrsEdc() {
-		return dsbDtaPrsEdc;
-	}
-
-	public void setDsbDtaPrsEdc(boolean dsbDtaPrsEdc) {
-		this.dsbDtaPrsEdc = dsbDtaPrsEdc;
-	}
-
-	public boolean isVsbDtaPrsEdc() {
-		return vsbDtaPrsEdc;
-	}
-
-	public void setVsbDtaPrsEdc(boolean vsbDtaPrsEdc) {
-		this.vsbDtaPrsEdc = vsbDtaPrsEdc;
-	}
-
-	public boolean isRqrDtaPrsEdc() {
-		return rqrDtaPrsEdc;
-	}
-
-	public void setRqrDtaPrsEdc(boolean rqrDtaPrsEdc) {
-		this.rqrDtaPrsEdc = rqrDtaPrsEdc;
-	}
-
-	public List<DtaTblPrsEdc> getLstPrsEdc() {
-		return lstPrsEdc;
-	}
-
-	public void setLstPrsEdc(List<DtaTblPrsEdc> lstPrsEdc) {
-		this.lstPrsEdc = lstPrsEdc;
-	}
+	
 
 	public boolean isDsbPnlPrsPhn() {
 		return dsbPnlPrsPhn;
@@ -1270,21 +724,7 @@ public class ScrCltPfl {
 		this.rqrPrsPhn = rqrPrsPhn;
 	}
 
-	public DtaTblPrsPhn getPrsPhn() {
-		return prsPhn;
-	}
-
-	public void setPrsPhn(DtaTblPrsPhn prsPhn) {
-		this.prsPhn = prsPhn;
-	}
-
-	public List<DtaTblPrsPhn> getLstPrsPhn() {
-		return lstPrsPhn;
-	}
-
-	public void setLstPrsPhn(List<DtaTblPrsPhn> lstPrsPhn) {
-		this.lstPrsPhn = lstPrsPhn;
-	}
+	
 
 	public List<DtaTblOpt> getLstGnd() {
 		return lstGnd;
@@ -1446,30 +886,7 @@ public class ScrCltPfl {
 		IPhnTpeId = iPhnTpeId;
 	}
 
-	public boolean isDsbDtaPrsEdcLvl() {
-		return dsbDtaPrsEdcLvl;
-	}
-
-	public void setDsbDtaPrsEdcLvl(boolean dsbDtaPrsEdcLvl) {
-		this.dsbDtaPrsEdcLvl = dsbDtaPrsEdcLvl;
-	}
-
-	public boolean isVsbDtaPrsEdcLvl() {
-		return vsbDtaPrsEdcLvl;
-	}
-
-	public void setVsbDtaPrsEdcLvl(boolean vsbDtaPrsEdcLvl) {
-		this.vsbDtaPrsEdcLvl = vsbDtaPrsEdcLvl;
-	}
-
-	public boolean isRqrDtaPrsEdcLvl() {
-		return rqrDtaPrsEdcLvl;
-	}
-
-	public void setRqrDtaPrsEdcLvl(boolean rqrDtaPrsEdcLvl) {
-		this.rqrDtaPrsEdcLvl = rqrDtaPrsEdcLvl;
-	}
-
+	
 	public boolean isDsbPrsUsr() {
 		return dsbPrsUsr;
 	}

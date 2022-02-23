@@ -1,0 +1,14 @@
+.ui-widget .ui-widget {
+	font-size: 0.92em;
+}
+
+.ui-widget-content a {
+	color: #fff;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td,
+	.ui-datatable tfoot th {
+	padding: 1px 1px;
+	border-width: 0.5px;
+	border-style: solid;
+}

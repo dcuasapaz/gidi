@@ -30,6 +30,10 @@ public class SitTblGnrDtl implements Serializable {
 
 	@Column(name="i_gnr_dtl_nmb")
 	private Integer iGnrDtlNmb;
+	
+	@Column(name="i_gnr_dtl_nmb_dd")
+	private Integer iGnrDtlNmbDd;
+
 
 	@Column(name="i_gns_id")
 	private Integer iGnsId;
@@ -154,6 +158,14 @@ public class SitTblGnrDtl implements Serializable {
 
 	public void setIPrcId(Integer iPrcId) {
 		IPrcId = iPrcId;
+	}
+
+	public Integer getiGnrDtlNmbDd() {
+		return iGnrDtlNmbDd;
+	}
+
+	public void setiGnrDtlNmbDd(Integer iGnrDtlNmbDd) {
+		this.iGnrDtlNmbDd = iGnrDtlNmbDd;
 	}
 
 }

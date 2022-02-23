@@ -1,6 +1,8 @@
 package ec.gob.inspi.gidi.sit.ent;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.*;
 
 
@@ -30,6 +32,23 @@ public class SitTblOpt implements Serializable {
 
 	@Column(name="s_opt_nme")
 	private String sOptNme;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "d_opt_rgs_dte")
+	private Date dOptRgsDte;
+	
+	@Column(name="s_opt_rgs_tme")
+	private String sOptRgsTme;
+	
+	@Column(name="b_opt_stt")
+	private Boolean bOptStt;
+	
+	@ManyToOne
+	@JoinColumn(name = "i_opt_rgs_prs_rol_id")
+	private ScrTblPrsRol scrTblPrsRol;
+	
+	@Column(name="i_opt_ctg")
+	private Integer iOptCtg;
 
 	public SitTblOpt() {
 	}
@@ -72,6 +91,46 @@ public class SitTblOpt implements Serializable {
 
 	public void setSOptNme(String sOptNme) {
 		this.sOptNme = sOptNme;
+	}
+
+	public Date getdOptRgsDte() {
+		return dOptRgsDte;
+	}
+
+	public void setdOptRgsDte(Date dOptRgsDte) {
+		this.dOptRgsDte = dOptRgsDte;
+	}
+
+	public String getsOptRgsTme() {
+		return sOptRgsTme;
+	}
+
+	public void setsOptRgsTme(String sOptRgsTme) {
+		this.sOptRgsTme = sOptRgsTme;
+	}
+
+	public Boolean getbOptStt() {
+		return bOptStt;
+	}
+
+	public void setbOptStt(Boolean bOptStt) {
+		this.bOptStt = bOptStt;
+	}
+
+	public ScrTblPrsRol getScrTblPrsRol() {
+		return scrTblPrsRol;
+	}
+
+	public void setScrTblPrsRol(ScrTblPrsRol scrTblPrsRol) {
+		this.scrTblPrsRol = scrTblPrsRol;
+	}
+
+	public Integer getiOptCtg() {
+		return iOptCtg;
+	}
+
+	public void setiOptCtg(Integer iOptCtg) {
+		this.iOptCtg = iOptCtg;
 	}
 
 }

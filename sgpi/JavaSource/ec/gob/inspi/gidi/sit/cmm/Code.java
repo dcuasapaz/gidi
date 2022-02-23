@@ -42,8 +42,11 @@ public class Code {
 
 	/****************************************************************************/
 	/* +++++++++++++++++++++++++++++++ MDL: SIT +++++++++++++++++++++++++++++++ */
-	/****************************************************************************/
-
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// AUTOR | DATE | OBJECT | DESCRIPTION
+	// --------------------------------------------------------------
+	// Diego Cuasapaz | 2022-02-22 | Code Option | UPPER METHOD
+	// --------------------------------------------------------------
 	public int sitTrp() {
 		return 2;
 	}
@@ -51,21 +54,29 @@ public class Code {
 	public int sitTpe() {
 		return 7;
 	}
+	
+	public static int I_SIT_TPE_FLD() {
+		return 701;
+	}
 
 	public int sitPrj() {
 		return 1;
 	}
 
-	public int sitSex() {
+	public int I_SIT_SEX() {
 		return 4;
 	}
 
-	public int sitSpc() {
+	public int I_SIT_GNR() {
 		return 5;
 	}
 
-	public int sitStg() {
+	public static int I_SIT_STG() {
 		return 6;
+	}
+
+	public static int I_SIT_CTN() {
+		return 9;
 	}
 
 	public int sitLrv() {

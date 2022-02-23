@@ -17,6 +17,101 @@ public class Message {
 
 	}
 
+	public static String S_LOG_NME_SRV = "SERVICE --> ";
+	public static String S_LOG_NME_CTL = "CONTROLLER --> ";
+
+	public static String D_MSG_FRM01_PRC_DTE() {
+		return "Date Process";
+	}
+
+	public static String S_MSG_FRM01_PRC() {
+		return "Process";
+	}
+
+	public static String S_MSG_FRM01_STE() {
+		return "Location";
+	}
+
+	public static String S_MSG_FRM01_TRP() {
+		return "Trap";
+	}
+
+	public static String S_MSG_FRM01_NMB() {
+		return "Number";
+	}
+
+	public static String S_MSG_FRM01_TCH_FLD() {
+		return "Field agent";
+	}
+
+	public static String D_MSG_FRM01_DTE_SET() {
+		return "Date ovitrap Set";
+	}
+
+	public static String D_MSG_FRM01_DTE_CLC() {
+		return "Date ovitrap Colected";
+	}
+
+	/*******************************************************************************************************/
+	public static String I_MSG_FRM01_EGS_WHL() {
+		return "N°. Whole Eggs";
+	}
+
+	public static String I_MSG_FRM01_EGS_BRK() {
+		return "N°. Broken Eggs";
+	}
+
+	public static String I_MSG_FRM01_EGS_VLB() {
+		return "N°. Viable Eggs";
+	}
+
+	public static String I_MSG_FRM01_EGS_VLB_NO() {
+		return "N°. No Viable Eggs";
+	}
+
+	/*******************************************************************************************************/
+	public static String I_MSG_FRM01_LRP_NMB() {
+		return "N°. Live";
+	}
+
+	public static String I_MSG_FRM01_LRP_NMB_DD() {
+		return "N°. Dead";
+	}
+
+	public static String I_MSG_FRM01_LRP_STG() {
+		return "Stage";
+	}
+	
+	public static String I_MSG_FRM01_LRP_CTN() {
+		return "Contain";
+	}
+
+	/*******************************************************************************************************/
+	public static String S_MSG_FRMO1_INPUT_DST_ZERO = "Enter a non-zero value";
+
+	/*******************************************************************************************************/
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// AUTOR | DATE | OBJECT | DESCRIPTION
+	// --------------------------------------------------------------
+	// Diego Cuasapaz | 2022-02-22 | Adults | Message, default ":"
+	// --------------------------------------------------------------
+	public static String I_MSG_FRM01_ADL_NMB() {
+		return "N°. Live";
+	}
+
+	public static String I_MSG_FRM01_ADL_NMB_DD() {
+		return "N°. Dead";
+	}
+
+	public static String I_MSG_FRM01_ADL_SEX() {
+		return "Sex";
+	}
+
+	public static String I_MSG_FRM01_ADL_GNR() {
+		return "Genus/Species";
+	}
+
 	public String ntaRcvPss() {
 		return "<b>Nota: </b>Es recomendable cambiar la contraseï¿½a para que pueda recordarla. ";
 	}

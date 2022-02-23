@@ -38,7 +38,7 @@ public class DteCtlGnr {
 	private void loadYr() {
 		try {
 			lstYr = new ArrayList<Integer>();
-			List<SitTblOpt> lstYrAux = SOpt.lstOpt(9999);
+			List<SitTblOpt> lstYrAux = SOpt.lstOpt(9999, false);
 			Iterator<SitTblOpt> auxYr = lstYrAux.iterator();
 			while (auxYr.hasNext()) {
 				SitTblOpt auxOpt = new SitTblOpt();

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -43,6 +45,7 @@ public class SitCtlGnr {
 	protected Name nme;
 
 	protected Log log;
+	private static Logger LOG;
 
 	public SitCtlGnr() {
 		gnr = new SitTblGnr();
@@ -57,6 +60,7 @@ public class SitCtlGnr {
 		sss = new ScrCtlSss();
 		log = new Log();
 		nme = new Name();
+		LOG = Logger.getLogger(this.getClass().getName());
 	}
 
 	public void loadPrl() {
@@ -107,6 +111,7 @@ public class SitCtlGnr {
 		this.actBLrs(true, true, false);
 		this.actBAdl(true, true, false);
 		this.actLrsStg(true, true, false);
+		this.actLrsCtn(true, true, false);
 		this.actBtnAdlAdd(true, true);
 		this.actBtnAdlNew(true, true);
 		this.actBtnAdlRst(true, true);
@@ -124,6 +129,7 @@ public class SitCtlGnr {
 		this.actGnrDtlLrvSpc(true, true, false);
 
 		this.actAdlNmb(true, true, false);
+		this.actAdlNmbDd(true, true, false);
 		this.actAdlSex(true, true, false);
 		this.actAdlSpc(true, true, false);
 		this.actBtnAdlAdd(true, true);
@@ -131,6 +137,9 @@ public class SitCtlGnr {
 		this.actBtnAdlRst(true, true);
 
 		this.actGnrPrfAgn(true, true, false);
+
+		this.actBtnRstPrfTch(true, true);
+
 		this.actGnrPrfTch(true, true, false);
 		this.newPrsPrfAgnSlc();
 		this.newPrsPrfTchSlc();
@@ -151,6 +160,12 @@ public class SitCtlGnr {
 		this.actPrj(false, true, true);
 		this.actSte(false, true, true);
 		this.actTpe(false, true, true);
+
+		this.actBEgs(true, true, false);
+		this.actBLrs(true, true, false);
+		this.actBAdl(true, true, false);
+		this.actGnrPrfAgn(true, true, false);
+
 	}
 
 	public void add() {
@@ -160,16 +175,13 @@ public class SitCtlGnr {
 			IYrId = 0;
 			ISteId = 0;
 			INmbId = 0;
-			IDteSetYr = 0;
-			IDteSetMth = 0;
-			IDteSetDay = 0;
-			IDteClcYr = 0;
-			IDteClcMth = 0;
-			IDteClcDay = 0;
 			gnr.setIGnrNmbEgsBrk(0);
 			gnr.setIGnrNmbEgsCpl(0);
 			gnr.setIGnrNmbEgsUsd(0);
 			gnr.setIGnrNmbEgsVlb(0);
+			gnr.setdGnrDteSet(Default.D_DAY_SUBTRACT(Default.dCurrentDate(), Default.I_DAYS_SBS()));
+			gnr.setdGnrDteClc(Default.dCurrentDate());
+			gnr.setdGnrRgsDte(Default.dCurrentDate());
 			this.newAdlSlc();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -203,7 +215,6 @@ public class SitCtlGnr {
 		ILrsStgId = 0;
 		ISexId = 0;
 		ISpcId = 0;
-		ITtlLrsId = 0;
 		this.actGnrPrfAgn(false, true, false);
 		this.actGnrPrfTch(false, true, false);
 		this.actBtnSve(false, true);
@@ -246,6 +257,7 @@ public class SitCtlGnr {
 		this.actBAdl(true, true, false);
 		BGnrAdl = false;
 		this.actAdlNmb(true, true, false);
+		this.actAdlNmbDd(true, true, false);
 		this.actAdlSex(true, true, false);
 		this.actAdlSpc(true, true, false);
 		this.actBtnAdlAdd(true, true);
@@ -277,8 +289,8 @@ public class SitCtlGnr {
 	public void sve() {
 		try {
 			this.loadPrl();
-			if (SGnr.sve(prl, gnr, nmb, ITrpId, IDteSetYr, IDteSetMth, IDteSetDay, IDteClcYr, IDteClcMth, IDteClcDay,
-					BGnrTrpRcv, BGnrTrpSup, BGnrEgs, BGnrLrs, BGnrAdl, ITpeId) != false) {
+
+			if (SGnr.sve(prl, gnr, nmb, ITrpId, BGnrTrpRcv, BGnrTrpSup, BGnrEgs, BGnrLrs, BGnrAdl, ITpeId) != false) {
 				try {
 					if (lstLrsStgSlc.size() > 0) {
 						for (SitTblGnrDtl gnrDtlLrvAux : lstLrsStgSlc) {
@@ -291,7 +303,7 @@ public class SitCtlGnr {
 						}
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 					this.msg.msgWrn("No larvae information");
 				}
 
@@ -306,7 +318,7 @@ public class SitCtlGnr {
 						}
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 					this.msg.msgWrn("No adult information");
 				}
 
@@ -321,7 +333,7 @@ public class SitCtlGnr {
 						}
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 					this.msg.msgWrn("No Field agent information");
 				}
 
@@ -336,7 +348,7 @@ public class SitCtlGnr {
 						}
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 					this.msg.msgWrn("No  Lab technician information");
 				}
 
@@ -346,8 +358,9 @@ public class SitCtlGnr {
 			} else {
 				this.msg.msgErr("Information is not stored correctly");
 			}
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 		}
 	}
 
@@ -379,7 +392,7 @@ public class SitCtlGnr {
 			});
 			return auxLstGnrDtl;
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 			return null;
 		}
 	}
@@ -567,6 +580,16 @@ public class SitCtlGnr {
 			ste = new SitTblSte();
 			ste = SSte.searchId(ISteId);
 			this.actTrp(false, true, true);
+
+			this.BGnrTrpRcv = false;
+			this.BGnrTrpSup = false;
+
+			this.actTrpRcv(false, true, false);
+			this.actTrpSup(false, true, false);
+
+			this.actGnrPrfAgn(false, true, true);
+			this.actBtnRstPrfTch(false, true);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -635,42 +658,10 @@ public class SitCtlGnr {
 		rqrDteClc = rqr;
 	}
 
-	private int IDteSetYr;
-	private int IDteSetMth;
-	private int IDteSetDay;
-	private int IDteClcYr;
-	private int IDteClcMth;
-	private int IDteClcDay;
-
-	public void chsSetYr() {
-		IDteSetMth = 0;
-		IDteSetDay = 0;
-	}
-
-	public void chsSetMth() {
-		IDteSetDay = 0;
-	}
-
-	public void chsSetDay() {
-
-	}
-
-	public void chsClcYr() {
-		IDteClcMth = 0;
-		IDteClcDay = 0;
-	}
-
-	public void chsClcMth() {
-		IDteClcDay = 0;
-	}
-
-	public void chsClcDay() {
-
+	public void chsClc() {
 		try {
-			if (mth.vldDte(mth.dte(IDteSetYr, IDteSetMth, IDteSetDay),
-					mth.dte(IDteClcYr, IDteClcMth, IDteClcDay)) == -1) { // # FECHA FIN > FECHA INICIO
-				if (mth.vldDte(mth.dte(IDteSetYr, IDteSetMth, IDteSetDay),
-						mth.dte(IDteClcYr, IDteClcMth, IDteClcDay)) == 0) { // # FECHA FIN = FECHA INICIO
+			if (mth.vldDte(gnr.getdGnrDteSet(), gnr.getdGnrDteClc()) == -1) { // # FECHA FIN > FECHA INICIO
+				if (mth.vldDte(gnr.getdGnrDteSet(), gnr.getdGnrDteClc()) == 0) { // # FECHA FIN = FECHA INICIO
 				} else {
 					this.actBEgs(false, true, false);
 					this.actBLrs(false, true, false);
@@ -678,11 +669,8 @@ public class SitCtlGnr {
 					this.actTrpRcv(false, true, false);
 					this.actTrpSup(false, true, false);
 					this.actGnrPrfAgn(false, true, false);
-					this.actGnrPrfTch(false, true, false);
-
 				}
-			} else if (mth.vldDte(mth.dte(IDteSetYr, IDteSetMth, IDteSetDay),
-					mth.dte(IDteClcYr, IDteClcMth, IDteClcDay)) == 1) {// # FECHA FIN < FECHA INICIO
+			} else if (mth.vldDte(gnr.getdGnrDteSet(), gnr.getdGnrDteClc()) == 1) {// # FECHA FIN < FECHA INICIO
 				this.msg.msgWrn("La fecha ingresada es incorrecta");
 			}
 		} catch (Exception e) {
@@ -919,18 +907,6 @@ public class SitCtlGnr {
 		rqrGnrNmbLrsPps = rqr;
 	}
 
-	private void actGnrEgs(boolean dsb, boolean vsb, boolean rqr) {
-		dsbGnrEgs = dsb;
-		vsbGnrEgs = vsb;
-		rqrGnrEgs = rqr;
-	}
-
-	private void actGnrLrv(boolean dsb, boolean vsb, boolean rqr) {
-		dsbGnrLrv = dsb;
-		vsbGnrLrv = vsb;
-		rqrGnrLrv = rqr;
-	}
-
 	private void newGnr() {
 		lstGnr = new ArrayList<SitTblGnr>();
 	}
@@ -942,8 +918,7 @@ public class SitCtlGnr {
 			lstGnr = SGnr.lstPrsRol(prl.getIPrjId());
 			Collections.sort(lstGnr, new Comparator<SitTblGnr>() {
 				public int compare(SitTblGnr o1, SitTblGnr o2) {
-					return mth.dte(o2.getIGnrDteClcYr(), o2.getIGnrDteClcMth(), o2.getIGnrDteClcDay())
-							.compareTo(mth.dte(o1.getIGnrDteClcYr(), o1.getIGnrDteClcMth(), o1.getIGnrDteClcDay()));
+					return o2.getdGnrDteClc().compareTo(o1.getdGnrDteClc());
 				}
 			});
 		} catch (Exception e) {
@@ -952,8 +927,15 @@ public class SitCtlGnr {
 	}
 
 	public void chsTrpRcv() {
-		this.actGnrEgs(true, true, false);
-		this.actGnrLrv(true, true, false);
+		if (this.BGnrTrpRcv == false) {
+			this.actBEgs(true, true, false);
+			this.actBLrs(true, true, false);
+			this.actBAdl(true, true, false);
+		} else {
+			this.actBEgs(false, true, false);
+			this.actBLrs(false, true, false);
+			this.actBAdl(false, true, false);
+		}
 	}
 
 	public void chsTrpSup() {
@@ -1029,20 +1011,28 @@ public class SitCtlGnr {
 	private boolean vsbLrsStg;
 	private boolean rqrLrsStg;
 
+	private boolean dsbLrsCtn;
+	private boolean vsbLrsCtn;
+	private boolean rqrLrsCtn;
+
 	private int ILrsStgId;
-	private int ITtlLrsId = 0;
 
 	private List<SitTblGnrDtl> lstLrsStgSlc;
 	private SitTblGnrDtl gnrDtlLrv;
 
 	public void chsLrs() {
+		this.newLrsStg();
 		if (BGnrLrs != false) {
 			this.actGnrNmbLrsPps(false, true, true);
 			this.actLrsStg(false, true, true);
+			this.actLrsCtn(false, true, false);
 			this.actBtnLrvAdd(false, true);
+			this.actGnrDtlLrvNmbDied(false, true, true);
 		} else {
 			this.actGnrNmbLrsPps(true, true, false);
+			this.actGnrDtlLrvNmbDied(true, true, false);
 			this.actLrsStg(true, true, false);
+			this.actLrsCtn(true, true, false);
 			this.actBtnLrvAdd(true, true);
 		}
 		this.newLstLrsStg();
@@ -1054,46 +1044,85 @@ public class SitCtlGnr {
 		rqrLrsStg = rqr;
 	}
 
+	private void actLrsCtn(boolean dsb, boolean vsb, boolean rqr) {
+		dsbLrsCtn = dsb;
+		vsbLrsCtn = vsb;
+		rqrLrsCtn = rqr;
+	}
+
 	public void newLstLrsStg() {
 		lstLrsStgSlc = new ArrayList<SitTblGnrDtl>();
-
 	}
 
 	public void newLrsStg() {
 		ILrsStgId = 0;
 		gnrDtlLrv = new SitTblGnrDtl();
+		gnrDtlLrv.setIGnrDtlNmb(0);
+		gnrDtlLrv.setiGnrDtlNmbDd(0);
 		this.actGnrNmbLrsPps(false, true, true);
+		this.actGnrDtlLrvNmbDied(false, true, true);
 		this.actLrsStg(false, true, true);
+		this.actLrsCtn(false, true, false);
 		this.actBtnLrvAdd(false, true);
 		this.actBtnLrvNew(true, true);
+		this.actBtnLrvRst(false, true);
 	}
 
 	public void addLrsStg() {
 		try {
-			gnrDtlLrv.setIStgId(ILrsStgId);
-			gnrDtlLrv.setITpeDtl(cde.sitLrv());
-			gnrDtlLrv.setIGnsId(dfl.IDflVle());
-			gnrDtlLrv.setISexId(dfl.IDflVle());
-			lstLrsStgSlc.add(gnrDtlLrv);
-			this.actGnrObsLrv(false, true, false);
-			this.actGnrDtlLrvNmbDied(false, true, false);
-			this.actBtnLrvAdd(true, true);
-			this.actBtnLrvNew(false, true);
-			this.actGnrNmbLrsPps(true, true, false);
-			this.actLrsStg(true, true, false);
-			ITtlLrsId = 0;
-			for (SitTblGnrDtl gnrDtlAux : lstLrsStgSlc) {
-				ITtlLrsId = ITtlLrsId + gnrDtlAux.getIGnrDtlNmb();
+			if (ITpeId == Code.I_SIT_TPE_FLD()) {
+				gnrDtlLrv.setIStgId(ILrsStgId);
+				gnrDtlLrv.setITpeDtl(cde.sitLrv());
+				gnrDtlLrv.setIGnsId(dfl.IDflVle());
+				gnrDtlLrv.setISexId(dfl.IDflVle());
+				gnrDtlLrv.setIPrcId(ITpeId);
+				gnrDtlLrv.setDGnrDtlDtePrc(gnr.getdGnrRgsDte());
+				if (gnrDtlLrv.getIGnrDtlNmb() == 0 && gnrDtlLrv.getiGnrDtlNmbDd() == 0) {
+					this.msg.msgWrn(Message.S_MSG_FRMO1_INPUT_DST_ZERO);
+				} else {
+					lstLrsStgSlc.add(gnrDtlLrv);
+					this.actGnrObsLrv(false, true, false);
+					this.actGnrDtlLrvNmbDied(true, true, false);
+					this.actBtnLrvAdd(true, true);
+					this.actBtnLrvNew(false, true);
+					this.actBtnLrvRst(true, true);
+					this.actGnrNmbLrsPps(true, true, false);
+					this.actLrsStg(true, true, false);
+					this.actLrsCtn(true, true, false);
+
+				}
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 		}
 
 	}
 
-	public void rstLrsStg() {
+	public void dltLrsStg() {
+		try {
+			lstLrsStgSlc.remove(gnrDtlLrv);
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
+		}
+	}
 
+	public void rstLrsStg() {
+		try {
+			this.actBtnLrvAdd(true, true);
+			this.actBtnLrvNew(false, true);
+			this.actBtnLrvRst(true, true);
+			ILrsStgId = 0;
+			gnrDtlLrv = new SitTblGnrDtl();
+			gnrDtlLrv.setIGnrDtlNmb(0);
+			gnrDtlLrv.setiGnrDtlNmbDd(0);
+			this.actGnrDtlLrvNmbDied(true, true, false);
+			this.actGnrNmbLrsPps(true, true, false);
+			this.actLrsStg(true, true, false);
+			this.actLrsCtn(true, true, false);
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
+		}
 	}
 
 	/****************************************************************************/
@@ -1103,6 +1132,10 @@ public class SitCtlGnr {
 	private boolean dsbAdlNmb;
 	private boolean vsbAdlNmb;
 	private boolean rqrAdlNmb;
+
+	private boolean dsbAdlNmbDd;
+	private boolean vsbAdlNmbDd;
+	private boolean rqrAdlNmbDd;
 
 	private boolean dsbAdlSex;
 	private boolean vsbAdlSex;
@@ -1135,25 +1168,33 @@ public class SitCtlGnr {
 			gnrDtlAdl = new SitTblGnrDtl();
 			ISexId = 0;
 			ISpcId = 0;
+			gnrDtlAdl.setIGnrDtlNmb(0);
+			gnrDtlAdl.setiGnrDtlNmbDd(0);
 			this.actBtnAdlAdd(false, true);
+			this.actBtnAdlRst(false, true);
 			this.actBtnAdlNew(true, true);
 			this.actAdlNmb(false, true, true);
+			this.actAdlNmbDd(false, true, true);
 			this.actAdlSex(false, true, true);
 			this.actAdlSpc(false, true, true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 		}
 	}
 
 	public void chsAdl() {
+		this.newAdl();
 		this.actGnrObsAdl(false, true, false);
 		if (BGnrAdl != false) {
 			this.actAdlNmb(false, true, true);
+			this.actAdlNmbDd(false, true, true);
 			this.actAdlSex(false, true, true);
 			this.actAdlSpc(false, true, true);
 			this.actBtnAdlAdd(false, true);
+			this.actBtnAdlRst(false, true);
 		} else {
 			this.actAdlNmb(true, true, false);
+			this.actAdlNmbDd(true, true, false);
 			this.actAdlSex(true, true, false);
 			this.actAdlSpc(true, true, false);
 			this.actBtnAdlAdd(true, true);
@@ -1163,24 +1204,52 @@ public class SitCtlGnr {
 
 	public void addAdl() {
 		try {
-			gnrDtlAdl.setIGnsId(ISpcId);
-			gnrDtlAdl.setISexId(ISexId);
-			gnrDtlAdl.setITpeDtl(cde.sitAdl());
-			gnrDtlAdl.setIStgId(dfl.IDflVle());
-			lstAdlSlc.add(gnrDtlAdl);
-			this.actAdlNmb(true, true, false);
-			this.actAdlSex(true, true, false);
-			this.actAdlSpc(true, true, false);
-			this.actBtnAdlAdd(true, true);
-			this.actBtnAdlNew(false, true);
+
+			if (ITpeId == Code.I_SIT_TPE_FLD()) {
+				if (gnrDtlAdl.getIGnrDtlNmb() == 0 && gnrDtlAdl.getiGnrDtlNmbDd() == 0) {
+					this.msg.msgWrn(Message.S_MSG_FRMO1_INPUT_DST_ZERO);
+				} else {
+					gnrDtlAdl.setIGnsId(ISpcId);
+					gnrDtlAdl.setISexId(ISexId);
+					gnrDtlAdl.setITpeDtl(cde.sitAdl());
+					gnrDtlAdl.setIStgId(dfl.IDflVle());
+					gnrDtlAdl.setICtnId(dfl.IDflVle());
+					gnrDtlAdl.setIPrcId(ITpeId);
+					gnrDtlAdl.setDGnrDtlDtePrc(gnr.getdGnrRgsDte());
+					lstAdlSlc.add(gnrDtlAdl);
+
+					this.actAdlNmb(true, true, false);
+					this.actAdlNmbDd(true, true, false);
+					this.actAdlSex(true, true, false);
+					this.actAdlSpc(true, true, false);
+					this.actBtnAdlAdd(true, true);
+					this.actBtnAdlNew(false, true);
+					this.actBtnAdlRst(true, true);
+				}
+			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 		}
 	}
 
 	public void rstAdl() {
-
+		try {
+			this.actBtnAdlAdd(true, true);
+			this.actBtnAdlNew(false, true);
+			this.actBtnAdlRst(true, true);
+			gnrDtlAdl = new SitTblGnrDtl();
+			ISexId = 0;
+			ISpcId = 0;
+			gnrDtlAdl.setIGnrDtlNmb(0);
+			gnrDtlAdl.setiGnrDtlNmbDd(0);
+			this.actAdlNmb(true, true, false);
+			this.actAdlNmbDd(true, true, false);
+			this.actAdlSex(true, true, false);
+			this.actAdlSpc(true, true, false);
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
+		}
 	}
 
 	private void actBtnAdlRst(boolean dsb, boolean vsb) {
@@ -1202,6 +1271,12 @@ public class SitCtlGnr {
 		dsbAdlNmb = dsb;
 		vsbAdlNmb = vsb;
 		rqrAdlNmb = rqr;
+	}
+
+	private void actAdlNmbDd(boolean dsb, boolean vsb, boolean rqr) {
+		dsbAdlNmbDd = dsb;
+		vsbAdlNmbDd = vsb;
+		rqrAdlNmbDd = rqr;
 	}
 
 	private void actAdlSex(boolean dsb, boolean vsb, boolean rqr) {
@@ -1227,6 +1302,9 @@ public class SitCtlGnr {
 	private boolean vsbGnrPrfTch;
 	private boolean rqrGnrPrfTch;
 
+	private boolean dsbBtnRstPrfTch;
+	private boolean vsbBtnRstPrfTch;
+
 	@EJB
 	protected ScrSrvPrsRol SPrsPrf;
 	private List<ScrTblPrsRol> lstPrsPrfAgnAdd;
@@ -1239,7 +1317,7 @@ public class SitCtlGnr {
 		try {
 			IPrsPrfAgnSlcId = new ArrayList<String>();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 		}
 	}
 
@@ -1247,18 +1325,33 @@ public class SitCtlGnr {
 		try {
 			lstPrsPrfAgnAdd = new ArrayList<ScrTblPrsRol>();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 		}
 	}
 
 	public void chsPrsPrfAgn() {
 		try {
-			this.newPrsPrfAgnAdd();
-			for (String prsPrfAux : IPrsPrfAgnSlcId) {
-				lstPrsPrfAgnAdd.add(SPrsPrf.searchId(Integer.valueOf(prsPrfAux)));
+			if (IPrsPrfAgnSlcId.size() > 0) {
+				this.newPrsPrfAgnAdd();
+				for (String prsPrfAux : IPrsPrfAgnSlcId) {
+					lstPrsPrfAgnAdd.add(SPrsPrf.searchId(Integer.valueOf(prsPrfAux)));
+				}
+			} else {
+				this.newPrsPrfAgnSlc();
+				this.newPrsPrfAgnAdd();
 			}
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
+		}
+	}
+
+	public void rstTchAgn() {
+		try {
+			this.newPrsPrfAgnSlc();
+			this.newPrsPrfAgnAdd();
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 		}
 	}
 
@@ -1266,7 +1359,7 @@ public class SitCtlGnr {
 		try {
 			IPrsPrfTchSlcId = new ArrayList<String>();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 		}
 	}
 
@@ -1274,7 +1367,7 @@ public class SitCtlGnr {
 		try {
 			lstPrsPrfTchAdd = new ArrayList<ScrTblPrsRol>();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 		}
 	}
 
@@ -1285,7 +1378,7 @@ public class SitCtlGnr {
 				lstPrsPrfTchAdd.add(SPrsPrf.searchId(Integer.valueOf(prsPrfAux)));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.WARNING, Message.S_LOG_NME_CTL + e.getMessage());
 		}
 	}
 
@@ -1299,6 +1392,11 @@ public class SitCtlGnr {
 		dsbGnrPrfTch = dsb;
 		vsbGnrPrfTch = vsb;
 		rqrGnrPrfTch = rqr;
+	}
+
+	private void actBtnRstPrfTch(boolean dsb, boolean vsb) {
+		dsbBtnRstPrfTch = dsb;
+		vsbBtnRstPrfTch = vsb;
 	}
 
 	/** +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ **/
@@ -1325,54 +1423,6 @@ public class SitCtlGnr {
 
 	public void setSte(SitTblSte ste) {
 		this.ste = ste;
-	}
-
-	public int getIDteSetYr() {
-		return IDteSetYr;
-	}
-
-	public void setIDteSetYr(int iDteSetYr) {
-		IDteSetYr = iDteSetYr;
-	}
-
-	public int getIDteSetMth() {
-		return IDteSetMth;
-	}
-
-	public void setIDteSetMth(int iDteSetMth) {
-		IDteSetMth = iDteSetMth;
-	}
-
-	public int getIDteSetDay() {
-		return IDteSetDay;
-	}
-
-	public void setIDteSetDay(int iDteSetDay) {
-		IDteSetDay = iDteSetDay;
-	}
-
-	public int getIDteClcYr() {
-		return IDteClcYr;
-	}
-
-	public void setIDteClcYr(int iDteClcYr) {
-		IDteClcYr = iDteClcYr;
-	}
-
-	public int getIDteClcMth() {
-		return IDteClcMth;
-	}
-
-	public void setIDteClcMth(int iDteClcMth) {
-		IDteClcMth = iDteClcMth;
-	}
-
-	public int getIDteClcDay() {
-		return IDteClcDay;
-	}
-
-	public void setIDteClcDay(int iDteClcDay) {
-		IDteClcDay = iDteClcDay;
 	}
 
 	public boolean isBGnrTrpRcv() {
@@ -2583,14 +2633,6 @@ public class SitCtlGnr {
 		this.gnrDtlLrv = gnrDtlLrv;
 	}
 
-	public int getITtlLrsId() {
-		return ITtlLrsId;
-	}
-
-	public void setITtlLrsId(int iTtlLrsId) {
-		ITtlLrsId = iTtlLrsId;
-	}
-
 	public boolean isVsbPgrTbl() {
 		return vsbPgrTbl;
 	}
@@ -2773,6 +2815,70 @@ public class SitCtlGnr {
 
 	public void setITpeId(int iTpeId) {
 		ITpeId = iTpeId;
+	}
+
+	public boolean isDsbBtnRstPrfTch() {
+		return dsbBtnRstPrfTch;
+	}
+
+	public void setDsbBtnRstPrfTch(boolean dsbBtnRstPrfTch) {
+		this.dsbBtnRstPrfTch = dsbBtnRstPrfTch;
+	}
+
+	public boolean isVsbBtnRstPrfTch() {
+		return vsbBtnRstPrfTch;
+	}
+
+	public void setVsbBtnRstPrfTch(boolean vsbBtnRstPrfTch) {
+		this.vsbBtnRstPrfTch = vsbBtnRstPrfTch;
+	}
+
+	public boolean isDsbAdlNmbDd() {
+		return dsbAdlNmbDd;
+	}
+
+	public void setDsbAdlNmbDd(boolean dsbAdlNmbDd) {
+		this.dsbAdlNmbDd = dsbAdlNmbDd;
+	}
+
+	public boolean isVsbAdlNmbDd() {
+		return vsbAdlNmbDd;
+	}
+
+	public void setVsbAdlNmbDd(boolean vsbAdlNmbDd) {
+		this.vsbAdlNmbDd = vsbAdlNmbDd;
+	}
+
+	public boolean isRqrAdlNmbDd() {
+		return rqrAdlNmbDd;
+	}
+
+	public void setRqrAdlNmbDd(boolean rqrAdlNmbDd) {
+		this.rqrAdlNmbDd = rqrAdlNmbDd;
+	}
+
+	public boolean isDsbLrsCtn() {
+		return dsbLrsCtn;
+	}
+
+	public void setDsbLrsCtn(boolean dsbLrsCtn) {
+		this.dsbLrsCtn = dsbLrsCtn;
+	}
+
+	public boolean isVsbLrsCtn() {
+		return vsbLrsCtn;
+	}
+
+	public void setVsbLrsCtn(boolean vsbLrsCtn) {
+		this.vsbLrsCtn = vsbLrsCtn;
+	}
+
+	public boolean isRqrLrsCtn() {
+		return rqrLrsCtn;
+	}
+
+	public void setRqrLrsCtn(boolean rqrLrsCtn) {
+		this.rqrLrsCtn = rqrLrsCtn;
 	}
 
 }

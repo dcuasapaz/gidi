@@ -25,14 +25,7 @@ public class SitSrvGnr extends SrvDb<SitTblGnr> {
 			int IDteClcMth, int IDteClcDay, boolean BGnrTrpRcv, boolean BGnrTrpSup, boolean BGnrEgs, boolean BGnrLrs,
 			boolean BGnrAdl, int ITpeId) {
 		try {
-			gnr.setIEpiId(-99);
 			gnr.setSitTblNmb(nmb);
-			gnr.setIGnrDteSetYr(IDteSetYr);
-			gnr.setIGnrDteSetMth(IDteSetMth);
-			gnr.setIGnrDteSetDay(IDteSetDay);
-			gnr.setIGnrDteClcYr(IDteClcYr);
-			gnr.setIGnrDteClcMth(IDteClcMth);
-			gnr.setIGnrDteClcDay(IDteClcDay);
 			gnr.setBGnrTrpRcv(BGnrTrpRcv);
 			gnr.setBGnrTrpSup(BGnrTrpSup);
 			gnr.setBGnrEgs(BGnrEgs);
@@ -48,22 +41,14 @@ public class SitSrvGnr extends SrvDb<SitTblGnr> {
 		}
 	}
 
-	public boolean sve(ScrTblPrsRol prsPrf, SitTblGnr gnr, SitTblNmb nmb, int ITrpId, int IDteSetYr, int IDteSetMth,
-			int IDteSetDay, int IDteClcYr, int IDteClcMth, int IDteClcDay, boolean BGnrTrpRcv, boolean BGnrTrpSup,
-			boolean BGnrEgs, boolean BGnrLrs, boolean BGnrAdl, int ITpeId) {
+	public boolean sve(ScrTblPrsRol prsPrf, SitTblGnr gnr, SitTblNmb nmb, int ITrpId, boolean BGnrTrpRcv,
+			boolean BGnrTrpSup, boolean BGnrEgs, boolean BGnrLrs, boolean BGnrAdl, int ITpeId) {
 		try {
 			gnr.setDGnrDteRgs(dfl.dCurrentDate());
 			gnr.setSGnrTmeRgs(dfl.currentTime());
 			gnr.setScrTblPrsRol(prsPrf);
-			gnr.setIEpiId(-99);
 			gnr.setSitTblNmb(nmb);
 			gnr.setITrpId(ITrpId);
-			gnr.setIGnrDteSetYr(IDteSetYr);
-			gnr.setIGnrDteSetMth(IDteSetMth);
-			gnr.setIGnrDteSetDay(IDteSetDay);
-			gnr.setIGnrDteClcYr(IDteClcYr);
-			gnr.setIGnrDteClcMth(IDteClcMth);
-			gnr.setIGnrDteClcDay(IDteClcDay);
 			gnr.setBGnrTrpRcv(BGnrTrpRcv);
 			gnr.setBGnrTrpSup(BGnrTrpSup);
 			gnr.setBGnrEgs(BGnrEgs);

@@ -5,18 +5,151 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean
 public class Html {
 	public Html() {
-		// TODO Auto-generated constructor stub
 	}
 
-	/*---------------------------------------------------------------------------------------------------------*/
-	/*
-	 * L: LABEL; O: OPTION; P: PLACEHOLDER; I: IMAGE;
-	 */
-	/*---------------------------------------------------------------------------------------------------------*/
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// Date: 2022-02-09
+	// L: LABEL; O: OPTION; P: PLACEHOLDER; I: IMAGE;
 
-	/****************************************************************************/
-	/* +++++++++++++++++++++++++++++++ PAGE: LOGIN ++++++++++++++++++++++++++++ */
-	/****************************************************************************/
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// DATE: 2022-02-09
+	// DESCRIPTION: Label Format 1
+
+	public static String D_LBL_FRM01_PRC_DTE() {
+		return Message.D_MSG_FRM01_PRC_DTE() + Html.S_LBL_PNT();
+	}
+
+	public static String S_LBL_FRM01_PRC() {
+		return "Process:";
+	}
+
+	public static String S_LBL_FRM01_STE() {
+		return "Location:";
+	}
+
+	public static String S_LBL_FRM01_TRP() {
+		return "Trap:";
+	}
+
+	public static String S_LBL_FRM01_NMB() {
+		return "Number:";
+	}
+
+	public static String S_LBL_FRM01_TCH_FLD() {
+		return "Field agent:";
+	}
+
+	public static String D_LBL_FRM01_DTE_SET() {
+		return "Date ovitrap Set:";
+	}
+
+	public static String D_LBL_FRM01_DTE_CLC() {
+		return "Date ovitrap Colected";
+	}
+
+	public static String B_LBL_FRM01_RCV() {
+		return "Trap recovered";
+	}
+
+	public static String B_LBL_FRM01_SUP() {
+		return "Trap set up";
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+	public static String S_TTL_FRM01_TRP() {
+		return "Trap";
+	}
+
+	public static String S_TTL_FRM01_EGS() {
+		return "Eggs";
+	}
+
+	public static String S_TTL_FRM01_LRV() {
+		return "Larvaes";
+	}
+
+	public static String S_TTL_FRM01_ADL() {
+		return "Adults";
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	public static String S_LBL_FRM01_Y_N() {
+		return "Yes/No";
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	public static String I_LBL_FRM01_EGS_WHL() {
+		return "N°. Whole Eggs:";
+	}
+
+	public static String I_LBL_FRM01_EGS_BRK() {
+		return "N°. Broken Eggs:";
+	}
+
+	public static String I_LBL_FRM01_EGS_VLB() {
+		return "N°. Viable Eggs:";
+	}
+
+	public static String I_LBL_FRM01_EGS_VLB_NO() {
+		return "N°. No Viable Eggs:";
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	public static String I_LBL_FRM01_LRP_NMB() {
+		return "N°. Live:";
+	}
+
+	public static String I_LBL_FRM01_LRP_NMB_DD() {
+		return "N°. Dead:";
+	}
+
+	public static String I_LBL_FRM01_LRP_STG() {
+		return "Stage:";
+	}
+
+	public static String I_LBL_FRM01_LRP_CTN() {
+		return Message.I_MSG_FRM01_LRP_CTN() + Html.S_LBL_PNT();
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// AUTOR | DATE | OBJECT | DESCRIPTION
+	// --------------------------------------------------------------
+	// Diego Cuasapaz | 2022-02-22 | Label Adults | Label, Style
+	// --------------------------------------------------------------
+	public static String S_LBL_PNT() {
+		return ":";
+	}
+
+	public static String I_LBL_FRM01_ADL_NMB() {
+		return Message.I_MSG_FRM01_ADL_NMB() + Html.S_LBL_PNT();
+	}
+
+	public static String I_LBL_FRM01_ADL_NMB_DD() {
+		return Message.I_MSG_FRM01_ADL_NMB_DD() + Html.S_LBL_PNT();
+	}
+
+	public static String I_LBL_FRM01_ADL_SEX() {
+		return Message.I_MSG_FRM01_ADL_SEX() + Html.S_LBL_PNT();
+	}
+
+	public static String I_LBL_FRM01_ADL_GNR() {
+		return Message.I_MSG_FRM01_ADL_GNR() + Html.S_LBL_PNT();
+	}
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// Date: 2022-02-09
+	// Description: Label item
+
+	public static String D_PTT() {
+		return "yyyy-MM-dd";
+	}
+
+	public static String S_ITM_SLC() {
+		return "Selected";
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	/* +++++++++++++++++++++++++ PAGE: LOGIN ++++++++++++++++++++++++ */
 
 	public final String L_PRS_USR() {
 		return "User/Email *:";
@@ -46,9 +179,9 @@ public class Html {
 		return "/img/lgo/gidi.png";
 	}
 
-	/****************************************************************************/
-	/* +++++++++++++++++++++++++++++++ PAGE: MAIN ++++++++++++++++++++++++++++ */
-	/****************************************************************************/
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	/* +++++++++++++++++++++++++++++ PAGE: MAIN +++++++++++++++++++++ */
+
 	public final String L_MAIN_SCR_DTE_RGS() {
 		return "Registration date:";
 	}
@@ -331,48 +464,138 @@ public class Html {
 		return ttlPgePrt;
 	}
 
-	/*---------------------------------------------------------------------------------------------------------*/
-	/* MENU: FORM */
-	/*---------------------------------------------------------------------------------------------------------*/
-	public String hmeBtnId = "frm-btn-hme";
-	public String hmeBtnNme = "Inicio";
-	public String hmeBtnIcn = "ui-icon-home";
-	public String hmeBtnDsc = "Regresar al menï¿½ principal";
-	public String hmeCsvBtnImg = "/img/icn/home256.png";
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// AUTOR | DATE | OBJECT | DESCRIPTION
+	// --------------------------------------------------------------
+	// Diego Cuasapaz | 2022-02-22 | Dialog confirm | Label, message
+	// --------------------------------------------------------------
 
-	public String newBtnId = "frm-btn-new";
-	public String newBtnNme = "Nuevo";
-	public String newBtnIcn = "ui-icon-document";
+	public static String FRM_DLG_CNF_HDR() {
+		return "Confirmation";
+	}
 
-	public String sveBtnId = "frm-btn-sve";
-	public String sveBtnNme = "Guardar";
-	public String sveBtnIcn = "ui-icon-disk";
+	public static String FRM_DLG_CNF_MSG() {
+		return "Are you sure?";
+	}
 
-	public String shwBtnId = "frm-tbl-btn-shw";
-	public String shwBtnNme = "Ver";
-	public String shwBtnIcn = "ui-icon-arrowrefresh-1-n";
-	public String shwBtnDsc = "Ver detalles de registro";
-	public String shwCsvBtnImg = "/img/icn/src16.png";
+	public static String FRM_DLG_CNF_ICN() {
+		return "ui-icon-alert";
+	}
 
-	public String edtBtnId = "frm-tbl-btn-edt";
-	public String edtBtnNme = "Editar";
-	public String edtBtnIcn = "ui-icon-pencil";
-	public String edtBtnDsc = "Editar registro";
-	public String edtCsvBtnImg = "/img/icn/edt16.png";
+	public static int FRM_DLG_CNF_SZE() {
+		return 250;
+	}
 
-	public String updBtnId = "frm-btn-upd";
-	public String updBtnNme = "Guardar cambios";
-	public String updBtnIcn = "ui-icon-disk";
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// AUTOR | DATE | OBJECT | DESCRIPTION
+	// --------------------------------------------------------------
+	// Diego Cuasapaz | 2022-02-22 | Dialog button confirm | Label, style, delete
+	// code
+	// --------------------------------------------------------------
 
-	public String dltBtnId = "frm-tbl-btn-dlt";
-	public String dltBtnNme = "Eliminar";
-	public String dltBtnIcn = "ui-icon-trash";
-	public String dltBtnDsc = "Eliminar registro";
-	public String dltCsvBtnImg = "/img/icn/dlt16.png";
+	public static String FRM_DLG_BTN_YES_NME() {
+		return "Yes";
+	}
 
-	public String rfrBtnId = "frm-btn-rfr";
-	public String rfrBtnNme = "Regresar";
-	public String rfrBtnIcn = "ui-icon-arrowrefresh-1-n";
+	public static String FRM_DLG_BTN_YES_STL() {
+		return "btn-cnf btn-success";
+	}
+
+	public static String FRM_DLG_BTN_NOT_NME() {
+		return "No";
+	}
+
+	public static String FRM_DLG_BTN_NOT_STL() {
+		return "btn-cnf btn-danger";
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// AUTOR | DATE | OBJECT | DESCRIPTION
+	// --------------------------------------------------------------
+	// Diego Cuasapaz | 2022-02-22 | Button new | Label, style, delete code
+	// --------------------------------------------------------------
+
+	public static String FRM_BTN_NEW_NME() {
+		return "New";
+	}
+
+	public static String FRM_BTN_NEW_STL() {
+		return "btn-cnf-pnl btn-primary";
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// AUTOR | DATE | OBJECT | DESCRIPTION
+	// --------------------------------------------------------------
+	// Diego Cuasapaz | 2022-02-22 | Button add | Label, style, delete code
+	// --------------------------------------------------------------
+
+	public static String FRM_BTN_ADD_NME() {
+		return "Add";
+	}
+
+	public static String FRM_BTN_ADD_STL() {
+		return "btn-cnf-pnl btn-success";
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// AUTOR | DATE | OBJECT | DESCRIPTION
+	// --------------------------------------------------------------
+	// Diego Cuasapaz | 2022-02-22 | Button delete | Label, style, delete code
+	// --------------------------------------------------------------
+
+	public static String FRM_BTN_DLT_NME() {
+		return "Delete";
+	}
+
+	public static String FRM_BTN_DLT_STL() {
+		return "btn btn-danger";
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// AUTOR | DATE | OBJECT | DESCRIPTION
+	// --------------------------------------------------------------
+	// Diego Cuasapaz | 2022-02-22 | Button reset | Label, style, delete code
+	// --------------------------------------------------------------
+
+	public static String FRM_BTN_RST_NME() {
+		return "Reset";
+	}
+
+	public static String FRM_BTN_RST_STL() {
+		return "btn-cnf-pnl btn-warning";
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+	// AUTOR | DATE | OBJECT | DESCRIPTION
+	// --------------------------------------------------------------
+	// Diego Cuasapaz | 2022-02-22 | Button table edit, delete | Label, style
+	// --------------------------------------------------------------
+
+	public static String FRM_TBL_BTN_EDT_ID() {
+		return "frm-tbl-btn-edt";
+	}
+
+	public static String FRM_TBL_BTN_EDT_NME() {
+		return "Edit";
+	}
+
+	public static String FRM_TBL_BTN_EDT_STL() {
+		return "btn-tbl btn-info";
+	}
+
+	public static String FRM_TBL_BTN_DLT_ID() {
+		return "frm-tbl-btn-dlt";
+	}
+
+	public static String FRM_TBL_BTN_DLT_NME() {
+		return "Delete";
+	}
+
+	public static String FRM_TBL_BTN_DLT_STL() {
+		return "btn-tbl btn-danger";
+	}
+
+	/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 	public String rfrBtnDsc = "Recargar ventana";
 	public String rfrCsvBtnImg = "/img/icn/refresh256.png";
 
@@ -419,64 +642,12 @@ public class Html {
 		return shwBlcId;
 	}
 
-	public String getShwBtnId() {
-		return shwBtnId;
-	}
-
-	public String getShwBtnNme() {
-		return shwBtnNme;
-	}
-
-	public String getShwBtnIcn() {
-		return shwBtnIcn;
-	}
-
-	public String getShwBtnDsc() {
-		return shwBtnDsc;
-	}
-
-	public String getShwCsvBtnImg() {
-		return shwCsvBtnImg;
-	}
-
-	public String getEdtBtnIcn() {
-		return edtBtnIcn;
-	}
-
-	public String getEdtBtnDsc() {
-		return edtBtnDsc;
-	}
-
-	public String getEdtCsvBtnImg() {
-		return edtCsvBtnImg;
-	}
-
-	public String getDltBtnIcn() {
-		return dltBtnIcn;
-	}
-
-	public String getDltBtnDsc() {
-		return dltBtnDsc;
-	}
-
-	public String getDltCsvBtnImg() {
-		return dltCsvBtnImg;
-	}
-
-	public String getHmeCsvBtnImg() {
-		return hmeCsvBtnImg;
-	}
-
 	public String getRfrCsvBtnImg() {
 		return rfrCsvBtnImg;
 	}
 
 	public String getDwnCsvBtnImg() {
 		return dwnCsvBtnImg;
-	}
-
-	public String getHmeBtnDsc() {
-		return hmeBtnDsc;
 	}
 
 	public String getRfrBtnDsc() {
@@ -517,82 +688,6 @@ public class Html {
 
 	public String getDltBlcId() {
 		return dltBlcId;
-	}
-
-	public String getHmeBtnId() {
-		return hmeBtnId;
-	}
-
-	public String getHmeBtnNme() {
-		return hmeBtnNme;
-	}
-
-	public String getHmeBtnIcn() {
-		return hmeBtnIcn;
-	}
-
-	public String getNewBtnId() {
-		return newBtnId;
-	}
-
-	public String getNewBtnNme() {
-		return newBtnNme;
-	}
-
-	public String getNewBtnIcn() {
-		return newBtnIcn;
-	}
-
-	public String getSveBtnId() {
-		return sveBtnId;
-	}
-
-	public String getSveBtnNme() {
-		return sveBtnNme;
-	}
-
-	public String getSveBtnIcn() {
-		return sveBtnIcn;
-	}
-
-	public String getEdtBtnId() {
-		return edtBtnId;
-	}
-
-	public String getEdtBtnNme() {
-		return edtBtnNme;
-	}
-
-	public String getUpdBtnId() {
-		return updBtnId;
-	}
-
-	public String getUpdBtnNme() {
-		return updBtnNme;
-	}
-
-	public String getUpdBtnIcn() {
-		return updBtnIcn;
-	}
-
-	public String getDltBtnId() {
-		return dltBtnId;
-	}
-
-	public String getDltBtnNme() {
-		return dltBtnNme;
-	}
-
-	public String getRfrBtnId() {
-		return rfrBtnId;
-	}
-
-	public String getRfrBtnNme() {
-		return rfrBtnNme;
-	}
-
-	public String getRfrBtnIcn() {
-		return rfrBtnIcn;
 	}
 
 	/*---------------------------------------------------------------------------------------------------------*/
